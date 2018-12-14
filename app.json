@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/group/current/current",
+    "pages/index/index",
+    "pages/cart/cart",
+    "pages/profile/profile",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#E42826",
+    "navigationBarTitleText": "链上臻品",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "backgroundColor": "#f7f7fa",
+    "borderStyle": "white",
+    "selectedColor": "#e4372e",
+    "color": "#666666",
+    "list": [
+      {
+        "pagePath": "pages/group/current/current",
+        "iconPath": "static/images/tabBar/tab-group-normal.png",
+        "selectedIconPath": "static/images/tabBar/tab-group-highlight.png",
+        "text": "拼团购"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "iconPath": "static/images/tabBar/tab-buy-normal.png",
+        "selectedIconPath": "static/images/tabBar/tab-buy-highlight.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}
