@@ -53,7 +53,7 @@ App({
           //   delta: 1
           // })
         }).catch((err) => {
-          wx.setStorageSync('token', '215B252DB0FE1C3746C028AB96605F67');
+          wx.setStorageSync('token', '86F0BAFF35531E1E0ACD43441A81074D');
           this.globalData.hasLogin = false;
           util.showErrorToast('微信登录失败');
           // wx.navigateTo({

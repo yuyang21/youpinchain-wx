@@ -1,0 +1,23 @@
+// filter.wxs
+var timeArry = function(number, index) {
+  var hours = Math.floor(number / 60 / 60)
+  var minutes = Math.floor((number - hours * 60 * 60) / 60)
+  var seconds = Math.floor((number - hours * 60 * 60 - minutes * 60))
+  var arry = []
+  hours < 10 ? hours = '0' + hours : null
+  minutes < 10 ? minutes = '0' + minutes : null
+  seconds < 10 ? seconds = '0' + seconds : null
+  arry.push(hours, minutes, seconds)
+  return arry[index]
+}
+var moneyFormat = function(money) {
+  return money.toFixed(2);
+}
+ 
+/*
+ * 导出
+ */
+module.exports = {
+    timeArry: timeArry,
+    moneyFormat: moneyFormat
+}

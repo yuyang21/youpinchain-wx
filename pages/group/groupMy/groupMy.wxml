@@ -1,0 +1,98 @@
+<wxs src="../../../utils/filter.wxs" module="filter" />
+<view class="goods">
+  <view class="info_box">
+    <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'/groupDet/' + groupSuit.id}}" class="group_info clear">
+      <image src="{{groupSuit.thumbnailPic}}" class="left image {{!groupSuit.thumbnailPic ? 'noImage' : ''}}"/>
+      <view class="left goods_info">
+        <view class="name">已经有<span>{{members.length}}</span>人参与拼团</view>
+        <view class="right_tip" wx:if="{{endTimeDown>0}}">
+          <view>距拼团结束</view>
+          <view>
+            <span class="shadow_box">{{filter.timeArry(endTimeDown, 0)}}</span>:<span class="shadow_box">{{filter.timeArry(endTimeDown, 1)}}</span>:<span class="shadow_box">{{filter.timeArry(endTimeDown, 2)}}</span>
+          </view>
+        </view>
+        <view class="right_tip" wx:else>
+          <view class="activityEnd">已结束</view>
+        </view>
+        <view class="price"><span class="RMB">￥</span>{{groupMy.discountPrice}}</view>
+      </view>
+    </navigator>
+    <view class="aid_friend">
+      <view class="friend_list">
+        <view class="li" wx:for="(item,index) in members" wx:key="index"><image src="{{item.headImgUrl}}"/>
+          <view wx:if="{{index === 0}}">团长</view>
+        </view>
+        <view class="li none">
+          <text>?</text>
+          <view>待邀请</view>
+        </view>
+        <view class="li none" wx:if="{{totalPages > 1}}" bindtap="loadMoreMember">
+          <view><span>查看更多</span></view>
+        </view>
+      </view>
+    </view>
+    <view class="invite_btn clear" wx:if="{{endTimeDown > 0}}" bindtap="showShareBox">邀请好友</view>
+  </view>
+  <!-- 拼团流程 -->
+  <view class="assembling_process">
+    <view class="panel_title">拼团流程</view>
+    <view class="content">
+      <view class="process">
+        <view class="li">
+          <image src="../../../static/images/group/process01.png" alt=""/>
+          <view class="text">团长开团</view>
+        </view>
+        <view class="li">
+          <image src="../../../static/images/group/process02.png" alt=""/>
+          <view class="text">邀请好友</view>
+        </view>
+        <view class="li">
+          <image src="../../../static/images/group/process03.png" alt=""/>
+          <view class="text">拼团成功</view>
+        </view>
+        <view class="li">
+          <image src="../../../static/images/group/process04.png" alt=""/>
+          <view class="text">等待发货</view>
+        </view>
+      </view>
+      <view class="rules">奖励规则</view>
+      <view class="rules">{{groupMy.rulesNum}}人即可享受拼团优惠</view>
+    </view>
+  </view>
+  <!-- <view class="poster" wx:show="showShare">
+    <p class="text">1.长按屏幕保存图片</p>
+    <p class="text">2.将图片分享给好友或朋友圈</p>
+    <view class="invite_landing" ref="test">
+      <img :src="output" width="100%" ref="output" wx:if="output" />
+      <view class="box" wx:else>
+        <view class="groupMyInfo">
+          <p :class="{'padd-t': groupMy.groupSuitType === 1}"><strong>{{leaderAddress.consignee}}</strong>邀请您参加{{!sex ?
+            '' : sex === '女' ? '她的' : '他的'}}团购</p>
+          <p wx:if="groupMy.groupSuitType === 2" class="ellipsis">同一收货地址：{{leaderAddress.address}}</p>
+        </view>
+        <view class="header">
+          <img src="../../images/group/icon_share.png" alt="" class="icon_head">
+          <img :src="groupSuit.sharePic" class="boxImg" alt="">
+          <view class="descrInfo">
+            <p class="left"><span>¥&nbsp;{{groupMy.discountPrice}}</span>/份 &nbsp; <span>{{groupSuit.minimum}}份起订</span></p>
+            <p class="right">拼团中</p>
+          </view>
+        </view>
+        <view class="container">
+          <view class="left">
+            <view class="title ellipsis">{{groupSuit.suitName}}</view>
+            <p class="content">{{groupSuit.describe}}</p>
+            <p class="discountPrice">同一地址团购：<span>¥</span>{{sameAddressPrice}}</p>
+            <p class="tips" wx:if="groupMy.groupSuitType === 2">(团长发起，并享劳动鼓励金)</p>
+            <p class="originalPrice">不同地址团购：<span>¥</span>{{diffetentAddressPrice}}</p>
+            <p class="originalPrice">单买价：<span>¥</span>{{groupSuit.suitPrice}}</p>
+          </view>
+          <view class="right">
+            <view class="qrcode" id="qrcode_1"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <img bindtap="showShare = false" src="../../images/bounty-plan/close_model.png" alt="" width="30" class="close_model">
+  </view> -->
+</view>

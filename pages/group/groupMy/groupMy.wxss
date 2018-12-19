@@ -1,0 +1,425 @@
+.goods {
+  background-color: #f6f5f5;
+}
+
+.invite_btn {
+  width: 92%;
+  height: 90rpx;
+  font-size: 30rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 90rpx;
+  margin: 0 auto 30rpx;
+  border-radius: 45rpx;
+  background-color: #e4372e;
+  padding-bottom: 70rpx;
+}
+
+.info_box {
+  background-color: #fff;
+  padding-bottom: 20rpx;
+}
+
+.info_box .group_info {
+  padding: 50rpx 0 0 30rpx;
+}
+
+.info_box .group_info .image {
+  margin-right: 70rpx;
+  width: 280rpx;
+  height: 280rpx;
+  border-radius: 10rpx;
+}
+
+.info_box .group_info image.noImage {
+  background-color: #000;
+}
+
+.info_box .group_info .goods_info {
+  width: 50%;
+}
+
+.info_box .group_info .goods_info .name {
+  font-size: 30rpx;
+  color: #333;
+  padding: 0 0 6rpx;
+}
+
+.info_box .group_info .goods_info .name span {
+  color: #e4372e;
+  font-weight: bold;
+}
+
+.info_box .group_info .goods_info .desr {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.info_box .group_info .goods_info .price {
+  font-size: 36rpx;
+  color: #e4372e;
+  font-weight: bold;
+}
+
+.info_box .group_info .goods_info .price .RMB {
+  font-size: 26rpx;
+  font-weight: bold;
+}
+
+.info_box .group_info .goods_info .right_tip {
+  position: relative;
+  width: 180rpx;
+  text-align: center;
+  background-color: #FB9D1C;
+  height: 128rpx;
+  margin: 10rpx 0 12rpx;
+}
+.info_box .group_info .goods_info .right_tip view:first-child {
+  font-size: 28rpx;
+  color: #fff;
+  padding: 18rpx 0 10rpx;
+}
+
+.info_box .group_info .goods_info .right_tip view:last-child {
+  font-size: 28rpx;
+  color: #fff;
+}
+
+.info_box .group_info .goods_info .right_tip view.activityEnd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 36rpx;
+  color: #333;
+}
+.info_box .group_info .goods_info .right_tip:before {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 56rpx;
+  left: -10rpx;
+  border-top: 10rpx solid transparent;
+  border-right: 10rpx solid #FB9D1C;
+  border-bottom: 10rpx solid transparent;
+}
+
+.info_box .group_info .goods_info .right_tip .shadow_box {
+  width: 36rpx;
+  height: 36rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background-color: #912714;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5rpx;
+}
+
+.info_box .aid_friend .friend_list {
+  overflow: hidden;
+  margin: 40rpx auto 0;
+  padding: 50rpx 60rpx 20rpx;
+  border-top: 2rpx solid #EFEFF4;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.info_box .aid_friend .friend_list .li {
+  float: left;
+  text-align: center;
+  width: 20%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30rpx;
+}
+.info_box .aid_friend .friend_list .li image {
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 50%;
+  background-color: #000000;
+}
+
+.info_box .aid_friend .friend_list .li view {
+  width: 148rpx;
+  height: 52rpx;
+  font-size: 40rpx;
+  color: #fff;
+  border-radius: 26rpx;
+  background-color: #e4372e;
+  position: absolute;
+  bottom: -012rpx;
+  transform: scale(.5);
+}
+.info_box .aid_friend .friend_list .li.none text {
+  width: 84rpx;
+  height: 84rpx;
+  margin: 0 auto;
+  border: 4rpx dashed #999;
+  border-radius: 50%;
+  line-height: 84rpx;
+  box-sizing: border-box;
+  font-size: 48rpx;
+  color: #999;
+}
+.info_box .aid_friend .friend_list .li.none text span {
+  font-size: 24rpx;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10rpx;
+}
+.info_box .aid_friend .friend_list .li.none view {
+  background-color: #999;
+}
+
+.assembling_process {
+  background-color: #fff;
+  margin: 30rpx 0 0;
+  padding-bottom: 20rpx;
+}
+
+.assembling_process .process {
+  overflow: hidden;
+  margin: 67rpx auto 40rpx;
+  text-align: center;
+  width: 86%;
+}
+
+.assembling_process .process .li {
+  float: left;
+  width: 25%;
+  position: relative;
+}
+
+.assembling_process .process .li:before {
+  content: '';
+  display: block;
+  position: absolute;
+  right: -44rpx;
+  top: 36rpx;
+  width: 90rpx;
+  height: 2rpx;
+  background-color: #E9EAEB;
+}
+
+.assembling_process .process .li:last-child:before {
+  content: '';
+  display: none;
+}
+
+.assembling_process .process image {
+  width: 60rpx;
+  height: 64rpx;
+}
+
+.assembling_process .process .text {
+  font-size: 28rpx;
+  color: #333;
+}
+.assembling_process .rules {
+  width: 80%;
+  margin: 0 auto 0;
+  overflow: hidden;
+  clear: both;
+  line-height: 2.2;
+  font-size: 26rpx;
+  color: #666;
+}
+.poster {
+  position: absolute;
+  top: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 1);
+  padding-top: 24rpx;
+}
+
+.poster .text {
+  font-size: 30rpx;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+}
+
+.poster .close_model {
+  position: absolute;
+  bottom: 80rpx;
+  left: 47%;
+}
+
+.poster .invite_landing {
+  overflow: hidden;
+  position: relative;
+  top: 20rpx;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.8);
+  width: 84%;
+}
+
+.poster .invite_landing .box {
+  overflow: auto;
+  width: 100%;
+  max-height: 960rpx;
+  background-color: #fff;
+  padding: 10rpx 30rpx 24rpx;
+  border-radius: 10rpx;
+}
+
+.poster .invite_landing .box .groupMyInfo {
+  margin: 30rpx 0 0 140rpx;
+  text-align: left;
+}
+
+.poster .invite_landing .box .groupMyInfo view:first-child {
+  font-size: 26rpx;
+  color: #3B3B3B;
+  line-height: 26rpx;
+}
+.poster .invite_landing .box .groupMyInfo view:first-child strong {
+  color: #000;
+  margin-right: 10rpx;
+}
+
+.poster .invite_landing .box .groupMyInfo view:nth-child(2) {
+  font-size: 24rpx;
+  color: #3B3B3B;
+  transform: scale(.87) translateX(-40rpx);
+  width: 113%;
+}
+
+.poster .invite_landing .box .groupMyInfo view.padd-t {
+  padding: 10rpx 0 20rpx;
+}
+
+.poster .invite_landing .box .header {
+  border: 6rpx solid #A40000;
+  border-radius: 10rpx;
+  position: relative;
+}
+
+.poster .invite_landing .box .header .icon_head {
+  position: absolute;
+  top: -74rpx;
+  left: -8rpx;
+  width: 122rpx;
+  height: 120rpx;
+}
+
+.poster .invite_landing .box .header .descrInfo {
+  width: 100%;
+  height: 80rpx;
+  line-height: .45rem;
+  background-color: #A40000;
+  overflow: hidden;
+  padding: 0 24rpx;
+}
+.poster .invite_landing .box .header .descrInfo .left {
+  font-size: 26rpx;
+  color: #fff;
+}
+.poster .invite_landing .box .header .descrInfo .left span:first-child {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+
+.poster .invite_landing .box .header .descrInfo .left span:last-child {
+  font-size: 24rpx;
+}
+
+.poster .invite_landing .box .header .descrInfo .right {
+  width: 20rpx;
+  height: 30rpx;
+  font-size: 24rpx;
+  color: #A40000;
+  background-color: #FFFF00;
+  border-radius: 16rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30rpx;
+}
+
+.poster .invite_landing .box .boxImg {
+  display: block;
+  width: 100%;
+  height: 350rpx;
+  border-radius: 4rpx 4rpx 0 0;
+}
+
+.poster .invite_landing .box .container {
+  overflow: hidden;
+  padding: 24rpx 0 0 2rpx;
+}
+
+.poster .invite_landing .box .container .left {
+  width: 63%;
+}
+.poster .invite_landing .box .container .left .title {
+  font-size: 30rpx;
+  color: #262424;
+  max-height: 72rpx;
+  font-weight: bold;
+}
+
+.poster .invite_landing .box .container .left .content {
+  font-size: 24rpx;
+  color: #434343;
+  max-height: 72rpx;
+  overflow: hidden;
+}
+
+.poster .invite_landing .box .container .left .discountPrice {
+  font-size: 30rpx;
+  color: #A40000;
+  font-weight: bold;
+  margin-top: 10rpx;
+}
+
+.poster .invite_landing .box .container .left .discountPrice span {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #A40000;
+  margin-right: 8rpx;
+}
+
+.poster .invite_landing .box .container .left .tips {
+  font-size: 24rpx;
+  color: #000;
+  font-weight: bold;
+  margin: 4rpx 0;
+  transform: scale(.9) translateX(-20rpx);
+}
+
+.poster .invite_landing .box .container .left .originalPrice {
+  font-size: 24rpx;
+  color: #000;
+  font-weight: bold;
+  margin-top: 10rpx;
+}
+
+.poster .invite_landing .box .container .left .originalPrice span {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 24rpx;
+  color: #000;
+  transform: scale(.85) translateY(2rpx);
+  margin-right: 4rpx;
+}
+
+.poster .invite_landing .box .container .qrcode {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 10rpx;
+  background: #000;
+  margin-top: 20rpx;
+}

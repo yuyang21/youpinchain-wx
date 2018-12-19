@@ -1,0 +1,81 @@
+<view class="profile_page">
+  <view>
+    <view class="profile-top-red"></view>
+    <view class="profile-number">
+      <view class="profile-link">
+        <image src="{{userInfo.userImgUrl}}" mode="aspectFill" class="privateImage" wx:if="{{userInfo && userInfo.userImgUrl}}"/>
+        <view class="privateImage" wx:else>
+          <svg class="privateImage-svg">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
+          </svg>
+        </view>
+        <view class="user-name">{{userInfo.username}}</view>
+      </view>
+    </view>
+    <view class="info-data">
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/order" class="my-order">
+        <span>我的订单</span>
+        <span class="to-all-order">
+          全部订单
+          <image src="../../../static/images/path.png"/>
+        </span>
+      </navigator>
+      <view class="ul clear">
+        <navigator  hover-class="none" hover-start-time="0" hover-stay-time="0" url="/order/unpaid" class="li info-data-link">
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-dzf.png"/><b class="red-points" wx:if="{{userInfo.unpaid}}">{{userInfo.unpaid}}</b></span>
+          <span class="info-data-bottom">待支付</span>
+        </navigator>
+        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/order/undelivery" class="li info-data-link">
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-dfh.png"/><b class="red-points" wx:if="{{userInfo.undelivery}}">{{userInfo.undelivery}}</b></span>
+          <span class="info-data-bottom">待发货</span>
+        </navigator>
+        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/order/delivered" class="li info-data-link">
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-yfh.png"/><b class="red-points" wx:if="{{userInfo.delivered}}">{{userInfo.delivered}}</b></span>
+          <span class="info-data-bottom">已发货</span>
+        </navigator>
+      </view>
+    </view>
+    <view class="profile-1reTe">
+      <!-- 我的收益 -->
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/profile/income" class="myorder">
+        <aside><image src="../../../static/images/mine-income.png"/></aside>
+        <view class="myorder-div">
+          <span>我的收益</span>
+          <span class="myorder-divsvg">
+            <image src="../../../static/images/path.png"/>
+          </span>
+        </view>
+      </navigator>
+      <!-- 我的优惠券 -->
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/coupon" class="myorder">
+        <aside><image src="../../../static/images/mine-wdyhq.png"/></aside>
+        <view class="myorder-div">
+          <span>我的优惠券</span>
+          <span class="myorder-divsvg">
+            <image src="../../../static/images/path.png"/>
+          </span>
+        </view>
+      </navigator>
+      <!-- 地址管理 -->
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/address" class="myorder">
+        <aside><image src="../../../static/images/mine-dzgl.png"/></aside>
+        <view class="myorder-div">
+          <span>地址管理</span>
+          <span class="myorder-divsvg">
+            <image src="../../../static/images/path.png"/>
+          </span>
+        </view>
+      </navigator>
+      <!-- 联系客服 -->
+      <view class="myorder" bindtap="showAlertTip = !showAlertTip">
+        <aside><image src="../../../static/images/mine-lxkf.png"/></aside>
+        <view class="myorder-div">
+          <span>联系客服</span>
+          <span class="myorder-divsvg">
+            <image src="../../../static/images/path.png"/>
+          </span>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

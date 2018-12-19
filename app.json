@@ -1,9 +1,10 @@
 {
   "pages": [
     "pages/group/current/current",
-    "pages/index/index",
-    "pages/cart/cart",
-    "pages/profile/profile",
+    "pages/group/confirmGroup/confirmGroup",
+    "pages/group/groupMy/groupMy",
+    "pages/profile/profile/profile",
+    "pages/group/groupDet/groupDet",
     "pages/logs/logs"
   ],
   "window": {
@@ -26,9 +27,9 @@
         "text": "拼团购"
       },
       {
-        "pagePath": "pages/profile/profile",
-        "iconPath": "static/images/tabBar/tab-buy-normal.png",
-        "selectedIconPath": "static/images/tabBar/tab-buy-highlight.png",
+        "pagePath": "pages/profile/profile/profile",
+        "iconPath": "static/images/tabBar/tab-mine-normal.png",
+        "selectedIconPath": "static/images/tabBar/tab-mine-highlight.png",
         "text": "我的"
       }
     ]

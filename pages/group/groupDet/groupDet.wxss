@@ -1,0 +1,347 @@
+.goods {
+  padding: 0rpx 0 100rpx;
+  background-color: #efeff4;
+  overflow: hidden;
+}
+.goods .top_main .show {
+  width: 100%;
+  height: 750rpx;
+}
+
+.presell_box {
+  overflow: hidden;
+  padding: 16rpx 0 24rpx 24rpx;
+  background-image: linear-gradient(133deg, #fc5b46, #fa424f);
+  width: 100%;
+  height: 128rpx;
+}
+.presell_box .left_price .price {
+  font-size: 47rpx;
+  color: #fff;
+  font-weight: bold;
+}
+
+.presell_box .left_price .price span {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: bold;
+}
+
+.presell_box .left_price .price s {
+  font-size: 24rpx;
+  color: #fff;
+  font-weight: normal;
+  text-decoration:line-through;
+}
+
+.presell_box .left_price .price.margin-t-p8 {
+  margin-top: 16rpx;
+}
+
+.presell_box .tip {
+  font-size: 24rpx;
+  color: #fff;
+  margin-top: -10rpx;
+  display: block;
+}
+
+.presell_box .right_tip {
+  position: relative;
+  width: 240rpx;
+  height: 128rpx;
+  text-align: center;
+  background-color: #FB9D1C;
+  margin-top: -16rpx;
+  color:#fff;
+}
+
+.presell_box .right_tip view:first-child {
+  font-size: 28rpx;
+  color: #fff;
+  padding: 18rpx 0 10rpx;
+}
+
+.presell_box .right_tip:before {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 56rpx;
+  left: -10rpx;
+  border-top: 10rpx solid transparent;
+  border-right: 10rpx solid #FB9D1C;
+  border-bottom: 10rpx solid transparent;
+}
+
+.shadow_box {
+  width: 36rpx;
+  height: 36rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background-color: #912714;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5rpx;
+}
+
+.right_tip.activityEnd {
+  background-color: #999;
+}
+.right_tip.activityEnd:before {
+  border-right: 10rpx solid #999;
+}
+
+.right_tip.activityEnd text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #fff;
+}
+
+.title {
+  background-color: #fff;
+  padding: 20rpx 30rpx 20rpx;
+  border-radius: 24rpx 24rpx 0 0;
+}
+
+.title .name {
+  font-size: 36rpx;
+  color: #333;
+  padding: 2rpx 0 0;
+}
+
+.title .name .presell_text {
+  font-size: 36rpx;
+  color: #333;
+  margin: 16rpx 0 0 -20rpx;
+  display: inline-block;
+}
+
+.title .desr {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.goods_info {
+  background-color: #fff;
+  margin: 30rpx 0;
+}
+
+.goods_info .single_price {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.goods_info .goodsImgs image {
+  width: 100%;
+  display: block;
+}
+
+.add_cart_container {
+  position: fixed;
+  bottom: 0;
+  overflow: hidden;
+  clear: both;
+  width: 100%;
+  height: 98rpx;
+}
+
+.add_cart_container .cart_icon_num {
+  width: 212rpx;
+  height: 98rpx;
+  background-color: #fff;
+}
+
+.add_cart_container .cart_icon_num .icon {
+  position: relative;
+  margin: 0.13rem auto;
+  width: 49rpx;
+  height: 45rpx;
+  background: url("../../../static/images/tabBar/tab-buy-normal.png") no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.add_cart_container .cart_btn,
+.add_cart_container .cart_btn_alone {
+  height: 98rpx;
+  text-align: center;
+  padding: 14rpx 0;
+  line-height: 1.25;
+  font-size: 30rpx;
+  color: #fff;
+}
+
+.add_cart_container .cart_btn {
+  background-color: #e4372e;
+  width: 70%;
+}
+
+.add_cart_container .cart_btn_alone {
+  background-color: #FF9FA2;
+  width: 30%;
+}
+
+.add_cart_container.activityEnd_btns .cart_btn_alone {
+  background-color: #999;
+  line-height: 70rpx;
+}
+
+.add_cart_container.activityEnd_btns .cart_btn {
+  line-height: 70rpx;
+}
+
+.assembling_process {
+  background-color: #fff;
+  margin: 30rpx 0;
+}
+
+.assembling_process .content {
+  padding-bottom: 30rpx;
+}
+.assembling_process .process {
+  overflow: hidden;
+  margin: 67rpx auto 50rpx;
+  text-align: center;
+  width: 86%;
+}
+.assembling_process .process view {
+  float: left;
+  width: 25%;
+  position: relative;
+}
+.assembling_process .process view:before {
+  content: '';
+  display: block;
+  position: absolute;
+  right: -44rpx;
+  top: 36rpx;
+  width: 90rpx;
+  height: 2rpx;
+  background-color: #E9EAEB;
+}
+
+.assembling_process .process view:last-child:before {
+  content: '';
+  display: none;
+}
+
+.assembling_process .process view image {
+  width: 67rpx;
+  height: 70rpx;
+  border: .01rem dashed #333;
+}
+
+.assembling_process .process view .text {
+  font-size: 28rpx;
+  color: #333;
+  display:block;
+}
+
+.assembling_process .mode {
+  width: 85%;
+  margin: 0 auto 24rpx;
+  overflow: hidden;
+  clear: both;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.assembling_process .mode span {
+  float: right;
+  width: 82.3%;
+  text-align: justify;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.scrollBox {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 1;
+}
+
+.goodslistul {
+  padding: 50rpx 30rpx 0;
+}
+
+.goodslistul image {
+  margin-right: 24rpx;
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 10rpx;
+}
+
+.goodslistul image.noImage {
+  background-color: #000;
+}
+
+.goodslistul .li {
+  width: 100%;
+  clear: both;
+  overflow: hidden;
+  margin-bottom: 24rpx;
+  position: relative;
+  border-bottom: 2rpx solid #f8f8f8;
+  padding-bottom: 30rpx;
+}
+
+.goodslistul .li:last-child {
+  margin-bottom: 0;
+}
+
+.goodslistul .shopping_cart {
+  position: absolute;
+  right: 0;
+  bottom: 50rpx;
+  width: 62rpx;
+  height: 62rpx;
+  background: url('../../images/shopping_cart.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.goodslistul .goods_li {
+  width: 55%;
+}
+
+.goodslistul .goods_li .name {
+  font-size: 30rpx;
+  color: #333;
+  padding: .02rem 0 .03rem;
+}
+
+.goodslistul .goods_li .desr {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.goodslistul .goods_li .coupon {
+  border-radius: 20rpx;
+  display: inline-block;
+  transform: scale(0.82) translateX(-16rpx);
+  margin: 40rpx 0 20rpx;
+  padding: 0 1rpx;
+}
+
+.goodslistul .goods_li .useCoupon {
+  font-size: 24rpx;
+  color: #e4372e;
+  border: 2rpx solid #e4372e;
+}
+
+.goodslistul .goods_li .unuseCoupon {
+  font-size: 24rpx;
+  color: #999;
+  border: 1px solid #999;
+}
+
+.goodslistul .goods_li .price {
+  font-size: 36rpx;
+  color: #e4372e;
+  font-weight: bold;
+}
+.goodslistul .goods_li .price s {
+  font-size: 24rpx;
+  color: #999;
+  font-weight: normal;
+}

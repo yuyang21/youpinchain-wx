@@ -1,0 +1,124 @@
+<wxs src="../../../utils/filter.wxs" module="filter" />
+<view class="goods">
+  <view class="scrollBox">
+    <view class="top_main">
+      <view wx:if="{{headPic && headPic.length <= 0}}">
+        <image src="{{groupSuit.normalPic}}" alt="" class="show" />
+      </view>
+      <swiper wx:else class="swiper" indicator-dots="true" autoplay="true" interval="1500" duration="1000" circular="true" indicator-color="#b5b5b5" indicator-active-color="#e4372e">
+        <block wx:for="{{headPic}}" wx:key="{{id}}" class="header_image">
+          <swiper-item>
+            <image src="{{item.pictureUrl}}" class="slide-image show" />
+          </swiper-item>
+        </block>
+      </swiper>
+      <view class="presell_box">
+        <view class="left_price left" wx:if="{{groupSuit.preSaleDelivery !== undefined}}">
+          <view class="price"><span>￥</span>{{groupPrice}} <s>￥{{groupSuit.suitPrice}}</s></view>
+          <view class="tip">商品预计{{(groupSuit.preSaleDelivery.split('T')[0]) | dateCharacter}}发货</view>
+        </view>
+        <view class="left_price left" wx:else>
+          <view class="price {{groupSuit.preSaleDelivery === undefined ? 'margin-t-p8' : ''}}">
+            <span>￥</span>{{groupPrice}} <s>￥{{groupSuit.suitPrice}}</s>
+          </view>
+        </view>
+        <view class="right_tip right" wx:if="{{!groupMyId && endTimeDown>0 && startTimeDown<1}}">
+          <view>距开团结束</view>
+          <view wx:if="endTimeDown > 24*60*60">
+            <span class="shadow_box">{{endTimeDown/60/60/24 | Int}}</span>天<span class="shadow_box">{{filter.timeArry((endTimeDown - (endTimeDown/24/60/60 | Int) * 24*60*60),0)}}</span>时<span class="shadow_box">{{filter.timeArry(endTimeDown,1)}}</span>分
+          </view>
+          <view wx:else>
+            <span class="shadow_box">{{endTimeDown | timeArry(0)}}</span>时<span class="shadow_box">{{endTimeDown |
+              timeArry(1)}}</span>分<span class="shadow_box">{{endTimeDown | timeArry(2)}}</span>秒
+          </view>
+        </view>
+        <view class="right_tip right" wx:if="{{groupMyId && endTimeDown>0}}">
+          <view>距拼团结束</view>
+          <view>
+            <span class="shadow_box">{{endTimeDown | timeArry(0)}}</span>:<span class="shadow_box">{{endTimeDown |
+              timeArry(1)}}</span>:<span class="shadow_box">{{endTimeDown | timeArry(2)}}</span>
+          </view>
+        </view>
+        <view class="right_tip right {{endTimeDown <= 0 ? 'activityEnd' : ''}}" wx:if="{{endTimeDown <= 0}}">
+          <text>{{endTimeDown}}拼团结束</text>
+        </view>
+      </view>
+      <view class="title">
+        <view class="name">
+          <span class="presell_text" wx:if="{{groupSuit.presentPrice !== undefined}}">【预售】</span>
+          {{groupSuit.suitName}}
+        </view>
+        <view class="desr">{{groupSuit.describe}}</view>
+      </view>
+    </view>
+    <!-- 拼团流程 -->
+    <view class="assembling_process">
+      <view class="panel_title">拼团流程</view>
+      <view class="content">
+        <view class="process">
+          <view>
+            <image src="../../../static/images/group/process01.png" alt=""/>
+            <text class="text">团长开团</text>
+          </view>
+          <view>
+            <image src="../../../static/images/group/process02.png" alt=""/>
+            <text class="text">邀请好友</text>
+          </view>
+          <view>
+            <image src="../../../static/images/group/process03.png" alt=""/>
+            <text class="text">拼团成功</text>
+          </view>
+          <view>
+            <image src="../../../static/images/group/process04.png" alt=""/>
+            <text class="text">等待发货</text>
+          </view>
+        </view>
+        <view class="mode">模式一：<span>普通拼团，享受价格优惠</span></view>
+        <view class="mode">模式二：<span>同一地址拼团，团长选择收货地址，团员线下与团长进行后续收货服务。团长获得劳动鼓励金。</span></view>
+      </view>
+    </view>
+    <!-- 拼团详情 -->
+    <view class="goods_info" wx:if="{{footPic && footPic.length > 0}}">
+      <view class="panel_title">拼团详情</view>
+      <view class="goodsImgs">
+        <image :src="item" alt="" wx:for="(item,index) in footPic" wx:key="index" width="100%"/>
+      </view>
+    </view>
+    <!-- 拼团商品 -->
+    <view class="goods_info">
+      <view class="panel_title">拼团商品</view>
+      <view class="goodslistul clear">
+          <view wx:for="{{suitDet}}" wx:key="{{item.id}}" class="li">
+              <!-- <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'/goods/' + item.productId}}"> -->
+                  <image src="{{item.productThumbnailPic}}" alt="" class="left {{!item.productThumbnailPic ? 'noImage' : ''}}"/>
+                  <view class="left goods_li">
+                      <view class="name">{{item.productName + ' ' +
+                          item.productNetContent}}*1{{item.productPacking}}</view>
+                      <view class="desr">{{item.productDescribe}}</view>
+                      <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view>
+                      <!-- &lt;!&ndash;<view class="single_price">单买价￥{{item.productOriginalPrice}}</view>&ndash;&gt; -->
+                  </view>
+              <!-- </navigator> -->
+          </view>
+      </view>
+    </view>
+  </view>
+  <view class="add_cart_container" wx:if="{{endTimeDown>0 && startTimeDown<1}}">
+    <view class="cart_btn right" wx:if="{{groupMyId}}" bindtap="toSubmitOrder" data-type="1">
+      <view>￥{{groupMy.discountPrice}}</view>
+      <view>参与拼团</view>
+    </view>
+    <view class="cart_btn right" wx:else bindtap="toSubmitOrder" data-type="1">
+      <view>￥{{groupPrice}}</view>
+      <view>发起拼团</view>
+    </view>
+    <view class="cart_btn_alone right" bindtap="toSubmitOrder" data-type="0">
+      <view>￥{{groupSuit.suitPrice}}</view>
+      <view>单独购买</view>
+    </view>
+  </view>
+  <view class="add_cart_container activityEnd_btns" wx:if="{{endTimeDown <= 0}}">
+    <view class="cart_btn right" bindtap="toSubmitOrder" data-type="1">{{!groupMyId ? '我要开团' : '查看其他拼团'}}</view>
+    <view class="cart_btn_alone right">拼团结束</view>
+  </view>
+</view>

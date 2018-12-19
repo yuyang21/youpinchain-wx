@@ -1,7 +1,7 @@
 {
   "files.associations": {
     "*.pdf": "html",
-    "*.wxml": "wxml",
+    "*.wxml": "html",
     "*.wxss": "css"
   }
 }

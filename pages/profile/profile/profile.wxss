@@ -1,0 +1,168 @@
+.profile_page {
+  padding-bottom: 120rpx;
+  background-color: #f6f5f5;
+}
+
+.profile-top-red {
+  height: 166rpx;
+  width: 100%;
+  background-image: linear-gradient(to bottom, #fc5b46, #fa424f);
+}
+
+.profile-number {
+  height: 240rpx;
+  width: 700rpx;
+  margin: -100rpx auto 35rpx;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20rpx;
+}
+
+.profile-number .profile-link {
+  padding: 10rpx 0;
+  text-align: center;
+  display: block;
+  box-align: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.profile-number .profile-link .privateImage {
+  height: 150rpx;
+  width: 150rpx;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 auto;
+  display: block;
+}
+
+.profile-number .profile-link .privateImage .privateImage-svg {
+  border-radius: 50%;
+  height: 150rpx;
+  width: 150rpx;
+  display: block;
+}
+
+.user-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.info-data {
+  width: 700rpx;
+  margin: 0 auto;
+  border-radius: 20rpx;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.info-data .my-order {
+  height: 88rpx;
+  border-bottom: 2rpx solid #f1f1f1;
+}
+
+.info-data .my-order span {
+  line-height: 88rpx;
+  color: #333;
+  font-size: 30rpx;
+  padding-left: 24rpx;
+  float: left;
+}
+
+.info-data .my-order .to-all-order {
+  color: #999;
+  font-size: 26rpx;
+  float: right;
+}
+
+.info-data .my-order .to-all-order image {
+  width: 10rpx;
+  height: 20rpx;
+  margin: 0 24rpx 0 20rpx;
+}
+
+.info-data .ul .info-data-link {
+  float: left;
+  width: 33.33%;
+  display: inline-block;
+}
+
+.info-data .ul .info-data-link span {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.info-data .ul .info-data-link .info-data-top image {
+  margin: 34rpx auto 18rpx;
+  position: relative;
+  width: 58rpx;
+  height: 55rpx;
+}
+
+.info-data .ul .info-data-link .info-data-bottom {
+  font-size: 22.8rpx;
+  color: #666;
+  padding-bottom: 18rpx;
+}
+
+.profile-1reTe {
+  margin-top: 30rpx;
+  background: #fff;
+  border-radius: 20rpx;
+}
+.profile-1reTe .myorder {
+  padding-left: 64rpx;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 110rpx;
+  border-bottom: 2rpx solid #f1f1f1;
+}
+
+.profile-1reTe .myorder aside image {
+  width: 51.6rpx;
+  height: 52rpx;
+  margin-left: -34.4rpx;
+  margin-right: 36rpx;
+  display: flex;
+  align-items: center;
+}
+
+.profile-1reTe .myorder .myorder-div {
+  width: 100%;
+  padding: 17.2rpx 10.6rpx 17.2rpx 0;
+  font-size: 5.6rpx;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-1reTe .myorder .myorder-div span {
+  display: block;
+  font-size: 30rpx;
+}
+
+.profile-1reTe .myorder .myorder-div .myorder-divsvg {
+  width: 18rpx;
+  height: 37.5rpx;
+  margin-right: 24rpx;
+}
+
+.profile-1reTe .myorder .myorder-div .myorder-divsvg image {
+  width: 100%;
+  height: 100%;
+}
+
+.router-slid-enter-active,
+.router-slid-leave-active {
+  transition: all 0.4s;
+}
+
+.router-slid-enter,
+.router-slid-leave-active {
+  transform: translate3d(80rpx, 0, 0);
+  opacity: 0;
+}

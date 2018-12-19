@@ -1,0 +1,122 @@
+.current .swiper {
+  height: 830rpx;
+}
+.current .swiper image{
+  width: 100%;
+  height: 100%;
+}
+.listul {
+  padding: 50rpx 30rpx 0;
+}
+.listul .listli {
+  width: 100%;
+  clear: both;
+  overflow: hidden;
+  margin-bottom: 30rpx;
+  position: relative;
+  border-bottom: 1px solid #f8f8f8;
+  padding-bottom: 30rpx;
+}
+
+.image {
+  margin-right: 24rpx;
+  width: 100%;
+  height: 350rpx;
+  border-radius: 10rpx;
+  background-color: #F8DCE8;
+  box-sizing: border-box;
+}
+
+image.noImage {
+  background-color: #000;
+}
+
+.goods_info {
+  width: 100%;
+}
+
+.goods_info .name {
+  font-size: 30rpx;
+  color: #333333;
+  padding: 6rpx 0;
+  display: block;
+}
+
+.goods_info .desr {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+}
+
+.goods_info .left {
+  width: 75%;
+}
+.goods_info .left .price {
+  font-size: 36rpx;
+  color: #e4372e;
+  font-weight: bold;
+}
+.goods_info .left .price s {
+  font-size: 12rpx;
+  color: #999;
+  font-weight: normal;
+}
+
+.goods_info .left .price .RMB {
+  margin-left: -60rpx;
+}
+
+.goods_info .left .lable {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 150rpx;
+  height: 60rpx;
+  font-size: 34rpx;
+  color: #E42826;
+  border: 2rpx solid rgba(228, 40, 38, 1);
+  border-radius: 5rpx;
+  transform: scale(.55) translateX(-60rpx);
+}
+
+.single_price {
+  font-size: 12rpx;
+  color: #999;
+}
+
+.single_price span {
+  font-size: 12rpx;
+  transform: scale(0.85) translateY(.01rem);
+  display: inline-block;
+}
+
+.tip {
+  width: 250rpx;
+  height: 56rpx;
+  font-size: 2rpx;
+  color: #FB9D1C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: .02rem solid #FFBA00;
+  border-radius: .14rem;
+  transform: scale(.55) translateX(-.72rem);
+}
+.shopping_cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5rpx;
+  background: #E42826;
+  width: 135rpx;
+  height: 55rpx;
+}
+.shopping_cart p {
+  line-height: 1.5;
+  color: #fff;
+  font-size: 26rpx;
+  text-align: center;
+}
+.text-center {
+  margin-bottom:30rpx;
+}
