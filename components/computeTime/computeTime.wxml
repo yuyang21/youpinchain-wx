@@ -1,0 +1,5 @@
+<view class="page">
+  <view class="rem_time">
+    {{countDown}}
+  </view>
+</view>
