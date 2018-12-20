@@ -1,0 +1,320 @@
+.order_detail_page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f1f1f1;
+  z-index: 202;
+}
+
+.scroll_container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.scroll_insert {
+  padding-bottom: 240rpx;
+}
+
+.page-top-red {
+  width: 100%;
+  height: 166rpx;
+  background-image: linear-gradient(to bottom, #fc5b46 44%, #fa424f);
+}
+
+.border_radius {
+  box-shadow: 0 2rpx 27rpx 2rpx rgba(181, 184, 188, 0.51);
+  border-radius: 20rpx;
+  width: 700rpx;
+  height: auto;
+  background-color: #fff;
+  margin: 0 auto;
+  margin-bottom: 32rpx;
+}
+
+.order_titel {
+  margin-top: -96rpx;
+  padding: 28rpx 60rpx;
+  display: flex;
+}
+
+.order_titel .status_0 {
+  background: url('../../../static/images/status1.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.order_titel .status_1 {
+  background: url('../../../static/images/status2.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.order_titel .status_2 {
+  background: url('../../../static/images/status3.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.order_titel .status_3 {
+  background: url('../../../static/images/status4.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.order_titel .status_4 {
+  background: url('../../../static/images/status5.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.order_titel .status-img image {
+  border-radius: 50%;
+  width: 200rpx;
+  height: 200rpx;
+  margin-right: 60rpx;
+}
+
+.order_titel>image {
+  width:20rpx;
+  height:35rpx;
+  margin-top:85rpx;
+}
+
+.order_titel .no-width {
+  width: 0;
+  height: 0;
+}
+
+.order_titel view {
+  width: 280rpx;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  align-items: center;
+  display: flex;
+}
+
+.address {
+  margin: 32rpx 24rpx;
+  padding: 42rpx 34rpx 40rpx 114rpx;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 20rpx;
+  background-color: #fff;
+  box-shadow: 0 2rpx 28rpx 2rpx rgba(181, 184, 188, 0.4);
+  position: relative;
+}
+
+.address-detail {
+  position: relative;
+  width: 460rpx;
+}
+
+.address-detail view {
+  line-height: 1.6;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.address-detail view span {
+  display: inline-block;
+  font-size: 30rpx;
+  color: #333;
+  margin-right: 30rpx;
+}
+
+.address-detail view:nth-of-type(1) {
+  margin-bottom: 48rpx;
+}
+
+.address-detail image {
+  content: '';
+  position: absolute;
+  left: -56rpx;
+  top: 0rem;
+  width: 32rpx;
+  height: 44rpx;
+}
+
+.distribution-information {
+  display: flex;
+  padding: 30rpx;
+  align-items: center;
+}
+
+.distribution-information image {
+  width: 60rpx;
+  height: 50rpx;
+  margin-right: 40rpx;
+}
+
+.distribution-information view text {
+  font-size: 30rpx;
+  color: #666;
+  line-height: 56rpx;
+}
+
+.food_list {
+  background-color: #fff;
+}
+
+.food_list .goods {
+  padding: 60rpx 30rpx 20rpx;
+}
+
+.food_list .goods .li {
+  position: relative;
+  margin-bottom: 52rpx;
+}
+
+.food_list .goods .img {
+  display: inline-block;
+  border-radius: 10rpx;
+  width: 190rpx;
+  height: 190rpx;
+  background-color: #000;
+  vertical-align: middle;
+  margin-left: 10rpx;
+}
+
+.food_list .goods .goods_info {
+  display: inline-block;
+  margin-left:10rpx;
+}
+
+.food_list .goods .goods_info .name {
+  font-size: 30rpx;
+  color: #333;
+  top: -20rpx;
+  position: relative;
+}
+
+.food_list .goods .goods_info .price {
+  font-size: 36rpx;
+  color: #e4372e;
+  font-weight: bold;
+  position: relative;
+  top: 76rpx;
+}
+
+.food_list .goods .goods_info .price span {
+  display: inline-block;
+  font-size: 24rpx;
+  color: #e4372e;
+  font-weight: normal;
+  transform: scale(.8) translateY(2rpx);
+}
+
+.food_list .goods .cart_btns {
+  position: absolute;
+  right: 40rpx;
+  bottom: 50rpx;
+}
+
+.food_list .goods .cart_btns .num {
+  display: inline-block;
+  text-align: center;
+  width: 49rpx;
+  height: 49rpx;
+  font-size: 36rpx;
+  color: #e4372e;
+  vertical-align: top;
+  font-weight: bold;
+}
+
+.food_list .food_list_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  border-bottom: 2rpx solid #f6f5f5;
+}
+
+.food_list .food_list_header .shop_name image {
+  width: 48rpx;
+  height: 48rpx;
+  vertical-align: middle;
+  margin-right: 8rpx;
+}
+
+.food_list .food_list_header .shop_name span {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.food_list .food_list_header .food_number {
+  color: #999;
+}
+
+.food_list .pay_ment {
+  font-size: 24rpx;
+  color: #fb6b23;
+  border-top: 2rpx solid #f6f5f5;
+  font-weight: bold;
+  line-height: 80rpx;
+  text-align: right;
+  padding-right: 20rpx;
+}
+
+.order_detail_style {
+  background-color: #fff;
+  margin-top: 20rpx;
+  padding-bottom: 30rpx;
+}
+
+.order_detail_style .header {
+  font-size: 30rpx;
+  color: #333;
+  padding: 20rpx;
+  border-bottom: 2rpx solid #f6f5f5;
+}
+
+.order_detail_style .item_style {
+  display: flex;
+  padding: 20rpx;
+  justify-content: space-between;
+}
+
+.order_detail_style .item_style text {
+  font-size: 30rpx;
+  color: #666;
+  line-height: 40rpx;
+}
+
+.sale_after {
+  display: flex;
+  text-align: right;
+  float: right;
+  padding: 0 36rpx;
+  margin: 0 auto;
+}
+
+.sale_after span,
+.sale_after navigator {
+  height: 66rpx;
+  border-radius: 32rpx;
+  line-height: 66rpx;
+  padding: 0 28rpx;
+  margin-left: 20rpx;
+}
+.detailStyle {
+  width: 172rpx;
+  height: 70rpx;
+  border-radius: 32rpx;
+  line-height: 66rpx;
+  margin-left: 20rpx;
+  font-size:30rpx;
+  text-align:center;
+  background:#e4372e;
+
+}
+
+.sale_after .red {
+  border: solid 2rpx #e4372e;
+  color: #e4372e;
+}
+
+.sale_after .grey {
+  border: solid 2rpx #999;
+  color: #666;
+}

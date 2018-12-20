@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "alertTip": "/components/alertTip/alertTip",
+    "computeTime": "/components/computeTime/computeTime"
+  }
+}

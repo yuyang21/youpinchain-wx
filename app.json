@@ -5,7 +5,9 @@
     "pages/group/groupMy/groupMy",
     "pages/profile/profile/profile",
     "pages/group/groupDet/groupDet",
-    "pages/logs/logs"
+    "pages/address/address/address",
+    "pages/order/list/list",
+    "pages/order/detail/detail"
   ],
   "window": {
     "backgroundTextStyle": "dark",

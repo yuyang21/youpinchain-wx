@@ -1,0 +1,120 @@
+<view class="order_detail_page">
+  <view wx:if="{{!showLoading}}" id="scroll_section" class="scroll_container">
+    <view class="scroll_insert">
+      <view class="page-top-red"></view>
+      <view class="order_titel border_radius" bindtap="goTrack">
+        <view class="status-img"><image src="../../../static/images/status1.png"/></view>
+        <view>{{orderData.orderStatusText}}</view>
+        <image src="../../../static/images/path.png" wx:if="{{orderData.handleOption.confirm}}"/>
+      </view>
+      <view class="distribution-information border_radius" wx:if="{{orderData.handleOption.confirm}}">
+        <image src="../../../static/images/ddxq-ps.png" alt=""/>
+        <view>
+          <text>{{exp.context}}</text>
+        </view>
+      </view>
+      <view class="address border_radius">
+        <view class="address-detail">
+          <image src="../../../static/images/gwc-icon-add.png"/>
+          <view>{{orderData.address}}</view>
+          <view><span>{{orderData.consignee}}</span><span>{{orderData.mobile}}</span></view>
+        </view>
+      </view>
+      <view class="food_list border_radius">
+        <view class="food_list_header">
+          <view class="shop_name">
+            <span>商品清单</span>
+          </view>
+          <span class="food_number">共{{orderProduct.length}}件</span>
+        </view>
+        <view class="goods">
+          <view class="li" wx:for="{{orderProduct}}" wx:key="item.id">
+            <image src="{{item.picUrl}}" alt="" class="img"/>
+            <view class="goods_info">
+              <view class="name">{{item.productName}}</view>
+              <view class="price"><span>￥</span>{{item.retailPrice}}</view>
+            </view>
+            <view class="cart_btns">
+              <span class="num">x{{item.number}}</span>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="order_detail_style border_radius">
+        <view class="header">订单价格</view>
+        <view class="item_style">
+          <text class="item_left">商品总价</text>
+          <view class="item_right">
+            <text>￥{{orderData.productPrice}}</text>
+          </view>
+        </view>
+        <view class="item_style">
+          <text class="item_left">优惠价格</text>
+          <view class="item_right">
+            <text>-￥0</text>
+          </view>
+        </view>
+        <view class="item_style">
+          <text class="item_left">运费</text>
+          <view class="item_right">
+            <text>+￥{{orderData.freightPrice}}</text>
+          </view>
+        </view>
+        <view class="item_style">
+          <text class="item_left">包装费</text>
+          <view class="item_right">
+            <text>+￥0</text>
+          </view>
+        </view>
+        <view class="item_style">
+          <text class="item_left">包装费减免</text>
+          <view class="item_right">
+            <text>-￥0</text>
+          </view>
+        </view>
+        <view class="item_style">
+          <text class="item_left">实际支付</text>
+          <view class="item_right">
+            <text>￥{{orderData.actualPrice}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="order_detail_style border_radius">
+        <view class="header">订单信息</view>
+        <view class="item_style">
+          <text class="item_left">订单编号</text>
+          <view class="item_right">
+            <text>{{orderData.orderSn}}</text>
+          </view>
+        </view>
+        <view class="item_style">
+          <text class="item_left">支付方式</text>
+          <view class="item_right">
+            <text>在线支付</text>
+          </view>
+        </view>
+        <view class="item_style">
+          <text class="item_left">下单时间</text>
+          <view class="item_right">
+            <text>{{orderData.addTime | timeformat}}</text>
+          </view>
+        </view>
+        <view class="item_style">
+          <text class="item_left">预计送达时间</text>
+          <view class="item_right">
+            <text>--</text>
+          </view>
+        </view>
+      </view>
+      <view class="sale_after">
+        <span class="red" bindtap="toggleAlert">联系客服</span>
+        <computeTime class="detailStyle" wx:if="{{orderData.handleOption.pay}}" time="orderData.expiryTime" bindtap="toPay(orderData.id)"></computeTime>
+        <span class="grey" bindtap="cancelOrder" wx:if="{{orderData.handleOption.cancel}}">取消订单</span>
+        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../rack/?expNo=' + orderData.expNo + '&expCode=' + orderData.expCode}}" class="grey"
+          wx:if="{{orderData.handleOption.confirm}}">查看物流</navigator>
+        <span class="grey" bindtap="confirmOrder(orderData.id)" wx:if="{{orderData.handleOption.confirm}}">确认收货</span>
+      </view>
+      <alertTip bindmyevent="toggleAlert" wx:if="{{showAlertTip}}" alertText="<p>请添加客服微信 <br> Lsyp-123</p>"></alertTip>
+    </view>
+  </view>
+</view>
