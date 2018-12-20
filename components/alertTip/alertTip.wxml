@@ -1,0 +1,10 @@
+<!-- 拨打客服电话 -->
+<view class="mask-common mask1">
+  <view class="alert-wrap">
+  <rich-text nodes="{{alertText}}" class="text"></rich-text>
+    <view class="i-know">
+      <view bindtap="cancelAlertTip">取消</view>
+      <view bindtap="cancelAlertTip">确定</view>
+    </view>
+  </view>
+</view>

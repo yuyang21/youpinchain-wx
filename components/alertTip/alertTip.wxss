@@ -1,0 +1,53 @@
+.mask-common {
+  position: fixed;
+  top: 0;
+  z-index: 999999;
+  bottom: -10rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.9);
+  -webkit-overflow-scrolling: touch;
+  overflow-y: hidden !important;
+  text-align: center;
+}
+
+.i-know {
+  display: flex;
+  font-size: 36rpx;
+  color: #333;
+  line-height: 92rpx;
+  background-color: #fff;
+  border-radius: 0 0 40rpx 40rpx;
+}
+
+.i-know view {
+  flex: 1;
+  border-top: 2rpx solid #ddd;
+}
+
+.i-know view:first-child {
+  color: #333;
+  border-right: 2rpx solid #ddd;
+}
+
+.i-know view:last-child {
+  color: #e4372e;
+}
+
+.mask1 .alert-wrap .text {
+  font-size: 36rpx;
+  color: #333;
+  width:100%;
+  height: 200rpx;
+  padding: 60rpx 40rpx 0;
+  border-radius: 40rpx 40rpx 0 0;
+}
+
+.mask1 .alert-wrap {
+  width: 560rpx;
+  height: 294rpx;
+  border-radius: 20rpx;
+  background-color: #fffefe;
+  margin: 240rpx auto;
+}
