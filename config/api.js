@@ -7,4 +7,5 @@ module.exports = {
   orderStat: '/orders/stat', //订单统计
   getDefaultAddress: '/addresses/defaultAddress', //地址列表查询
   getAddressList: '/addresses', //地址列表查询
+  getRegionsList: '/regions', //查询区域
 };

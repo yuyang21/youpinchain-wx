@@ -1,7 +1,7 @@
 <view class="confirmOrderContainer">
   <view class="shop_list_container">
     <view class="swiper-container" wx:if="{{productList.length}}">
-      <view class="topBG" wx:if="{{choosedAddress}}"></view>
+      <view class="topBG" wx:if="{{choosedAddress}}"><image src="../../../static/images/gwc-bg.png"/></view>
       <view class="address">
         <view class="no_address" wx:if="{{!choosedAddress}}">
           <view class="adddetail">
@@ -17,12 +17,12 @@
                     <input type="tel" maxlength="11" placeholder="请填写收货人手机号" value="{{address.mobile}}" bindinput="address.mobile = address.mobile.replace(/\D/g, '')" />
                   </view>
                 </view>
-                <view class="input-new">
+                <picker bindchange="changeRegin" bindcolumnchange="bindMultiPickerColumnChange" mode="multiSelector" range="{{region}}" class="input-new">
                   <span>所在地区</span>
                   <input type="text" id="address-input" disabled style="width:500rpx;" placeholder="请选择"
                     value="{{address.tipText}}" />
                   <image src="../../../static/images/path.png"/>
-                </view>
+                </picker>
                 <view class="input-new">
                   <span>地址</span>
                   <textarea placeholder="请填写详细地址" id="adinfo" value="" rows="2" value="{{address.address}}"></textarea>
@@ -37,21 +37,21 @@
         </view>
         <view class="address_info" wx:else>
           <view class="address-detail">
-            <view class="{{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}">
+            <image src="../../../static/images/gwc-icon-add.png" class="add-icon"/>
+            <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}">
               {{choosedAddress.provinceName +
               choosedAddress.cityName + choosedAddress.areaName +
               choosedAddress.address}}</view>
-            <view class="{{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}">{{choosedAddress.name}} {{choosedAddress.mobile}}</view>
-            拼团方式
-            <view class="groupSuitType" wx:if="{{groupMyId === 'undefined' && groupType === 1}}">
+            <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}"><span>{{choosedAddress.name}}</span>{{choosedAddress.mobile}}</view>
+            <view class="groupSuitType" wx:if="{{!groupMyId && groupType === 1}}">
               <view class="left">拼团方式</view>
-              <view class="right" bindtap="suitTypeBox = true;showTipsBox();">
+              <view class="right" bindtap="showTipsBox" data-type="suitTypeBox">
                 <span>{{!groupSuitType ? '请选择拼团方式': groupSuitType === 1 ? '普通拼团': '同一地址拼团(推荐)'}}</span>
-                <image src="../../images/path.png" alt=""/>
+                <image src="../../../static/images/path.png" alt=""/>
               </view>
             </view>
             <view class="tips" wx:if="{{!groupMy && groupSuitType === 2 && groupType === 1}}">
-              选择同一地址拼团，支持“大美乡村计划”—扶持农业，收获健康，感谢您选择更环保·更温暖的生活方式。
+              <text>选择同一地址拼团，支持“大美乡村计划”—扶持农业，收获健康，感谢您选择更环保·更温暖的生活方式。</text>
               <span class="left">团长职责：</span><span class="left">邀请您附近伙伴拼团，团长统一收货并组织团员取货。</span>
               <span class="left">大美奖励：</span><span class="left">订单结束后团长获得鼓励金</span>
             </view>
@@ -71,8 +71,8 @@
               </view>
             </view>
           </view>
-          <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'/addressList?path=confirmOrder'}}" class="deletesite">
-            <span></span>
+          <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../../address/address/address?path=confirmOrder'}}" class="deletesite">
+            <image src="../../../static/images/path.png"/>
           </navigator>
         </view>
       </view>
@@ -132,18 +132,19 @@
     <view class="li" bindtap="paymentCall()">去付款</view>
     <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{(totalPrice + fare) | number}}</span></view>
   </view>
-  <view class="mask_box" hidden="!showTip" bindtap="showTipsBox"></view>
-  <view class="suitTypeBox" hidden="!suitTypeBox">
+<view class="mask_box" hidden="{{!showTip}}" bindtap="showTipsBox" style="height:{{maskBoxH}}px;"></view>
+  <view class="suitTypeBox" hidden="{{!suitTypeBox}}">
     <view class="title">
       拼团方式
-      <view class="right" bindtap="suitTypeBox = false;showTip = false;">
+      <view class="right" bindtap="showTipsBox" data-close="true">
         <image src="../../../static/images/close.png" alt=""/>
       </view>
     </view>
     <view class="levels">
-      <view class="label {{groupSuitType === item.type ? 'selected' : ''}}" wx:for="{{uitTypes}}" wx:key="index"
-        bindtap="selectSuitType(item.type)">{{item.text}}
-      </view>
+      <view class="label {{groupSuitType === item.type ? 'selected' : ''}}" wx:for="{{suitTypes}}" wx:key="index" wx:for-item="item"
+        bindtap="selectSuitType" data-suit-type="{{item.type}}">
+        <text>{{item.textType}}</text>
+    </view>
     </view>
   </view>
 </view>

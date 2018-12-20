@@ -1,3 +1,23 @@
+.tui-picker-content {
+  padding: 30rpx;
+  text-align: center;
+}
+
+.tui-picker-name {
+  height: 80rpx;
+  line-height: 80rpx;
+}
+
+.tui-picker-detail {
+  height: 80rpx;
+  line-height: 80rpx;
+  background-color: #fff;
+  font-size: 35rpx;
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+
 .confirmOrderContainer {
   padding-bottom: 100rpx;
   background-color: #f6f5f5;
@@ -24,11 +44,9 @@
   padding-bottom: 30rpx;
 }
 
-.shop_list_container .swiper-container .topBG {
+.shop_list_container .swiper-container .topBG image {
   width: 100%;
   height: 166rpx;
-  background: url("../../../static/images/gwc-bg.png") no-repeat center center;
-  background-size: 100% 100%;
 }
 
 .shop_list_container .swiper-container .address_info {
@@ -47,19 +65,19 @@
   position: relative;
   width: 97%;
 }
-.shop_list_container .swiper-container .address_info .address-detail view {
+.shop_list_container .swiper-container .address_info .address-detail .p {
   line-height: 1.6;
   font-size: 30rpx;
   color: #333;
 }
 
-.shop_list_container .swiper-container .address_info .address-detail view span {
+.shop_list_container .swiper-container .address_info .address-detail .p span {
   display: inline-block;
   font-size: 30rpx;
   color: #333;
 }
 
-.shop_list_container .swiper-container .address_info .address-detail view:nth-of-type(1) {
+.shop_list_container .swiper-container .address_info .address-detail .p:nth-of-type(1) {
   margin-bottom: 30rpx;
 }
 
@@ -72,7 +90,9 @@
   border-top: 2rpx solid #efeff4;
   padding-top: 20rpx;
 }
-
+.shop_list_container .swiper-container .address_info .address-detail .tips text {
+  display: block;
+}
 .shop_list_container .swiper-container .address_info .address-detail .tips span {
   font-size: 26rpx;
   color: #999;
@@ -110,13 +130,11 @@
   pointer-events: none;
 }
 
-.shop_list_container .swiper-container .address_info .address-detail:before {
+.shop_list_container .swiper-container .address_info .address-detail .add-icon {
   content: "";
   position: absolute;
   left: -56rpx;
   top: 0;
-  background: url("../../../static/images/gwc-icon-add.png") no-repeat center center;
-  background-size: 100% 100%;
   width: 32rpx;
   height: 44rpx;
 }
@@ -131,11 +149,9 @@
   justify-content: center;
 }
 
-.shop_list_container .swiper-container .address_info .deletesite span {
+.shop_list_container .swiper-container .address_info .deletesite image {
   width: 20rpx;
   height: 35rpx;
-  background: url("../../../static/images/path.png") no-repeat center center;
-  background-size: 100% 100%;
 }
 .shop_list_container .swiper-container .no_address {
   background-color: #f6f5f5;
@@ -159,7 +175,6 @@
   display: flex;
   border-bottom: 2rpx solid #efeff4;
 }
-
 .shop_list_container .swiper-container .no_address .ui-padding-block .input-new span {
   width: 140rpx;
   line-height: 90rpx;
@@ -167,7 +182,7 @@
 }
 
 .shop_list_container .swiper-container .no_address .ui-padding-block .input-new input {
-  display: flex;
+  display: inline-flex;
   width: 540rpx;
   height: 88rpx;
   font-size: 30rpx;
@@ -190,16 +205,25 @@
   margin-top: 8rpx;
 }
 
-.shop_list_container .swiper-container .no_address .ui-padding-block .input-new:nth-of-type(4) {
+.shop_list_container .swiper-container .no_address .ui-padding-block .input-new:nth-of-type(3) {
   height: 180rpx;
 }
 
-.shop_list_container .swiper-container .no_address .ui-padding-block .input-new:nth-of-type(4) textarea {
+.shop_list_container .swiper-container .no_address .ui-padding-block .input-new:nth-of-type(3) textarea {
   padding: 30rpx 0 0 0;
   width: 540rpx;
   height: 148rpx;
   font-size: 30rpx;
 }
+
+.shop_list_container .swiper-container .no_address .ui-padding-block picker.input-new {
+  line-height: 90rpx;
+}
+
+.shop_list_container .swiper-container .no_address .ui-padding-block picker.input-new span {
+  margin-right: 50rpx !important;
+}
+
 
 .shop_list_container .swiper-container .no_address .addbutton {
   margin: 30rpx auto;
@@ -497,7 +521,7 @@
   padding: 0 0 0 30rpx;
 }
 
-.suitTypeBox .title view .right {
+.suitTypeBox .title .right {
   width: 100rpx;
   height: 90rpx;
   line-height: 100rpx;
@@ -505,8 +529,9 @@
   padding: 0 30rpx 0 0;
 }
 
-.suitTypeBox .title view .right image {
+.suitTypeBox .title .right image {
   width: 30rpx;
+  height: 30rpx;
 }
 
 .suitTypeBox .levels {
