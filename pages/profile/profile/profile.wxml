@@ -13,7 +13,7 @@
       </view>
     </view>
     <view class="info-data">
-      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/order" class="my-order">
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list" class="my-order">
         <span>我的订单</span>
         <span class="to-all-order">
           全部订单
@@ -21,15 +21,15 @@
         </span>
       </navigator>
       <view class="ul clear">
-        <navigator  hover-class="none" hover-start-time="0" hover-stay-time="0" url="/order/unpaid" class="li info-data-link">
+        <navigator  hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=101" class="li info-data-link">
           <span class="info-data-top"><image src="../../../static/images/mine-icon-dzf.png"/><b class="red-points" wx:if="{{userInfo.unpaid}}">{{userInfo.unpaid}}</b></span>
           <span class="info-data-bottom">待支付</span>
         </navigator>
-        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/order/undelivery" class="li info-data-link">
+        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=201" class="li info-data-link">
           <span class="info-data-top"><image src="../../../static/images/mine-icon-dfh.png"/><b class="red-points" wx:if="{{userInfo.undelivery}}">{{userInfo.undelivery}}</b></span>
           <span class="info-data-bottom">待发货</span>
         </navigator>
-        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/order/delivered" class="li info-data-link">
+        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=301" class="li info-data-link">
           <span class="info-data-top"><image src="../../../static/images/mine-icon-yfh.png"/><b class="red-points" wx:if="{{userInfo.delivered}}">{{userInfo.delivered}}</b></span>
           <span class="info-data-bottom">已发货</span>
         </navigator>
@@ -67,7 +67,7 @@
         </view>
       </navigator>
       <!-- 联系客服 -->
-      <view class="myorder" bindtap="showAlertTip = !showAlertTip">
+      <view class="myorder" bindtap="toggleAlert">
         <aside><image src="../../../static/images/mine-lxkf.png"/></aside>
         <view class="myorder-div">
           <span>联系客服</span>
@@ -78,4 +78,5 @@
       </view>
     </view>
   </view>
+  <alertTip bindmyevent="toggleAlert" wx:if="{{showAlertTip}}" alertText="<p>请添加客服微信 <br> Lsyp-123</p>"></alertTip>
 </view>

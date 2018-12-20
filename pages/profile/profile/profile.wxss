@@ -93,11 +93,11 @@
   display: block;
   width: 100%;
   text-align: center;
+  position: relative;
 }
 
 .info-data .ul .info-data-link .info-data-top image {
   margin: 34rpx auto 18rpx;
-  position: relative;
   width: 58rpx;
   height: 55rpx;
 }
@@ -155,14 +155,16 @@
   width: 100%;
   height: 100%;
 }
-
-.router-slid-enter-active,
-.router-slid-leave-active {
-  transition: all 0.4s;
-}
-
-.router-slid-enter,
-.router-slid-leave-active {
-  transform: translate3d(80rpx, 0, 0);
-  opacity: 0;
+.red-points {
+  position: absolute;
+  width: 36rpx;
+  height: 36rpx;
+  font-size: 26rpx;
+  color: #fff;
+  line-height: 36rpx;
+  background: #e4372e;
+  border-radius: 50%;
+  right:63rpx;
+  top:24rpx;
+  text-align: center;
 }

@@ -4,7 +4,8 @@ Page({
   data: {
     userInfo: {
       userImgUrl: ''
-    }
+    },
+    showAlertTip: false
   },
   onLoad: function () {
   },
@@ -55,5 +56,19 @@ Page({
         })
       }
     })
+  },
+  toggleAlert () {
+    this.setData({
+      showAlertTip: !this.data.showAlertTip
+    })
+    if (this.data.showAlertTip) {
+      wx.hideTabBar({
+        animation: true
+      })
+    } else {
+      wx.showTabBar({
+        animation: true
+      })
+    }
   }
 })
