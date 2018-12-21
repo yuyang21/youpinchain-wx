@@ -1,6 +1,7 @@
-.page {
-  display: inline-block;
-}
 .rem_time {
+  display: inline-block;
+  background:#e4372e;
+  border-radius:32rpx;
   color: #fff;
+  min-width: 124rpx;
 }

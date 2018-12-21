@@ -1,0 +1,60 @@
+<wxs src="../../../utils/filter.wxs" module="filter" />
+<view class="order_page">
+  <view class="nav_tab">
+    <view wx:for="{{tabList}}" wx:key="index" class="li {{activeTab == item.showType ? 'active' : ''}}" bindtap="findOrder" data-show-type="{{item.showType}}">{{item.tab}}</view>
+  </view>
+  <view class="order_list_ul">
+    <view wx:if="{{orderList.length <= 0}}" class="no_list">暂无订单记录</view>
+    <block wx:else>
+      <view wx:for="{{orderList}}" wx:key="item.id" class="order_list_li">
+        <view class="order_item_top">
+          <view>
+            <view class="order_item_top_header">
+              <view class="order_time">{{filter.timeformat(item.addTime)}}</view>
+              <view class="order_status">
+                <view wx:if="{{item.groupMyType == 2}}">(拼团成功)</view>
+                <view wx:if="{{item.groupMyType == 3}}">(拼团失败)</view>
+                {{item.orderStatusText}}
+              </view>
+            </view>
+            <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" wx:if="{{item.groupOrderDto}}" url="{{'../../group/groupMy/groupMy?groupMyId=' + item.groupMyId}}" class="order_item_top_header_group">
+              <view class="ul">
+                <text>{{item.groupOrderDto.suitName}}拼团中</text>
+                <text>
+                  已有{{item.groupOrderDto.peoNum}}人参与 当前拼团将在{{filter.formatDate(item.groupOrderDto.endTime,'nosecond')}}结束
+                </text>
+              </view>
+              <image class="image" src="../../../static/images/path.png"/>
+            </navigator>
+            <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../detail/detail?orderId=' + item.id}}" class="goods_img">
+              <view class="goods_box">
+                <image class="restaurant_image" wx:for="{{item.productList}}" wx:for-item="goods" src="{{goods.pictureUrl}}" wx:if="{{index < 4}}"
+                  wx:key="index"/>
+              </view>
+              <text>共{{item.productList.length}}件</text>
+              <image class="image" src="../../../static/images/path.png"/>
+            </navigator>
+          </view>
+          <view class="order_item_bottom">
+            <span class="order_text">实际支付<b class="red"><span class="RMB">￥</span><strong class="order_price_size">{{item.actualPrice}}</strong></b></span>
+            <view class="order_button_border_grey" bindtap="toggleAlert">联系客服</view>
+            <computeTime class="detailStyle" wx:if="{{item.handleOption.pay}}" time="{{item.expiryTime}}" bindtap="toPay(item.id)"></computeTime>
+            <span class="order_button_border_red" bindtap="cancelOrder(item.id)" wx:if="{{item.handleOption.cancel}}">取消订单</span>
+            <span class="order_button_border_red" bindtap="refundCom(item.id)" wx:if="{{item.handleOption.refund}}">申请退款</span>
+            <navigator url="{{'/track?expNo=' + item.expNo + '&expCode=' + item.expCode}}" class="order_button_border_red"
+              wx:if="{{item.handleOption.confirm}}">查看物流
+            </navigator>
+            <span class="order_button_border_red" bindtap="confirmOrder(item.id)" wx:if="{{item.handleOption.confirm}}">确认收货</span>
+            <span class="order_button_border_red" bindtap="rebuy(item.id)" wx:if="{{item.handleOption.rebuy}}">再次购买</span>
+          </view>
+        </view>
+      </view>
+      <view class="text-center loadText">
+        <text hidden="{{!loading}}">正在加载中....</text>
+        <text hidden="{{!loaded}}">到底喽，没有更多数据了...</text>
+      </view>
+    </block>
+  </view>
+  <alertTip bindmyevent="toggleAlert" alertText='<p>请添加客服微信 <br> Lsyp-123</p>' wx:if="{{showAlertTip}}"></alertTip>
+  <refundOrderTip bindmyevent="myrefundOrderTip" orderId='refundOrderId' wx:if="{{showRefundOrderTip}}"></refundOrderTip>
+</view>

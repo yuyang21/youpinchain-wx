@@ -296,6 +296,7 @@
   line-height: 66rpx;
   padding: 0 28rpx;
   margin-left: 20rpx;
+  font-size: 30rpx;
 }
 .detailStyle {
   width: 172rpx;

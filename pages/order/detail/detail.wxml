@@ -108,7 +108,7 @@
       </view>
       <view class="sale_after">
         <span class="red" bindtap="toggleAlert">联系客服</span>
-        <computeTime class="detailStyle" wx:if="{{orderData.handleOption.pay}}" time="orderData.expiryTime" bindtap="toPay(orderData.id)"></computeTime>
+        <computeTime class="detailStyle" wx:if="{{orderData.handleOption.pay}}" time="{{orderData.expiryTime}}" bindtap="toPay(orderData.id)"></computeTime>
         <span class="grey" bindtap="cancelOrder" wx:if="{{orderData.handleOption.cancel}}">取消订单</span>
         <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../rack/?expNo=' + orderData.expNo + '&expCode=' + orderData.expCode}}" class="grey"
           wx:if="{{orderData.handleOption.confirm}}">查看物流</navigator>

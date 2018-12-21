@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "我的订单",
+  "usingComponents": {
+    "alertTip": "/components/alertTip/alertTip",
+    "refundOrderTip": "/components/refundOrderTip/refundOrderTip",
+    "computeTime": "/components/computeTime/computeTime"
+  }
+}

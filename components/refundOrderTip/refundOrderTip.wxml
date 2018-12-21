@@ -1,0 +1,12 @@
+<view class="mask-common mask1">
+  <view class="alert-wrap">
+    <view class="text">
+      <text>确定要申请退款吗？请填写退款说明!</text>
+      <textarea maxlength="50" style="width: 100%;border-radius:7px;" placeholder="建议留言前先与客服进行确认,50字以内" vlaue="{{refund}}"></textarea>
+    </view>
+    <view class="i-know">
+      <view bindtap="AlertTip" data-type="0">取消</view>
+      <view bindtap="AlertTip" data-type="1">确定</view>
+    </view>
+  </view>
+</view>

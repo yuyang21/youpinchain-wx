@@ -13,11 +13,57 @@ var timeArry = function(number, index) {
 var moneyFormat = function(money) {
   return money.toFixed(2);
 }
+
+/**
+ * 
+ * @param timestamp 时间戳
+ * @param option 返回格式 notime hh:mm:ss, nosecond yyyy-MM-dd hh:mm
+ */
+var formatDate = function (timestamp,option) {
+  var date = getDate(parseInt(timestamp));
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hour = function() {
+    if (date.getHours()<10) {
+      return '0' + date.getHours();
+    }
+    return date.getHours();
+    }
+  var minute = function () {
+    if (date.getMinutes() < 10) {
+      return '0' + date.getMinutes();
+    }
+    return date.getMinutes();
+  }
+  var second = function () {
+    if (date.getSeconds() < 10) {
+      return '0' + date.getSeconds();
+    }
+    return date.getSeconds();
+  }
+
+  if (option=='notime'){  //不需要时间
+    return year + '-' + month + '-' + day;
+  }
+  if (option=='nosecond'){  //不需要时间
+    return year + '-' + month + '-' + day + ' ' + hour() + ':' + minute();
+  }
+
+  return year + '-' + month + '-' + day + ' ' + hour() + ':' + minute() + ":" + second();
+}
+
+// 接口返回时间格式含有‘T’ 处理为yy-MM-dd HH:mm
+var timeformat = function (number) {
+  return number.split('T')[0].split('-').join('.') + ' ' + number.split('T')[1].split(':')[0] + ':' + number.split('T')[1].split(':')[1]
+}
  
 /*
  * 导出
  */
 module.exports = {
-    timeArry: timeArry,
-    moneyFormat: moneyFormat
+  timeArry: timeArry,
+  moneyFormat: moneyFormat,
+  formatDate: formatDate,
+  timeformat: timeformat
 }

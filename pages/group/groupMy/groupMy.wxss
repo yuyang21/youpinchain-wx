@@ -245,12 +245,15 @@
   color: #fff;
   text-align: center;
   font-weight: bold;
+  display: block;
 }
 
 .poster .close_model {
   position: absolute;
   bottom: 80rpx;
   left: 47%;
+  width: 60rpx;
+  height: 60rpx;
 }
 
 .poster .invite_landing {
@@ -279,24 +282,24 @@
   text-align: left;
 }
 
-.poster .invite_landing .box .groupMyInfo view:first-child {
+.poster .invite_landing .box .groupMyInfo text:first-child {
   font-size: 26rpx;
   color: #3B3B3B;
   line-height: 26rpx;
 }
-.poster .invite_landing .box .groupMyInfo view:first-child strong {
+.poster .invite_landing .box .groupMyInfo text:first-child strong {
   color: #000;
   margin-right: 10rpx;
 }
 
-.poster .invite_landing .box .groupMyInfo view:nth-child(2) {
+.poster .invite_landing .box .groupMyInfo text:nth-child(2) {
   font-size: 24rpx;
   color: #3B3B3B;
   transform: scale(.87) translateX(-40rpx);
   width: 113%;
 }
 
-.poster .invite_landing .box .groupMyInfo view.padd-t {
+.poster .invite_landing .box .groupMyInfo text.padd-t {
   padding: 10rpx 0 20rpx;
 }
 
@@ -317,7 +320,7 @@
 .poster .invite_landing .box .header .descrInfo {
   width: 100%;
   height: 80rpx;
-  line-height: .45rem;
+  line-height: 90rpx;
   background-color: #A40000;
   overflow: hidden;
   padding: 0 24rpx;
@@ -336,7 +339,7 @@
 }
 
 .poster .invite_landing .box .header .descrInfo .right {
-  width: 20rpx;
+  width: 200rpx;
   height: 30rpx;
   font-size: 24rpx;
   color: #A40000;
@@ -358,6 +361,7 @@
 .poster .invite_landing .box .container {
   overflow: hidden;
   padding: 24rpx 0 0 2rpx;
+  width: 100%;
 }
 
 .poster .invite_landing .box .container .left {
