@@ -1,0 +1,15 @@
+<wxs src="../../../../utils/filter.wxs" module="filter" />
+<view class="income_details">
+  <view class="ul" wx:if="{{detailList.length > 0}}">
+    <view class="li" wx:for="{{detailList}}" wx:key="index">
+      <view>{{filter.formatDate(item.createTime, 'nosecond', '.')}}</view>
+      <view class="ellipsis" align="center">{{item.describe}}</view>
+      <view>{{item.amount > 0 ? '+' : ''}}{{item.amount}}</view>
+    </view>
+  </view>
+  <view wx:else class="no_list">暂无记录</view>
+  <view class="loadText">
+    <text hidden="{{!loading}}">正在加载中....</text>
+    <text hidden="{{!loaded}}">到底喽，没有更多数据了...</text>
+  </view>
+</view>
