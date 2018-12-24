@@ -3,7 +3,7 @@
     <view class="profile-top-red"></view>
     <view class="profile-number">
       <view class="profile-link">
-        <image src="{{userInfo.userImgUrl}}" mode="aspectFill" class="privateImage" wx:if="{{userInfo && userInfo.userImgUrl}}"/>
+        <image src="{{userInfo.userImgUrl}}" class="privateImage" wx:if="{{userInfo && userInfo.userImgUrl}}"/>
         <view class="privateImage" wx:else>
           <svg class="privateImage-svg">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
@@ -37,7 +37,7 @@
     </view>
     <view class="profile-1reTe">
       <!-- 我的收益 -->
-      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/profile/income" class="myorder">
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../income/my/income" class="myorder">
         <aside><image src="../../../static/images/mine-income.png"/></aside>
         <view class="myorder-div">
           <span>我的收益</span>
@@ -47,7 +47,7 @@
         </view>
       </navigator>
       <!-- 我的优惠券 -->
-      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/coupon" class="myorder">
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../coupon/coupon" class="myorder">
         <aside><image src="../../../static/images/mine-wdyhq.png"/></aside>
         <view class="myorder-div">
           <span>我的优惠券</span>
@@ -57,7 +57,7 @@
         </view>
       </navigator>
       <!-- 地址管理 -->
-      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/address" class="myorder">
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../address/address" class="myorder">
         <aside><image src="../../../static/images/mine-dzgl.png"/></aside>
         <view class="myorder-div">
           <span>地址管理</span>

@@ -49,11 +49,10 @@ Page({
     let index = e.currentTarget.dataset.showType;
     if (this.data.activeTab !== index) {
       this.setData({
-        activeTab: index
+        activeTab: index,
+        orderList: []
       })
-      wx.navigateTo({
-        url: './list?showType=' + index
-      })
+      this.getOrderList(this.data.page, this.data.size, index);
     }
   },
   // 取消订单
