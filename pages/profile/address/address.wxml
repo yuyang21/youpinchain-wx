@@ -1,0 +1,21 @@
+<view class="address">
+  <view class="addresslist">
+    <view class="li" wx:for='{{adressList}}' bindtap="selectOrEdit" data-address="{{item}}" wx:key="index">
+      <span class="default-address" wx:if="{{choosedAddressIndex === index && selectedAddress}}"></span>
+      <view class="address-detail">
+        <image src="../../../static/images/gwc-icon-add.png"/>
+        <view>{{item.detailedAddress}}</view>
+        <view><span>{{item.name}}</span> <span>{{item.mobile}}</span></view>
+      </view>
+      <view class="deletesite" bindtap="toEdit" data-address="{{item}}">
+        <image src="../../../static/images/icon-edit-nor.png"/>
+      </view>
+    </view>
+  </view>
+  <view class="no_address" wx:if="{{adressList.length === 0}}">您还没有添加过地址哦～</view>
+  <view bindtap="toAddAddress">
+    <view class="addsite">
+      + 添加新地址
+    </view>
+  </view>
+</view>

@@ -1,11 +1,16 @@
 {
   "pages": [
+    "pages/profile/profile/profile",
+    "pages/profile/inviteList/inviteList",
+    "pages/profile/income/my/income",
+    "pages/profile/income/detail/detail",
     "pages/group/current/current",
     "pages/group/confirmGroup/confirmGroup",
     "pages/group/groupMy/groupMy",
-    "pages/profile/profile/profile",
     "pages/group/groupDet/groupDet",
-    "pages/address/address/address",
+    "pages/profile/coupon/coupon",
+    "pages/profile/address/address",
+    "pages/profile/edit/edit",
     "pages/order/list/list",
     "pages/order/detail/detail"
   ],
