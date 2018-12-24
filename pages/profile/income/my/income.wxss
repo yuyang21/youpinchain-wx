@@ -1,0 +1,267 @@
+.income {
+  background-color: #efeff4;
+}
+
+.number_statistics {
+  overflow: hidden;
+  background-color: #fff;
+  margin-bottom: 30rpx;
+}
+
+.number_statistics view {
+  overflow: hidden;
+  height: 110rpx;
+  line-height: 110rpx;
+  padding: 0 30rpx;
+}
+
+.number_statistics view text:first-child {
+  float: left;
+  font-size: 30rpx;
+  color: #666;
+  text-align: left;
+}
+
+.number_statistics view text:last-child {
+  float: right;
+  font-size: 30rpx;
+  color: #e4372e;
+  text-align: right;
+}
+
+.number_statistics view:first-child {
+  border-bottom: 2rpx solid #efeff4;
+}
+
+.royalty_ratio .content {
+  overflow: hidden;
+  clear: both;
+  width: 100%;
+  background-color: #fff;
+  padding: 30rpx .2rem;
+  margin: 0 auto;
+}
+
+.royalty_ratio .content .tips {
+  float: right;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.royalty_ratio .content .tips image {
+  width: 33rpx;
+  height: 33rpx;
+  vertical-align: sub;
+  margin-left: 6rpx;
+}
+
+.royalty_ratio .content .levels {
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+}
+
+.royalty_ratio .content .levels .img {
+  margin: 30rpx 0 .0;
+}
+
+.royalty_ratio .content .levels view {
+  float: left;
+  width: 20%;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.royalty_ratio .content .text {
+  font-size: 26rpx;
+  color: #666;
+  text-align: left;
+  line-height: 1.7;
+  padding: 30rpx 0 14rpx 20rpx;
+}
+
+.royalty_ratio .content .img {
+  overflow: hidden;
+  clear: both;
+  position: relative;
+  height: 240rpx;
+}
+
+.royalty_ratio .content .img .hr {
+  margin: 224rpx auto 0;
+  background-color: #FCC931;
+  width: 88%;
+  height: 5rpx;
+  text-align:center;
+}
+
+.royalty_ratio .content .img .level {
+  float: left;
+  background-color: #FDE749;
+  width: 58rpx;
+  position: absolute;
+  bottom: 30rpx;
+  border-radius: 5rpx;
+}
+
+.royalty_ratio .content .img view:nth-child(1) {
+  height: 56rpx;
+  left: 6%;
+}
+
+.royalty_ratio .content .img view:nth-child(2) {
+  height: 76rpx;
+  left: 26%;
+}
+
+.royalty_ratio .content .img view:nth-child(3) {
+  height: 96rpx;
+  left: 46%;
+}
+
+.royalty_ratio .content .img view:nth-child(4) {
+  height: 116rpx;
+  left: 66%;
+}
+
+.royalty_ratio .content .img view:nth-child(5) {
+  height: 136rpx;
+  left: 86%;
+}
+
+.royalty_ratio .content .img view image {
+  content: '';
+  display: block;
+  width: 48rpx;
+  height: 48rpx;
+  position: absolute;
+  top: -56rpx;
+  left: 3rpx;
+}
+
+.royalty_ratio .panel_title {
+  padding-left: 20rpx;
+}
+
+.myincome {
+  background-color: #fff;
+  margin-top: 30rpx;
+  border-radius: 20rpx 20rpx 0 0;
+}
+.myincome .title {
+  width: 100%;
+  height: 110rpx;
+  overflow: hidden;
+  line-height: 110rpx;
+  padding: 0 26rpx;
+}
+
+.myincome .title .left {
+  font-size: 30rpx;
+  color: #666;
+}
+
+.myincome .title .left image {
+  width: 58rpx;
+  height: 58rpx;
+  vertical-align: middle;
+  margin: -6rpx 30rpx 0 0;
+}
+
+.myincome .title .right {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.myincome .title .right image {
+  width: 20rpx;
+  height: 35rpx;
+  vertical-align: text-bottom;
+  margin-left: 30rpx;
+}
+
+.myincome .content {
+  overflow: hidden;
+  border-top: 2rpx solid #efeff4;
+}
+
+.myincome .content .li {
+  float: left;
+  width: 50%;
+  height: 143rpx;
+}
+
+.myincome .content .li view:first-child {
+  font-size: 48rpx;
+  color: #e4372e;
+  margin: 24rpx 0 12rpx 24rpx;
+  height: 56rpx;
+}
+
+.myincome .content .li view:first-child span {
+  font-size: 36rpx;
+  margin-right: 10rpx;
+  font-weight: normal;
+}
+
+.myincome .content .li view:last-child {
+  font-size: 26rpx;
+  color: #999;
+  margin-left: 24rpx;
+}
+
+.myincome .content .li .btn {
+  width: 217rpx;
+  height: 60rpx;
+  font-size: 26rpx;
+  color: #fff;
+  background-color: #e4372e;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 30rpx;
+  margin: 40rpx 0 0 10rpx;
+}
+
+.myincome .content .li .btn.disabled {
+  background-color: #999;
+}
+
+.myincome .content .li:nth-child(even) {
+  border-left: 2rpx solid #efeff4;
+  border-bottom: 2rpx solid #efeff4;
+}
+
+.myincome .content .li:nth-child(odd) {
+  border-bottom: 2rpx solid #efeff4;
+}
+
+.myincome .content .li:last-child {
+  border-left: none;
+}
+
+.tips {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.9;
+  padding: 30rpx 30rpx 60rpx;
+}
+
+.tips view {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 24rpx;
+  overflow: hidden;
+  display: flex;
+  clear: both;
+}
+
+.tips span {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+.tips span:nth-child(even) {
+  width: 95%;
+  padding-left: 10rpx;
+}

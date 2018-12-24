@@ -1,0 +1,73 @@
+<view class="income">
+  <view class="number_statistics">
+    <view>
+      <text>邀请人数</text>
+      <text>{{profileInfo.inviteNum}}人</text>
+    </view>
+    <view>
+      <text>下单人数</text>
+      <text>{{profileInfo.invitePayNum}}人</text>
+    </view>
+  </view>
+  <view class="royalty_ratio">
+    <view class="panel_title">当前邀请用户奖励提成比</view>
+    <view class="content">
+      <view class="img">
+        <view wx:for="{{levels}}" wx:key="index" class="level">
+          <image src="../../../../static/images/profile/icon.png" wx:if="{{level === item.sortNo}}"/>
+        </view>
+        <view class="hr"></view>
+      </view>
+      <view class="levels">
+        <view wx:for="{{levels}}" wx:key="index" style="width: {{100 / levels.length + '%'}}">{{item.name}}</view>
+      </view>
+      <view class="text"><span class="show">奖励：</span> 用户下单金额*(有效下单人数提成比+邀请用户提成比)</view>
+    </view>
+  </view>
+  <view class="myincome">
+    <view class="title">
+      <view class="left"><image src="../../../../static/images/mine-income.png" alt=""/>我的收益</view>
+      <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../detail/detail" class="right">查看收益明细<image src="../../../../static/images/path.png" alt=""/></navigator>
+    </view>
+    <view class="content">
+      <view class="li">
+        <view><span>¥</span>{{todayInfo.todayAmount || 0}}</view>
+        <view>今日收益</view>
+      </view>
+      <view class="li">
+        <view><span>¥</span>{{todayInfo.todayOrderAmount || 0}}</view>
+        <view>今日下单金额</view>
+      </view>
+      <view class="li">
+        <view><span>¥</span>{{profileInfo.invitePayAmount || 0}}</view>
+        <view>用户累计下单</view>
+      </view>
+      <view class="li">
+        <view><span>¥</span>{{profileInfo.totalAmount || 0}}</view>
+        <view>累计收益</view>
+      </view>
+      <view class="li">
+        <view><span>¥</span>{{(profileInfo.totalAmount - profileInfo.canWithdrawAmount - profileInfo.alreadyWithdrawAmount)
+          || 0}}</view>
+        <view>预估收益余额</view>
+      </view>
+      <view class="li">
+        <view><span>¥</span>{{profileInfo.alreadyWithdrawAmount || 0}}</view>
+        <view>已累计提现</view>
+      </view>
+      <view class="li">
+        <view><span>¥</span>{{profileInfo.canWithdrawAmount || 0}}</view>
+        <view>可提现金额</view>
+      </view>
+      <view class="li">
+        <button class="btn {{profileInfo.canWithdrawAmount <= 0 ? 'disabled' : ''}}" bindtap="withdraws" data-can-withdraw-amount="{{profileInfo.canWithdrawAmount}}">申请提现</button>
+      </view>
+    </view>
+    <view class="tips">
+      <view>说明：</view>
+      <view><span class="left">1.</span><span class="left">余额中包含所有已付款用户，如果发生退款则会扣除未成功的金额 </span></view>
+      <view><span class="left">2.</span><span class="left">头衔：根据邀请用户数+有效下单数量计算</span></view>
+      <view><span class="left">3.</span><span class="left">具体收益细则请查看明细</span></view>
+    </view>
+  </view>
+</view>
