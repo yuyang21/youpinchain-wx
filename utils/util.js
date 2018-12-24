@@ -36,7 +36,6 @@ function request(url, data = {}, method = "GET") {
         'X-youpinchain-Token': wx.getStorageSync('token')
       },
       success: function (res) {
-
         if (res.statusCode == 200) {
           if (res.data.errno == 401) {
             // 微信登陆失效
@@ -48,25 +47,10 @@ function request(url, data = {}, method = "GET") {
               // Do something when catch error
             }
             // 切换到登录页面
-            // wx.navigateTo({
-            //   url: '/pages/auth/wxLogin/login'
-            // });
-            console.log('登录失败')
-          }
-
-          if (res.data.errno == 410) {
-            //权限账号登陆失效
-            // 清除登录相关内容
-            // try {
-            //   wx.removeStorageSync('userInfo');
-            //   wx.removeStorageSync('token');
-            // } catch (e) {
-            //   // Do something when catch error
-            // }
-            // 切换到登录页面
             wx.navigateTo({
               url: '/pages/auth/login/login'
             });
+            console.log('登录失败')
           } else {
             resolve(res.data);
           }
@@ -89,7 +73,7 @@ const shareEvent = (option, obj) => {
     imgUrl: obj.imgUrl,
     success(res) {
       // 转发成功之后的回调
-      if (res.errMsg == 'shareAppMessage:ok') {}
+      if (res.errMsg == 'shareAppMessage:ok') { }
     },
     fail(res) {
       // 转发失败之后的回调

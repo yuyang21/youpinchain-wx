@@ -12,7 +12,8 @@
     "pages/profile/address/address",
     "pages/profile/edit/edit",
     "pages/order/list/list",
-    "pages/order/detail/detail"
+    "pages/order/detail/detail",
+    "pages/auth/login/login"
   ],
   "window": {
     "backgroundTextStyle": "dark",
