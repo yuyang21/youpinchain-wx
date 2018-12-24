@@ -46,10 +46,8 @@ Page({
     areaId: []
   },
   onLoad: function (options) {
-    wx.removeStorageSync('choosedAddress');
+    // wx.removeStorageSync('choosedAddress');
     // wx.setStorageSync('choosedAddress', '{"name": "yuy","mobile": "17611121231","tipText": "北京市 市辖区 东城区","address": "qqqq","provinceId": "1","provinceName": "北京市","cityId": "32","cityName": "北京市","areaId": "376","areaName": "东城区","id": 47}')
-    this.setData({
-    })
     this.setData({
       groupType: Number(options.type),
       groupMyId: Number(options.groupMyId),

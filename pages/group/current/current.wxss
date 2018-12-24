@@ -117,6 +117,3 @@ image.noImage {
   font-size: 26rpx;
   text-align: center;
 }
-.text-center {
-  margin-bottom:30rpx;
-}

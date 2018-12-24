@@ -45,7 +45,6 @@ Page({
       }
       that.setData({
         groupSuit: res.data.groupSuit,
-        suitDet: res.data.suitDet,
         headTitle: res.data.groupSuit.suitName,
         suitTypes: res.data.suitTypes,
         headPic: res.data.headPic,
@@ -83,6 +82,14 @@ Page({
         util.countDown(that)
       })
     }
+    util.request('/groups/' + that.data.groupSuitId + '/pro').then(res => {
+      if (res.errno !== 0) {
+        return;
+      }
+      that.setData({
+        suitDet: res.data
+      })
+    })
   },
   toSubmitOrder(event) {
     let type = event.currentTarget.dataset.type;

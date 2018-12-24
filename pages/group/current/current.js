@@ -18,6 +18,9 @@ Page({
           brand: res.data.brand
         });
       }
+      setTimeout(function () {
+        wx.hideLoading()
+      }, 100)
     });
   },
   getList: function (page, size) {
@@ -41,6 +44,9 @@ Page({
   onLoad: function () {
   },
   onShow: function () {
+    wx.showLoading({
+      title: '加载中',
+    })
     this.getIndexData();
     this.getList(this.data.page, this.data.size);
   },
