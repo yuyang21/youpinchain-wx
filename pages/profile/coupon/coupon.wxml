@@ -1,0 +1,24 @@
+<view class="address">
+  <view class="input-new" wx:if="{{confirmOrder}}">
+    <view class="setDefault">不使用优惠券</view>
+    <view style="display:flex;align-items:center;margin-right: .1rem;">
+      <view class="wrap" bindtap="nonuse">
+        <my-switch size="md" open-name="" close-name="" value="{{checked}}" disabled="{{checked}}"></my-switch>
+      </view>
+    </view>
+  </view>
+  <view class="addresslist">
+    <view wx:for='{{coupons}}' class="li {{goodsPrice && (goodsPrice < item.money || goodsPrice < item.condition) ? 'unavailable' : ''}}"
+      bindtap="selectOrEdit" data-coupon="{{item}}" wx:key="index">
+      <span class="default-address" wx:if="{{choosedCoupon && choosedCoupon.id === item.id}}"></span>
+      <view class="address-detail">
+        <text>{{item.money}}</text>
+        <text>{{item.couponName}}</text>
+        <text wx:if="item.couponType === 1">{{item.condition}}</text>
+        <text>{{item.describe}}</text>
+        <text>有效期至：{{item.deadline}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="no_address" wx:if="{{coupons.length === 0}}">暂无可使用的优惠券哦～</view>
+</view>
