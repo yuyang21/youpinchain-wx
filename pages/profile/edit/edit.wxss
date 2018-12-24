@@ -1,0 +1,129 @@
+.wrap {
+  display: flex;
+  align-items: center;
+}
+
+.adddetail {
+  margin-top: 10rpx;
+  border-radius: 20rpx;
+  background: #fff;
+  height: 98%;
+}
+
+.add-detail {
+  display: block;
+}
+
+.input-new {
+  width: 100%;
+  height: 90rpx;
+  padding: 0 0 0 24rpx;
+  display: flex;
+  font-size: 30rpx;
+  color: #666;
+  border-bottom: 2rpx solid #efeff4;
+}
+
+.input-new span {
+  width: 140rpx;
+  line-height: 90rpx;
+  margin-right: 28rpx;
+}
+
+.input-new input {
+  width: 340rpx;
+  height: 88rpx;
+  font-size: 30rpx;
+  display:inline-flex;
+  color: #000;
+}
+
+.input-new .verifies {
+  border-color: #ea3106;
+}
+
+.input-new view {
+  font-size: 24rpx;
+  color: #ea3106;
+  padding-left: 20rpx;
+  margin-top: 8rpx;
+}
+
+.input-new:nth-of-type(3) {
+  height: 180rpx;
+}
+
+.input-new:nth-of-type(3) textarea {
+  padding: 30rpx 0 0 0;
+  width: 540rpx;
+  height:148rpx;
+  font-size: 30rpx;
+  color: #000;
+}
+
+.input-new:last-child {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-new:last-child view {
+  font-size: 30rpx;
+  color: #666;
+  line-height: 90rpx;
+  margin: 0;
+  padding: 0;
+}
+
+.input-new image {
+  width: 20rpx;
+  height: 35rpx;
+}
+picker.input-new span {
+  padding-right: 19rpx;
+}
+
+.addbutton {
+  margin: 62rpx auto 146rpx auto;
+  width: 700rpx;
+}
+
+.addbutton button {
+  width: 100%;
+  font-size: 30rpx;
+  color: #fff;
+  line-height: 90rpx;
+  background: #e4372e;
+  font-weight: 700;
+  border-radius: 46rpx;
+}
+
+.addbutton .butopacity {
+  transition: all 0.4s;
+  opacity: 1;
+}
+.delete-address {
+  text-align:center;
+}
+.delete-address image {
+  width: 86rpx;
+  height: 86rpx;
+}
+/*swtich样式-start*/
+/*swtich整体大小*/
+
+.wx-switch-input {
+  width: 82rpx !important;
+  height: 40rpx !important;
+}
+
+/*白色样式（false的样式）*/
+.wx-switch-input::before {
+  width: 80rpx !important;
+  height: 36rpx !important;
+}
+
+/*绿色样式（true的样式）*/
+.wx-switch-input::after {
+  width: 40rpx !important;
+  height: 36rpx !important;
+}
