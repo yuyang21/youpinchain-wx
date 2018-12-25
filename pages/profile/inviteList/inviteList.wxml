@@ -1,0 +1,30 @@
+<view class="inviteList">
+  <view class="list">
+    <view class="content" wx:if="{{list.length > 0}}">
+      <view class="li" wx:for="{{list}}" wx:key="index">
+        <image src="{{item.headImgUrl}}" class="{{!item.headImgUrl ? 'noImage': ''}}" alt="头像"/>
+      </view>
+    </view>
+    <view wx:else class="no_list">暂时没有邀请人，快去邀请吧！</view>
+  </view>
+  <view class="invite_btn" bindtap="sharePoster">邀请赚赏金</view>
+  <view class="poster" wx:if="{{showPoster}}">
+    <text class="p">1.长按屏幕保存图片</text>
+    <text class="p">2.将图片分享给好友或朋友圈</text>
+    <view class="invite_landing">
+      <image src="{{output}}" width="100%" wx:if="{{showImages}}"/>
+      <view class="box" wx:else>
+        <image src="../../../static/images/bounty-plan/share_poster.png" class="boxImg" alt="" />
+        <view class="container" >
+          <view class="title">
+            <view>领金条  拍大奖 </view>
+            <view>拣金钻  兑好物</view>
+          </view>
+          <view class="qrcode" id="qrcode_1"></view>
+          <view class="content">争做创世居民，送无门槛竞拍礼包，有实惠，优先享。</view>
+        </view>
+      </view>
+    </view>
+    <image bindtap="sharePoster" data-type="close" src="../../../static/images/bounty-plan/close_model.png" alt="" width="30" class="close_model"/>
+  </view>
+</view>

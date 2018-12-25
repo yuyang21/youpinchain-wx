@@ -497,7 +497,7 @@
 .groupSuitType .right image {
   width: 20rpx;
   height: 35rpx;
-  vertical-align: text-top;
+  vertical-align: middle;
   margin-left: 10rpx;
 }
 
