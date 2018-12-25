@@ -5,16 +5,16 @@
       <view class="address">
         <view class="no_address" wx:if="{{!choosedAddress}}">
           <view class="adddetail">
-            <form action="">
+            <form bindsubmit="submitAddress">
               <view class="ui-padding-block">
                 <view class="input-new">
                   <span>姓名</span>
-                  <input type="text" placeholder="请填写收件人姓名" value="{{address.name}}"/>
+                  <input name="name" type="text" placeholder="请填写收件人姓名" value="{{address.name}}"/>
                 </view>
                 <view class="add-detail">
                   <view class="input-new">
                     <span>联系电话</span>
-                    <input type="tel" maxlength="11" placeholder="请填写收货人手机号" value="{{address.mobile}}" bindinput="address.mobile = address.mobile.replace(/\D/g, '')" />
+                    <input name="mobile" type="tel" maxlength="11" placeholder="请填写收货人手机号" value="{{address.mobile}}" bindinput="address.mobile = address.mobile.replace(/\D/g, '')" />
                   </view>
                 </view>
                 <picker bindchange="changeRegin" bindcolumnchange="bindMultiPickerColumnChange" mode="multiSelector" range="{{region}}" class="input-new">
@@ -25,14 +25,14 @@
                 </picker>
                 <view class="input-new">
                   <span>地址</span>
-                  <textarea placeholder="请填写详细地址" id="adinfo" value="" rows="2" value="{{address.address}}"></textarea>
+                  <textarea name="address" placeholder="请填写详细地址" id="adinfo" value="" rows="2" value="{{address.address}}"></textarea>
                 </view>
               </view>
               <view id="container"></view>
             </form>
           </view>
           <view class="addbutton">
-            <button class="{{butpart ? 'butopacity' : ''}}" bindtap="submitAddress(address)">保存</button>
+            <button class="{{butpart ? 'butopacity' : ''}}" form-type="submit">保存</button>
           </view>
         </view>
         <view class="address_info" wx:else>
@@ -96,25 +96,25 @@
         <view class="purchase_num">
           <text class="left">购买数量</text>
           <view class="cart_btns right">
-            <span class="subduction" bindtap="addNumber(suitNum, -groupSuit.stepSize)"><image src="../../../static/images/sub-icon.png"/></span>
+            <span class="subduction" bindtap="addNumber" data-suitNum="{{suitNum}}" data-number="{{-groupSuit.stepSize}}"><image src="../../../static/images/sub-icon.png"/></span>
             <span class="num">{{suitNum}}</span>
-            <span class="add" bindtap="addNumber(suitNum, groupSuit.stepSize)"><image src="../../../static/images/add-icon.png"/></span>
+            <span class="add" bindtap="addNumber" data-suitNum="{{suitNum}}" data-number="{{groupSuit.stepSize}}"><image src="../../../static/images/add-icon.png"/></span>
           </view>
         </view>
         <view class="right totalPrice red">
           套装单价
-          <view><span class="RMB">￥</span>{{packPrice | number}}</view>
+          <view><span class="RMB">￥</span>{{packPrice}}</view>
         </view>
       </view>
       <view class="shop_info margin-t-p3">
         <view class="payment_info">
           <view class="li">
             <view>商品总价</view>
-            <view><span class="RMB">￥</span>{{goodsPrice | number}}</view>
+            <view><span class="RMB">￥</span>{{goodsPrice}}</view>
           </view>
-          <navigator class="li" hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'/couponList?path=confirmOrder'}}">
+          <navigator class="li" hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../../profile/coupon/coupon?path=confirmOrder'}}">
             <view>优惠价格</view>
-            <view class="RMB coupon">-￥{{coupon ? coupon.money : 0 | number}}</view>
+            <view class="RMB coupon">-￥{{coupon ? coupon.money : 0}}</view>
           </navigator>
           <view class="li">
             <view>运费{{fareInfo}}</view>
@@ -123,14 +123,14 @@
         </view>
         <view class="right totalPrice">
           实际支付
-          <view><span class="RMB">￥</span>{{(totalPrice + fare) | number}}</view>
+          <view><span class="RMB">￥</span>{{(totalPrice + fare)}}</view>
         </view>
       </view>
     </view>
   </view>
   <view class="settlement">
     <view class="li" bindtap="paymentCall()">去付款</view>
-    <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{(totalPrice + fare) | number}}</span></view>
+    <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{(totalPrice + fare)}}</span></view>
   </view>
 <view class="mask_box" hidden="{{!showTip}}" bindtap="showTipsBox" style="height:{{maskBoxH}}px;"></view>
   <view class="suitTypeBox" hidden="{{!suitTypeBox}}">
