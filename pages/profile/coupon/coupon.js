@@ -15,9 +15,9 @@ Page({
     if (options.path === 'confirmOrder') {
       this.setData({
         queryPath: options.path,
-        goodsPrice: JSON.parse(wx.getStorageSync('goodsPrice')),
+        goodsPrice: wx.getStorageSync('goodsPrice') ? JSON.parse(wx.getStorageSync('goodsPrice')) : null,
         confirmOrder: true,
-        choosedCoupon: JSON.parse(wx.getStorageSync('choosedCoupon'))
+        choosedCoupon: wx.getStorageSync('choosedCoupon') ? JSON.parse(wx.getStorageSync('choosedCoupon')) : null
       })
       
     }

@@ -1,13 +1,13 @@
 <view class="address">
   <view class="addresslist">
     <view class="li" wx:for='{{adressList}}' bindtap="selectOrEdit" data-address="{{item}}" wx:key="index">
-      <span class="default-address" wx:if="{{choosedAddressIndex === index && selectedAddress}}"></span>
+      <span class="default-address" wx:if="{{choosedAddressIndex === index && selectedAddress}}"><image src="../../../static/images/add-slected.png" /></span>
       <view class="address-detail">
         <image src="../../../static/images/gwc-icon-add.png"/>
         <view>{{item.detailedAddress}}</view>
         <view><span>{{item.name}}</span> <span>{{item.mobile}}</span></view>
       </view>
-      <view class="deletesite" bindtap="toEdit" data-address="{{item}}">
+      <view class="deletesite" catchtap="toEdit" data-address="{{item}}">
         <image src="../../../static/images/icon-edit-nor.png"/>
       </view>
     </view>

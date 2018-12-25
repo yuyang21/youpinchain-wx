@@ -15,14 +15,12 @@
   position: relative;
 }
 
-.default-address {
+.default-address  image {
   width: 86rpx;
   height: 84rpx;
   position: absolute;
   left: 0;
   top: 0;
-  background: url('../../../static/images/add-slected.png') no-repeat center center;
-  background-size: 100% 100%;
 }
 
 .address-detail {

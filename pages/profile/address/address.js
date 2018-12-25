@@ -8,9 +8,13 @@ Page({
     queryPath: ''
   },
   onLoad: function (options) {
-    if (options.path && options.path !== 'confirmOrder') {
+    if (options.path) {
+      that.setData({
+        queryPath: options.path
+      })
+    }
+    if (this.data.queryPath !== 'confirmOrder') {
       this.setData({
-        queryPath: options.path,
         selectedAddress: false
       })
     }
@@ -56,13 +60,12 @@ Page({
   },
   toEdit (event) {
     let address = event.currentTarget.dataset.address;
+    let query = '?addressId=' + address.id;
     if (this.data.queryPath === 'confirmOrder') {
-      wx.navigateTo({
-        url: '../../group/confirmGroup/confirmGroup?addressId=' + address.id + '&path=confirmOrder'
-      })
+      query = query + '&path=confirmOrder'
     }
     wx.navigateTo({
-      url: '../edit/edit?addressId=' + address.id
+      url: '../edit/edit' + query
     })
   },
   toAddAddress() {
