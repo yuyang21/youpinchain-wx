@@ -68,9 +68,9 @@
       <img src="{{output}}" width="100%" wx:if="{{output}}" />
       <view class="box" wx:else>
         <view class="groupMyInfo">
-          <text class="{{groupMy.groupSuitType === 1 ? 'padd-t' : ''}}"><strong>{{leaderAddress.consignee}}</strong>邀请您参加{{!sex ?
-            '' : sex === '女' ? '她的' : '他的'}}团购</text>
-          <text wx:if="{{groupMy.groupSuitType === 2}}" class="ellipsis">同一收货地址：{{leaderAddress.address}}</text>
+          <view class="{{groupMy.groupSuitType === 1 ? 'padd-t' : ''}}"><strong>{{leaderAddress.consignee || 'ww'}}</strong>邀请您参加{{!sex ?
+            '' : sex === '女' ? '她的' : '他的'}}团购</view>
+          <view wx:if="{{groupMy.groupSuitType === 2}}" class="ellipsis">同一收货地址：{{leaderAddress.address}}</view>
         </view>
         <view class="header">
           <image src="../../../static/images/group/icon_share.png" class="icon_head"/>
@@ -85,7 +85,7 @@
             <view class="title ellipsis">{{groupSuit.suitName}}</view>
             <view class="content">{{groupSuit.describe}}</view>
             <view class="discountPrice">同一地址团购：<span>¥</span>{{sameAddressPrice}}</view>
-            <view class="tips" wx:if="{{groupMy.groupSuitType === 2}}">(团长发起，并享劳动鼓励金)</view>
+            <!-- <view class="tips" wx:if="{{groupMy.groupSuitType === 2}}">(团长发起，并享劳动鼓励金)</view> -->
             <view class="originalPrice">不同地址团购：<span>¥</span>{{diffetentAddressPrice}}</view>
             <view class="originalPrice">单买价：<span>¥</span>{{groupSuit.suitPrice}}</view>
           </view>
@@ -95,6 +95,6 @@
         </view>
       </view>
     </view>
-    <image bindtap="showShare = false" src="../../../static/images/group/close_model.png" width="30" class="close_model"/>
+    <image bindtap="showShareBox" src="../../../static/images/group/close_model.png" width="30" class="close_model"/>
   </view>
 </view>

@@ -278,28 +278,29 @@
 }
 
 .poster .invite_landing .box .groupMyInfo {
-  margin: 30rpx 0 0 140rpx;
-  text-align: left;
+  margin:30rpx 0 0 140rpx;
+  text-align:left;
 }
 
-.poster .invite_landing .box .groupMyInfo text:first-child {
+.poster .invite_landing .box .groupMyInfo view:first-child {
   font-size: 26rpx;
   color: #3B3B3B;
   line-height: 26rpx;
 }
-.poster .invite_landing .box .groupMyInfo text:first-child strong {
+.poster .invite_landing .box .groupMyInfo view:first-child strong {
   color: #000;
   margin-right: 10rpx;
+  font-weight: bold;
 }
 
-.poster .invite_landing .box .groupMyInfo text:nth-child(2) {
+.poster .invite_landing .box .groupMyInfo view:nth-child(2) {
   font-size: 24rpx;
   color: #3B3B3B;
   transform: scale(.87) translateX(-40rpx);
   width: 113%;
 }
 
-.poster .invite_landing .box .groupMyInfo text.padd-t {
+.poster .invite_landing .box .groupMyInfo view.padd-t {
   padding: 10rpx 0 20rpx;
 }
 
