@@ -1,3 +1,7 @@
 {
-  "navigationBarTitleText": "编辑地址"
+  "navigationBarTitleText": "编辑地址",
+  "usingComponents": {
+    "alertTip": "/components/alertTip/alertTip",
+    "computeTime": "/components/computeTime/computeTime"
+  }
 }

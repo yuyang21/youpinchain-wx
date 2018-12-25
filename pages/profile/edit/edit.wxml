@@ -1,13 +1,13 @@
 <view class="adddetail">
-  <form action="">
+  <form bindsubmit="submitAddress">
     <view class="ui-padding-block">
       <view class="input-new">
         <span>姓名</span>
-        <input type="text" placeholder="请填写你的姓名" value="{{address.name}}"/>
+        <input name="name" type="text" placeholder="请填写你的姓名" value="{{address.name}}"/>
       </view>
       <view class="input-new">
         <span>联系电话</span>
-        <input type="tel" maxlength="11" placeholder="请填写收货人手机号" bindinput="address.mobile = address.mobile.replace(/\D/g, '')"
+        <input name="moblie" type="tel" maxlength="11" placeholder="请填写收货人手机号" bindinput="address.mobile = address.mobile.replace(/\D/g, '')"
           value="{{address.mobile}}" />
       </view>
       <picker bindchange="changeRegin" bindcolumnchange="bindMultiPickerColumnChange" mode="multiSelector" range="{{region}}" class="input-new">
@@ -17,21 +17,22 @@
       </picker>
       <view class="input-new">
         <span>地址</span>
-        <textarea placeholder="请填写详细地址" id="adinfo" rows="2" value="{{address.address}}"></textarea>
+        <textarea name="address" placeholder="请填写详细地址" id="adinfo" rows="2" value="{{address.address}}"></textarea>
       </view>
       <view class="input-new">
         <view class="setDefault">设置为默认地址</view>
         <view style="display:flex;align-items:center;margin-right: 20rpx;">
-          <switch checked color="#e4372e" bindchange="switchChange" />
+          <switch color="#e4372e" bindchange="switchChange" />
         </view>
       </view>
     </view>
     <view class="addbutton">
-      <button bindtap="submitAddress">{{submitText}}</button>
+      <button form-type="submit">{{submitText}}</button>
     </view>
-    <view class="delete-address" bindtap="showAlertTip = !showAlertTip" wx:if="{{showDelete}}">
+    <view class="delete-address" bindtap="deleteAddress1" wx:if="{{showDelete}}">
       <image src="../../../static/images/add-delete.png"/>
     </view>
     <view id="city_container"></view>
+    <alertTip bindmyevent="deleteAddress1" wx:if="{{showAlertTip}}" alertText="<p>确定要删除该地址吗！</p>"></alertTip>
   </form>
 </view>

@@ -15,7 +15,8 @@ Page({
     area: [],
     provincesId: [],
     cityId: [],
-    areaId: []
+    areaId: [],
+    queryPath: ''
   },
   onLoad: function (options) {
     let that = this;
@@ -33,7 +34,12 @@ Page({
         deleteNumber: options.number
       })
     }
-    if (options.path == 'confirmOrder') {
+    if (options.path) {
+      that.setData({
+        queryPath: options.path
+      })
+    }
+    if (this.data.queryPath == 'confirmOrder') {
       that.setData({
         submitText: '保存并使用',
         showDelete: false
@@ -44,46 +50,52 @@ Page({
     this.setRegions(0, 0);
   },
   // 保存地址
-  submitAddress() {
-    var address = this.address;
+  submitAddress(e) {
+    var address = e.detail.value;
+    console.log(address)
     if (address.id) {
-      updateAddress(
-        address.id,
-        address.name,
-        address.provinceId,
-        address.cityId,
-        address.areaId,
-        address.mobile,
-        address.address
-      ).then(res => {
+      util.request(api.updateAddress + address.id, {
+        name: address.name,
+        provinceId: this.data.provinceId,
+        cityId: this.data.cityId,
+        areaId: this.data.areaId,
+        mobile: address.mobile,
+        address: address.address
+      }, 'PUT').then(res => {
         if (res.errno == 0) {
-          var index = 0;
-          if (this.$route.query.path == 'confirmOrder') {
-            localStorage.setItem('choosedAddress', JSON.stringify(address));
-            this.$router.go(-2);
+          if (this.data.queryPath == 'confirmOrder') {
+            wx.setStorageSync('choosedAddress', JSON.stringify(address));
+            wx.navigateBack({
+              delta: 2
+            })
           } else {
-            this.$router.go(-1);
+            wx.navigateBack({
+              delta: 1
+            })
           }
         }
       });
     } else {
-      addAddress(
-        address.name,
-        address.provinceId,
-        address.cityId,
-        address.areaId,
-        address.mobile,
-        address.address,
-        this.toggle
-      ).then(res => {
+      util.request(api.addAddress, {
+        name: address.name,
+        provinceId: this.data.provinceId,
+        cityId: this.data.cityId,
+        areaId: this.data.areaId,
+        mobile: address.mobile,
+        address: address.address,
+        isDefault: this.data.toggle
+      }, 'POST').then(res => {
         address.id = res.data;
         if (res.errno == 0) {
-          var index = 0;
-          if (this.$route.query.path == 'confirmOrder') {
-            localStorage.setItem('choosedAddress', JSON.stringify(address));
-            this.$router.go(-2);
+          if (this.data.queryPath == 'confirmOrder') {
+            wx.getStorageSync('choosedAddress', JSON.stringify(address));
+            wx.navigateBack({
+              delta: 2
+            })
           } else {
-            this.$router.go(-1);
+            wx.navigateBack({
+              delta: 1
+            })
           }
         }
       });
@@ -91,16 +103,22 @@ Page({
   },
 
   // 删除地址
-  deleteAddress1() {
+  deleteAddress1(e) {
+    // e.detail // 自定义组件触发事件时提供的detail对象
+    this.setData({
+      showAlertTip: !this.data.showAlertTip
+    })
     var that = this;
-    if (that.data.address.id) {
-      deleteAddress(that.data.address.id).then(res => {
+    if (e.detail.type == 1 && that.data.address.id) {
+      util.request(api.deleteAddress + that.data.address.id, {}, 'DELETE').then(res => {
         if (res.errno == 0) {
-          var sessionAddr = localStorage.getItem('choosedAddress');
-          if (sessionAddr && JSON.parse(sessionAddr).id == that.address.id) {
-            localStorage.removeItem('choosedAddress');
+          var sessionAddr = wx.getStorageSync('choosedAddress');
+          if (sessionAddr && JSON.parse(sessionAddr).id == that.data.address.id) {
+            wx.removeStorageSync('choosedAddress');
           }
-          that.$router.go(-1);
+          wx.navigateBack({
+            delta: 1
+          })
         }
       });
     }
@@ -116,6 +134,7 @@ Page({
     let city = this.data.region[1][arr[1]];
     let area = this.data.region[2][arr[2]];
     let address = this.data.address;
+    console.log(this.data.address)
     address.tipText = provinces + ' ' + city + ' ' + area;
     this.setData({
       address: address
@@ -141,24 +160,24 @@ Page({
       let provinces = res.data;
       region[0] = that.returnListName(provinces, 'name');
       let provincesId = that.returnListName(provinces, 'id');
-      console.log(region[0])
-      console.log(provincesId)
+      // console.log(region[0])
+      // console.log(provincesId)
       util.request(api.getRegionsList, {
         pid: provinces[0].id
       }).then((res) => {
         let city = res.data;
         let cityId = that.returnListName(city, 'id');
         region[1] = that.returnListName(city, 'name');
-        console.log(region[1])
-        console.log(cityId)
+        // console.log(region[1])
+        // console.log(cityId)
         util.request(api.getRegionsList, {
           pid: city[0].id
         }).then((res) => {
           let area = res.data;
           let areaId = that.returnListName(area, 'id');
           region[2] = that.returnListName(area, 'name');
-          console.log(region[2])
-          console.log(areaId)
+          // console.log(region[2])
+          // console.log(areaId)
           that.setData({
             region: region,
             provinces: region[0],
@@ -170,11 +189,11 @@ Page({
           })
         })
       })
-      console.log(that.data.region)
+      // console.log(that.data.region)
     })
   },
   bindMultiPickerColumnChange(e) {
-    console.log('修改的列为', e.detail.column, '，值为', e.detail.value)
+    // console.log('修改的列为', e.detail.column, '，值为', e.detail.value)
     // this.setData({
     //   region: [[],[],[]]
     // })
@@ -210,8 +229,8 @@ Page({
       case 1:
         var region = [this.data.provinces, this.data.city, []];
         var that = this;
-        console.log(that.data.cityId);
-        console.log(e.detail.value);
+        // console.log(that.data.cityId);
+        // console.log(e.detail.value);
         util.request(api.getRegionsList, {
           pid: that.data.cityId[e.detail.value]
         }).then((res) => {

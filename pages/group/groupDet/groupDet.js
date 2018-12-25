@@ -94,7 +94,6 @@ Page({
   toSubmitOrder(event) {
     let type = event.currentTarget.dataset.type;
     if (this.data.groupMyId && this.data.endTimeDown <= 0) {
-      this.$router.push('/group');
       wx.navigateTo({
         url: '../current/current'
       })
