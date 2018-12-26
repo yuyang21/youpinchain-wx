@@ -42,15 +42,12 @@
   color: #666;
 }
 
-.address-detail view span {
+.address-detail text {
   display: inline-block;
   font-size: 30rpx;
   color: #666;
 }
 
-.address-detail view span:first-child {
-  margin-right: 30rpx;
-}
 
 .address-detail view:nth-of-type(1) {
   margin-bottom: 48rpx;

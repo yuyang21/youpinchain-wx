@@ -4,8 +4,8 @@
       <span class="default-address" wx:if="{{choosedAddressIndex === index && selectedAddress}}"><image src="../../../static/images/add-slected.png" /></span>
       <view class="address-detail">
         <image src="../../../static/images/gwc-icon-add.png"/>
-        <view>{{item.detailedAddress}}</view>
-        <view><span>{{item.name}}</span> <span>{{item.mobile}}</span></view>
+        <view><span class="errAddress">(超出配送范围) </span>{{item.detailedAddress}}</view>
+        <text decode="{{true}}">{{item.name}}&emsp;{{item.mobile}}</text>
       </view>
       <view class="deletesite" catchtap="toEdit" data-address="{{item}}">
         <image src="../../../static/images/icon-edit-nor.png"/>

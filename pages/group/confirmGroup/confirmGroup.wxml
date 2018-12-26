@@ -44,6 +44,7 @@
               choosedAddress.cityName + choosedAddress.areaName +
               choosedAddress.address}}</view>
             <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}"><text decode="{{true}}">{{choosedAddress.name}}&emsp;{{choosedAddress.mobile}}</text></view>
+            <view class="errAddress" wx:if="{{!groupMyId && groupType === 1}}">当前商品不支持配送至该地址</view>
             <view class="groupSuitType" wx:if="{{!groupMyId && groupType === 1}}">
               <view class="left">拼团方式</view>
               <view class="right" bindtap="showTipsBox" data-type="suitTypeBox">
