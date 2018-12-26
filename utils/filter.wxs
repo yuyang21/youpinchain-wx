@@ -57,6 +57,11 @@ var formatDate = function (timestamp,option) {
 var timeformat = function (number) {
   return number.split('T')[0].split('-').join('.') + ' ' + number.split('T')[1].split(':')[0] + ':' + number.split('T')[1].split(':')[1]
 }
+
+var numberFormat = function (value) {
+  var v = parseInt(value) //强转Int，毕竟有可能返回是String类型的数字
+  return v.toFixed(2)
+}
  
 /*
  * 导出
@@ -65,5 +70,6 @@ module.exports = {
   timeArry: timeArry,
   moneyFormat: moneyFormat,
   formatDate: formatDate,
-  timeformat: timeformat
+  timeformat: timeformat,
+  numberFormat: numberFormat
 }
