@@ -1,3 +1,4 @@
+<wxs src="../../../utils/filter.wxs" module="filter" />
 <view class="confirmOrderContainer">
   <view class="shop_list_container">
     <view class="swiper-container" wx:if="{{productList.length}}">
@@ -87,26 +88,33 @@
               <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view>
             </view>
             <view class="cart_btns">
-              <span class="num">x {{item.suitNumber}}</span>
+              <span class="number" wx:if="{{productType === 1}}">x {{item.suitNumber}}</span>
+              <block wx:else>
+                <span class="subduction" bindtap="addNumber" data-index="{{index}}" data-number="-1"><image src="../../../static/images/sub-icon.png"/></span>
+                <span class="num">{{item.suitNum}}</span>
+                <span class="add" bindtap="addNumber" data-index="{{index}}" data-number="1"><image src="../../../static/images/add-icon.png"/></span>
+              </block>
             </view>
           </view>
-          <view wx:if="{{showTotal}}" class="load_more" bindtap="loadAllProducts();">
+          <!-- <view wx:if="{{showTotal}}" class="load_more" bindtap="loadAllProducts">
             共{{productList.length}}件
-            <image src="../../images/path-2.png" width="4%"/>
+            <image src="../../../static/images/path-2.png" width="4%"/>
+          </view> -->
+        </view>
+        <block wx:if="{{productType === 1}}">
+          <view class="purchase_num">
+            <text class="left">购买数量</text>
+            <view class="cart_btns right">
+              <span class="subduction" bindtap="addNumber" data-suit-num="{{suitNum}}" data-number="{{-groupSuit.stepSize}}"><image src="../../../static/images/sub-icon.png"/></span>
+              <span class="num">{{suitNum}}</span>
+              <span class="add" bindtap="addNumber" data-suit-num="{{suitNum}}" data-number="{{groupSuit.stepSize}}"><image src="../../../static/images/add-icon.png"/></span>
+            </view>
           </view>
-        </view>
-        <view class="purchase_num">
-          <text class="left">购买数量</text>
-          <view class="cart_btns right">
-            <span class="subduction" bindtap="addNumber" data-suit-num="{{suitNum}}" data-number="{{-groupSuit.stepSize}}"><image src="../../../static/images/sub-icon.png"/></span>
-            <span class="num">{{suitNum}}</span>
-            <span class="add" bindtap="addNumber" data-suit-num="{{suitNum}}" data-number="{{groupSuit.stepSize}}"><image src="../../../static/images/add-icon.png"/></span>
+          <view class="right totalPrice red">
+            套装单价
+            <view><span class="RMB">￥</span>{{packPrice}}</view>
           </view>
-        </view>
-        <view class="right totalPrice red">
-          套装单价
-          <view><span class="RMB">￥</span>{{packPrice}}</view>
-        </view>
+        </block>
       </view>
       <view class="shop_info margin-t-p3">
         <view class="payment_info">
@@ -125,14 +133,14 @@
         </view>
         <view class="right totalPrice">
           实际支付
-          <view><span class="RMB">￥</span>{{(totalPrice + fare)}}</view>
+          <view><span class="RMB">￥</span>{{filter.numberFormat(totalPrice + fare)}}</view>
         </view>
       </view>
     </view>
   </view>
   <view class="settlement">
     <view class="li" bindtap="paymentCall">去付款</view>
-    <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{(totalPrice + fare)}}</span></view>
+    <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{filter.numberFormat(totalPrice + fare)}}</span></view>
   </view>
 <view class="mask_box" hidden="{{!showTip}}" bindtap="showTipsBox" style="height:{{maskBoxH}}px;"></view>
   <view class="suitTypeBox" hidden="{{!suitTypeBox}}">

@@ -21,7 +21,7 @@ Page({
   },
   onLoad: function (options) {
     this.setData({
-      groupSuitId: options.groupSuitId || 57,
+      groupSuitId: options.groupSuitId,
       groupMyId: options.groupMyId ? options.groupMyId : null
     })
   },
@@ -50,6 +50,7 @@ Page({
         headPic: res.data.headPic,
         footPic: res.data.footPic
       })
+      that.getDuitDet();
       wx.setNavigationBarTitle({
         title: that.data.groupSuit.suitName
       })
@@ -69,7 +70,7 @@ Page({
 
     // 有用户拼团Id，说明这是一个已开的团，只能参团
     if (that.data.groupMyId) {
-      util.request('/groups/' + groupMyIdthat.data.groupSuitId + '/groupMys/' + that.data.groupMyId).then(function (res) {
+      util.request('/groups/' + that.data.groupSuitId + '/groupMys/' + that.data.groupMyId).then(function (res) {
         if (res.errno !== 0) {
           return;
         }
@@ -82,16 +83,54 @@ Page({
         util.countdown(that)
       })
     }
+  },
+  addNumber(e) {
+    let number = parseInt(e.currentTarget.dataset.number);
+    let index = e.currentTarget.dataset.index;
+    if (this.data.suitDet[index].suitNum <= 0 && number < 0) {
+      util.showErrorToast('购买数量大于0');
+      return
+    }
+    let suitDet = this.data.suitDet;
+    suitDet[index].suitNum = this.data.suitDet[index].suitNum + number;
+    this.setData({
+      suitDet: suitDet
+    })
+  },
+  getDuitDet() {
+    let that = this;
     util.request('/groups/' + that.data.groupSuitId + '/pro').then(res => {
       if (res.errno !== 0) {
         return;
       }
+      let suitDet = res.data;
+      suitDet.forEach(s => {
+        s.suitNum = 0
+      })
       that.setData({
-        suitDet: res.data
+        suitDet: suitDet
       })
     })
   },
   toSubmitOrder(event) {
+    let isNO = true;
+    if (this.data.groupSuit.type === 2) {
+      this.data.suitDet.forEach(s => {
+        console.log(s.suitNum)
+        if (s.suitNum === 0) {
+          isNO = true;
+        } else {
+          isNO = false;
+          return
+        }
+      })
+    } else {
+      isNO = false;
+    }
+    if (isNO) {
+      util.showErrorToast('至少选择一件');
+      return;
+    }
     let type = event.currentTarget.dataset.type;
     if (this.data.groupMyId && this.data.endTimeDown <= 0) {
       wx.navigateTo({
@@ -116,7 +155,7 @@ Page({
       JSON.stringify(this.data.suitTypes)
     );
     wx.navigateTo({
-      url: '../confirmGroup/confirmGroup?type=' + type + '&groupKey=groupSuit_' + currentTime + '&suitKey=suit_' + currentTime + '&suitTypeKey=suitType_' + currentTime + '&groupMyId=' + groupMyId
+      url: '../confirmGroup/confirmGroup?type=' + type + '&groupKey=groupSuit_' + currentTime + '&suitKey=suit_' + currentTime + '&suitTypeKey=suitType_' + currentTime + '&groupMyId=' + groupMyId + '&productType=' + groupSuit.type
     })
   }
 })

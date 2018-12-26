@@ -301,23 +301,6 @@
   position: relative;
   top: 46rpx;
 }
-
-.shop_list_container .shop_info .goods .cart_btns {
-  position: absolute;
-  right: 40rpx;
-  bottom: 50rpx;
-}
-.shop_list_container .shop_info .goods .cart_btns .num {
-  display: inline-block;
-  text-align: center;
-  width: 69rpx;
-  height: 49rpx;
-  font-size: 36rpx;
-  color: #999;
-  vertical-align: top;
-  font-weight: bold;
-}
-
 .shop_list_container .shop_info .payment_info {
   overflow: hidden;
   clear: both;
@@ -378,13 +361,31 @@
   line-height: 98rpx;
 }
 
+.shop_list_container .shop_info .goods .cart_btns {
+  position: absolute;
+  right: 40rpx;
+  bottom: 50rpx;
+}
+
+.shop_list_container .shop_info .cart_btns .number {
+  display: inline-block;
+  text-align: center;
+  width: 69rpx;
+  height: 49rpx;
+  font-size: 36rpx;
+  color: #999;
+  vertical-align: top;
+  font-weight: bold;
+}
+
+
 .shop_list_container .shop_info .purchase_num .cart_btns {
   margin-top: 30rpx;
   display: flex;
 }
-.shop_list_container .shop_info .purchase_num .cart_btns .subduction image,
-.shop_list_container .shop_info .purchase_num .cart_btns .num,
-.shop_list_container .shop_info .purchase_num .cart_btns .add image{
+.shop_list_container .shop_info .cart_btns .subduction image,
+.shop_list_container .shop_info .cart_btns .num,
+.shop_list_container .shop_info .cart_btns .add image{
   width: 40rpx;
   height: 40rpx;
   display: inline-flex;
@@ -393,22 +394,22 @@
   justify-content: center;
 }
 
-.shop_list_container .shop_info .purchase_num .cart_btns .num {
+.shop_list_container .shop_info .cart_btns .num {
   font-size: 36rpx;
   color: #e4372e;
   vertical-align: top;
   margin: 0 10rpx;
 }
 
-.shop_list_container .shop_info .purchase_num .cart_btns .subduction,
-.shop_list_container .shop_info .purchase_num .cart_btns .add {
+.shop_list_container .shop_info .cart_btns .subduction,
+.shop_list_container .shop_info .cart_btns .add {
   display: inline-flex;
   flex: 1;
   align-items: center;
   justify-content: center;
 }
 
-.shop_list_container .shop_info .purchase_num .cart_btns .subduction.disabled {
+.shop_list_container .shop_info .cart_btns .subduction.disabled {
   background: url("../../../static/images/sub-disable-icon.png") no-repeat center center;
   background-size: 100% 100%;
 }

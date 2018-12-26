@@ -85,7 +85,7 @@
       </view>
     </view>
     <!-- 拼团商品 -->
-    <view class="goods_info">
+    <view class="goods_info" wx:if="{{groupSuit.type === 2}}">
       <view class="panel_title">拼团商品</view>
       <view class="goodslistul clear">
           <view wx:for="{{suitDet}}" wx:key="{{item.id}}" class="li">
@@ -96,6 +96,11 @@
                           item.productNetContent}}*1{{item.productPacking}}</view>
                       <view class="desr">{{item.productDescribe}}</view>
                       <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view>
+                      <view class="cart_btns right">
+                        <span class="subduction" bindtap="addNumber" data-index="{{index}}" data-number="-1"><image src="../../../static/images/sub-icon.png"/></span>
+                        <span class="num">{{item.suitNum}}</span>
+                        <span class="add" bindtap="addNumber" data-index="{{index}}" data-number="1"><image src="../../../static/images/add-icon.png"/></span>
+                      </view>
                       <!-- &lt;!&ndash;<view class="single_price">单买价￥{{item.productOriginalPrice}}</view>&ndash;&gt; -->
                   </view>
               <!-- </navigator> -->

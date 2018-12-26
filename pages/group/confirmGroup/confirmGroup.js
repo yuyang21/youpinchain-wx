@@ -24,6 +24,7 @@ Page(Object.assign({
     orderId: 0,
     message: '',
     groupType: '',
+    productType: '',
     groupMyId: null,
     groupMy: null,
     payButton: false,
@@ -49,8 +50,9 @@ Page(Object.assign({
     // wx.removeStorageSync('choosedAddress');
     // wx.setStorageSync('choosedAddress', '{"name": "yuy","mobile": "17611121231","tipText": "北京市 市辖区 东城区","address": "qqqq","provinceId": "1","provinceName": "北京市","cityId": "32","cityName": "北京市","areaId": "376","areaName": "东城区","id": 47}')
     this.setData({
-      groupType: Number(options.type),
-      groupMyId: Number(options.groupMyId),
+      productType: parseInt(options.productType),
+      groupType: parseInt(options.type),
+      groupMyId: parseInt(options.groupMyId),
       productList: JSON.parse(
         wx.getStorageSync(options.suitKey)
       ),
@@ -244,20 +246,34 @@ Page(Object.assign({
     })
   },
   addNumber(e) {
-    let number = e.currentTarget.dataset.number;
-    let suitNum = e.currentTarget.dataset.suitNum;
-    let minimum = this.data.groupSuit.minimum;
-    if (number < 0 && suitNum <= minimum) {
-      if (minimum > 1) {
-        util.showErrorToast('至少购买' + minimum + '份');
+    if (this.data.productType === 1) {
+      let number = e.currentTarget.dataset.number;
+      let suitNum = e.currentTarget.dataset.suitNum;
+      let minimum = this.data.groupSuit.minimum;
+      if (number < 0 && suitNum <= minimum) {
+        if (minimum > 1) {
+          util.showErrorToast('至少购买' + minimum + '份');
+        }
+        return;
       }
-      return;
+      suitNum = suitNum + number;
+      this.setData({
+        suitNum: suitNum
+      })
+      this.reComputePrice();
+    } else {
+      let number = parseInt(e.currentTarget.dataset.number);
+      let index = e.currentTarget.dataset.index;
+      if (this.data.productList[index].suitNum <= 0 && number < 0) {
+        util.showErrorToast('购买数量大于0');
+        return
+      }
+      let productList = this.data.productList;
+      productList[index].suitNum = this.data.productList[index].suitNum + number;
+      this.setData({
+        productList: productList
+      })
     }
-    suitNum = suitNum + number;
-    this.setData({
-      suitNum: suitNum
-    })
-    this.reComputePrice();
   },
   reComputePrice() {
     this.setData({

@@ -265,7 +265,7 @@
   padding: 50rpx 30rpx 0;
 }
 
-.goodslistul image {
+.goodslistul image.left {
   margin-right: 24rpx;
   width: 190rpx;
   height: 190rpx;
@@ -344,4 +344,47 @@
   font-size: 24rpx;
   color: #999;
   font-weight: normal;
+}
+
+.goodslistul .goods_li .cart_btns {
+  position: absolute;
+  right: 40rpx;
+  bottom: 50rpx;
+}
+
+.goodslistul .goods_li .cart_btns .num {
+  display: inline-block;
+  text-align: center;
+  width: 69rpx;
+  height: 49rpx;
+  font-size: 36rpx;
+  color: #999;
+  vertical-align: top;
+  font-weight: bold;
+}
+
+.goodslistul .goods_li .cart_btns .subduction image,
+.goodslistul .goods_li .cart_btns .num,
+.goodslistul .goods_li .cart_btns .add image {
+  width: 40rpx;
+  height: 40rpx;
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.goodslistul .goods_li .cart_btns .num {
+  font-size: 36rpx;
+  color: #e4372e;
+  vertical-align: top;
+  margin: 0 10rpx;
+}
+
+.goodslistul .goods_li .cart_btns .subduction,
+.goodslistul .goods_li .cart_btns .add {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 }
