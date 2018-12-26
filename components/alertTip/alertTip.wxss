@@ -19,6 +19,9 @@
   line-height: 92rpx;
   background-color: #fff;
   border-radius: 0 0 40rpx 40rpx;
+  position:absolute;
+  width:100%;
+  bottom:0;
 }
 
 .i-know view {
@@ -50,4 +53,5 @@
   border-radius: 20rpx;
   background-color: #fffefe;
   margin: 240rpx auto;
+  position: relative;
 }

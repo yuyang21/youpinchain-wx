@@ -9,7 +9,7 @@ Page({
   },
   onLoad: function (options) {
     if (options.path) {
-      that.setData({
+      this.setData({
         queryPath: options.path
       })
     }

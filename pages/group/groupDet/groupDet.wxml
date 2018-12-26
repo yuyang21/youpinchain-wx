@@ -81,7 +81,7 @@
     <view class="goods_info" wx:if="{{footPic && footPic.length > 0}}">
       <view class="panel_title">拼团详情</view>
       <view class="goodsImgs">
-        <image :src="item" alt="" wx:for="(item,index) in footPic" wx:key="index" width="100%"/>
+        <image src="{{item}}" alt="" wx:for="{{footPic}}" wx:key="index" mode="widthFix"/>
       </view>
     </view>
     <!-- 拼团商品 -->
