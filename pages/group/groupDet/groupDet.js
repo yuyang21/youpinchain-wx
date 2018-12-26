@@ -79,7 +79,7 @@ Page({
           endTimeDown: res.data.groupMy.endTime - new Date().getTime() / 1000
         })
 
-        util.countDown(that)
+        util.countdown(that)
       })
     }
     util.request('/groups/' + that.data.groupSuitId + '/pro').then(res => {

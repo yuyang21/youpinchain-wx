@@ -1,6 +1,5 @@
 const util = require('../../../utils/util.js');
 const api = require('../../../config/api.js');
-var user = require('../../../services/user.js');
 Page({
   data: {
     showShare: false,
@@ -12,7 +11,7 @@ Page({
     size: 10,
     totalPages: 1,
     leaderAddress: {},
-    endTimeDown: 1,
+    endTimeDown: 0,
     timer: null,
     systemTime: null,
     shareLink: '',
@@ -56,9 +55,7 @@ Page({
         leaderAddress: res.data.orderAddressVo,
         endTimeDown: res.data.groupMy.endTime - that.data.systemTime
       })
-      // countDown(that.endTimeDown, time => {
-      //   that.endTimeDown = time
-      // })
+      util.countdown(that);
       util.request(api.groupSuit + that.data.groupMy.groupSuitId).then(res => {
         that.setData({
           groupSuit: res.data.groupSuit

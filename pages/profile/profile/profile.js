@@ -3,7 +3,6 @@ const api = require('../../../config/api.js');
 Page({
   data: {
     userInfo: {
-      userImgUrl: ''
     },
     showAlertTip: false
   },
@@ -50,7 +49,7 @@ Page({
       if (res.errno == 0) {
         that.setData({
           userInfo: {
-            userImgUrl: res.data.headImgUrl,
+            userImgUrl: res.data.headImgUrl.replace("http://", "https://"),
             username: res.data.nickName
           }
         })
