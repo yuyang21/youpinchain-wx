@@ -36,7 +36,7 @@ Page({
         // 发送用户信息
         util.request(api.AuthLoginByWeixin, {
           code: res.code,
-          userInfo: e.detail.userInfo
+          userInfo: e.detail
         }, 'POST').then(function (ret) {
           if (ret.errno == 0) {
             wx.setStorageSync('token', ret.data.token);

@@ -1,0 +1,128 @@
+.order_track_page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f1f1f1;
+  z-index: 202;
+}
+
+.scroll_container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.scroll_insert {
+  padding-bottom: 120rpx;
+}
+
+.page-top-red {
+  width: 100%;
+  height: 166rpx;
+  background-image: linear-gradient(to bottom, #fc5b46 44%, #fa424f);
+}
+
+.border_radius {
+  box-shadow: 0rpx 2rpx 28rpx 1.2rpx rgba(181, 184, 188, 0.51);
+  border-radius: 20rpx;
+  width: 700rpx;
+  height: auto;
+  background-color: #fff;
+  margin: 0 auto;
+  margin-bottom: 32rpx;
+}
+
+.order_track_detail {
+  padding: 50rpx 30rpx 2rpx;
+  margin-top: -80rpx;
+  font-size: 30rpx;
+  color: #666;
+  line-height: 48rpx;
+  min-height: 1100rpx;
+}
+.order_track_step {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60rpx;
+}
+
+.order_track_step .phone_number {
+  color: #e4372e;
+}
+
+.order_track_step span {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 50rpx;
+  background: #ccc;
+  color: #fff;
+  margin-top: 20rpx;
+  position: relative;
+}
+
+.order_track_step .no_line.have_after:after {
+  content: none;
+}
+
+.order_track_step .have_after:after {
+  content: '';
+  height: 180rpx;
+  border: 10rpx solid #cdcdcd;
+  background: #cdcdcd;
+  position: absolute;
+  left: 22rpx;
+  top: 50rpx;
+}
+
+.order_track_step .received:after {
+  border: 010rpx dashed #ccc;
+}
+
+.order_track_step .circle_only {
+  background: rgba(255, 255, 255, 0);
+  padding: 15rpx;
+}
+
+.order_track_step .circle_only b {
+  background: #ccc;
+  width: 18rpx;
+  height: 18rpx;
+  display: block;
+  border-radius: 50%;
+}
+
+.order_track_step .circle_only:after {
+  top: 24rpx;
+  height: 204rpx;
+}
+
+.order_track_step .distributing {
+  /* @include bis(''); */
+}
+
+.order_track_step view:nth-of-type(1) text:nth-of-type(1) {
+  font-size: 36rpx;
+  color: #666;
+}
+
+.order_track_step view:nth-of-type(1) text:nth-of-type(2) {
+  font-size: 26rpx;
+  color: #999;
+  text-indent: 80rpx;
+}
+
+.order_track_step view:nth-of-type(2) {
+  min-height: 144rpx;
+  width: 420rpx;
+}
+
+.align_center {
+  display: flex;
+  align-items: center;
+}

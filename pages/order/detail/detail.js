@@ -68,7 +68,7 @@ Page({
       return
     }
     wx.navigateTo({
-      url: '../track?expNo=' + this.data.orderData.expNo + '&expCode=' + this.data.orderData.expCode
+      url: '../track/track?expNo=' + this.data.orderData.expNo + '&expCode=' + this.data.orderData.expCode
     })
   },
   // 取消订单
