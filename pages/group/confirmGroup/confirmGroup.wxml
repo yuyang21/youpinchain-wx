@@ -5,16 +5,16 @@
       <view class="address">
         <view class="no_address" wx:if="{{!choosedAddress}}">
           <view class="adddetail">
-            <form bindsubmit="submitAddress">
+            <form>
               <view class="ui-padding-block">
                 <view class="input-new">
                   <span>姓名</span>
-                  <input name="name" type="text" placeholder="请填写收件人姓名" value="{{address.name}}"/>
+                  <input name="name" type="text" placeholder="请填写收件人姓名" value="{{address.name}}"  bindinput="updateValue" data-name='address.name'/>
                 </view>
                 <view class="add-detail">
                   <view class="input-new">
                     <span>联系电话</span>
-                    <input name="mobile" type="tel" maxlength="11" placeholder="请填写收货人手机号" value="{{address.mobile}}" bindinput="address.mobile = address.mobile.replace(/\D/g, '')" />
+                    <input name="mobile" type="number" maxlength="11" placeholder="请填写收货人手机号" value="{{address.mobile}}" bindinput="updateValue" data-name='address.mobile'/>
                   </view>
                 </view>
                 <picker bindchange="changeRegin" bindcolumnchange="bindMultiPickerColumnChange" mode="multiSelector" range="{{region}}" class="input-new">
@@ -25,14 +25,14 @@
                 </picker>
                 <view class="input-new">
                   <span>地址</span>
-                  <textarea name="address" placeholder="请填写详细地址" id="adinfo" value="" rows="2" value="{{address.address}}"></textarea>
+                  <textarea name="address" placeholder="请填写详细地址" id="adinfo" rows="2" value="{{address.address}}" bindinput="updateValue" data-name='address.address'></textarea>
                 </view>
               </view>
               <view id="container"></view>
             </form>
           </view>
           <view class="addbutton">
-            <button class="{{butpart ? 'butopacity' : ''}}" form-type="submit">保存</button>
+            <button class="{{butpart ? 'butopacity' : ''}}" bindtap="submitAddress" data-address="{{address}}">保存</button>
           </view>
         </view>
         <view class="address_info" wx:else>
@@ -42,7 +42,7 @@
               {{choosedAddress.provinceName +
               choosedAddress.cityName + choosedAddress.areaName +
               choosedAddress.address}}</view>
-            <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}"><span>{{choosedAddress.name}}</span>{{choosedAddress.mobile}}</view>
+            <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}"><text decode="{{true}}">{{choosedAddress.name}}&emsp;{{choosedAddress.mobile}}</text></view>
             <view class="groupSuitType" wx:if="{{!groupMyId && groupType === 1}}">
               <view class="left">拼团方式</view>
               <view class="right" bindtap="showTipsBox" data-type="suitTypeBox">
@@ -59,15 +59,17 @@
               快来邀请好友分享美味吧~
               <span>3人即可成团享受优惠价格，如收货地址相同推荐选择“同一地址拼团”更划算，更温暖。</span>
             </view>
-            <view wx:if="{{groupMy && groupMy.groupSuitType === 2}}">
+            <view wx:if="{{groupMy && groupMy.groupSuitType === 2}}" class="tuan">
               <view class="position-re">
-                <view class="left address-tuan">{{tuanAddress.address}}</view>
-                <image src="../../images/group/icon.png" class="icon" bindtap="showTipsBox"/>
-                <span class="tip_box" wx:if="showTip">因为您参与的是同一地址拼团，所以您的商品会寄送到此地址（团长地址）</span>
+                <view class="left address-tuan p">{{tuanAddress.address}}</view>
+                <image src="../../../static/images/group/icon.png" class="icon" bindtap="showTipsBox"/>
+                <span class="tip_box" wx:if="{{showTip}}">
+                  <image src="../../../static/images/group/tip_box.png"/>
+                  <text>因为您参与的是同一地址拼团，所以您的商品会寄送到此地址（团长地址）</text>
+                </span>
               </view>
-              <view class="clear">
-                <span>{{tuanAddress.consignee}}</span>
-                <span>{{tuanAddress.mobile}}</span>
+              <view class="clear p">
+                <text decode="{{true}}">{{tuanAddress.consignee}}&emsp;{{tuanAddress.mobile}}</text>
               </view>
             </view>
           </view>
@@ -96,9 +98,9 @@
         <view class="purchase_num">
           <text class="left">购买数量</text>
           <view class="cart_btns right">
-            <span class="subduction" bindtap="addNumber" data-suitNum="{{suitNum}}" data-number="{{-groupSuit.stepSize}}"><image src="../../../static/images/sub-icon.png"/></span>
+            <span class="subduction" bindtap="addNumber" data-suit-num="{{suitNum}}" data-number="{{-groupSuit.stepSize}}"><image src="../../../static/images/sub-icon.png"/></span>
             <span class="num">{{suitNum}}</span>
-            <span class="add" bindtap="addNumber" data-suitNum="{{suitNum}}" data-number="{{groupSuit.stepSize}}"><image src="../../../static/images/add-icon.png"/></span>
+            <span class="add" bindtap="addNumber" data-suit-num="{{suitNum}}" data-number="{{groupSuit.stepSize}}"><image src="../../../static/images/add-icon.png"/></span>
           </view>
         </view>
         <view class="right totalPrice red">
@@ -129,7 +131,7 @@
     </view>
   </view>
   <view class="settlement">
-    <view class="li" bindtap="paymentCall()">去付款</view>
+    <view class="li" bindtap="paymentCall">去付款</view>
     <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{(totalPrice + fare)}}</span></view>
   </view>
 <view class="mask_box" hidden="{{!showTip}}" bindtap="showTipsBox" style="height:{{maskBoxH}}px;"></view>

@@ -1,6 +1,7 @@
 const util = require('../../../utils/util');
 const api = require('../../../config/api');
-Page({
+var commonMixin = require('../../../mixins/commonMixin');
+Page(Object.assign({
   data: {
     showTotal: false,
     totalPrice: 0,
@@ -34,7 +35,6 @@ Page({
     suitTypes: [],
     tuanAddress: {},
     expressCostData: null,
-    showLoading: false,
     suitTypeBox: false,
     maskBoxH: 0,
     region: [],
@@ -100,10 +100,9 @@ Page({
       suitNum: this.data.groupSuit.minimum,
       showTotal: this.data.productList.length > 2
     })
-    this.data.groupMyId ? this.getGroupMyAddress() : null;
     // 运费
     let that = this;
-    util.request(api.expressCost + this.data.groupSuit.expressCostId).then(res => {
+    util.request(api.expressCost + that.data.groupSuit.expressCostId).then(res => {
       let expressCostData = res.data;
       let fareInfo = '';
       if (expressCostData.freeExpress === 1) {
@@ -115,7 +114,133 @@ Page({
         expressCostData: expressCostData,
         fareInfo: fareInfo
       })
-      that.reComputePrice();
+      that.data.groupMyId ? that.getGroupMyAddress() : that.reComputePrice();
+    })
+  },
+  paymentCall() {
+    let that = this;
+    if (!that.data.groupSuitType) {
+      that.setData({
+        suitTypeBox: true
+      })
+      that.showTipsBox();
+      return;
+    }
+    if (that.data.payButton) {
+      return;
+    }
+    that.setData({
+      payButton: true
+    })
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    setTimeout(function () {
+      wx.hideLoading();
+    }, 3000);
+    if (!that.data.choosedAddress) {
+      if (!that.checkAddress(that.data.address)) {
+        that.setData({
+          payButton: false
+        })
+        return;
+      }
+    } else {
+      that.doPayCall();
+    }
+  },
+  doPayCall() {
+    let that = this;
+    let suitId = that.data.groupSuit.id;
+    let addressId = that.data.choosedAddress.id;
+    let type = Number(that.data.groupType);
+    let groupSuitType = that.data.groupSuitType;
+    let suitNum = that.data.suitNum;
+    let groupMyId = !that.data.groupMyId ? null : Number(that.data.groupMyId);
+
+    // 开团
+    if (!groupMyId) {
+      util.request('/groups/' + suitId + '/groupMys', {
+        suitId: suitId,
+        type: type,
+        groupSuitType: groupSuitType,
+        suitNum: suitNum,
+        groupMyId: groupMyId
+      }).then((res) => {
+        // 开团失败时
+        if (res.errno !== 0) {
+          util.showErrorToast(res.errmsg);
+          return;
+        }
+        groupMyId = res.data;
+        that.submitGroup(suitId, addressId, that.couponId, that.message, suitNum, groupMyId);
+      })
+    } else { // 参团
+      that.submitGroup(suitId, addressId, that.couponId, that.message, suitNum, groupMyId);
+    }
+  },
+  submitGroup(suitId, addressId, couponId, message, suitNum, groupMyId) {
+    let that = this;
+    util.request('/groups/' + suitId + '/groupMys/' + groupMyId + '/order', {
+      suitId: suitId,
+      addressId: addressId,
+      couponId: couponId,
+      message: message,
+      suitNum: suitNum,
+      groupMyId: groupMyId
+    }).then(res => {
+      if (res.errno !== 0) {
+        util.showErrorToast(res.errmsg);
+        that.setData({
+          payButton: false
+        })
+        return;
+      }
+      that.setData({
+        orderId: res.data.orderId
+      })
+      that.doPay(that.data.orderId, groupMyId);
+    })
+  },
+  doPay(orderId, groupMyId) {
+    let that = this;
+    util.request('/orders/' + orderId + '/prepay').then(resp => {
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+      that.setData({
+        payButton: false
+      })
+      if (resp.errno === 403) {
+        util.showErrorToast(resp.errmsg);
+      } else {
+        wx.requestPayment({
+          timeStamp: resp.data.timeStamp, //时间戳，自1970年以来的秒数
+          nonceStr: resp.data.nonceStr, //随机串
+          package: resp.data.packageValue,
+          signType: resp.data.signType, //微信签名方式：
+          paySign: resp.data.paySign, //微信签名
+          success(res) {
+            that.setData({
+              payButton: false
+            })
+            if (that.data.groupType === 1) {
+              wx.navigateTo({
+                url: '../groupMy/groupMy?groupMyId' + groupMyId
+              })
+            } else {
+              wx.navigateTo({
+                url: '../../order/list/list'
+              })
+            }
+          },
+          fail(res) {
+            util.showErrorToast('支付失败');
+          }
+        })
+      }
     })
   },
   addNumber(e) {
@@ -124,7 +249,7 @@ Page({
     let minimum = this.data.groupSuit.minimum;
     if (number < 0 && suitNum <= minimum) {
       if (minimum > 1) {
-        util.showErrorToast('该商品至少购买' + minimum + '份');
+        util.showErrorToast('至少购买' + minimum + '份');
       }
       return;
     }
@@ -163,8 +288,8 @@ Page({
       }
     }
     wx.setStorageSync('goodsPrice', JSON.stringify(goodsPrice));
-    let fare = this.data.expressCostData.expressPrice;
     let expressCostData = this.data.expressCostData;
+    let fare = expressCostData.expressPrice;
     if (expressCostData.freeExpress === 1 && goodsPrice >= expressCostData.freeExpressValue) { // 金额包邮
       fare = 0;
     } else if (expressCostData.freeExpress === 2 && this.data.suitNum >= expressCostData.freeExpressValue) { // 数量包邮
@@ -202,7 +327,9 @@ Page({
     return true;
   },
   submitAddress(e) {
-    let address = e.detail.value;
+    // let address = e.detail.value;
+    let address = e.currentTarget.dataset.address;
+    console.log(address)
     if (!this.checkAddress(address)) {
       return;
     }
@@ -278,7 +405,6 @@ Page({
     })
   },
   selectSuitType (event) {
-    console.log(this.data.suitTypes)
     this.setData({
       groupSuitType: event.currentTarget.dataset.suitType
     })
@@ -289,10 +415,10 @@ Page({
     let provinces = this.data.region[0][arr[0]];
     let city = this.data.region[1][arr[1]];
     let area = this.data.region[2][arr[2]];
+    let address = this.data.address;
+    address.tipText = provinces + ' ' + city + ' ' + area;
     this.setData({
-      address: {
-        tipText: provinces + ' ' + city + ' ' + area
-      }
+      address: address
     });
   },
   returnListName(list, type) {
@@ -394,4 +520,4 @@ Page({
         break;
     }
   }
-})
+}, commonMixin))

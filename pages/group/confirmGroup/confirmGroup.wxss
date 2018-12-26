@@ -23,7 +23,8 @@
   background-color: #f6f5f5;
 }
 
-.line-through {
+.line-through,
+.line-through span {
   text-decoration: line-through;
 }
 
@@ -75,6 +76,7 @@
   display: inline-block;
   font-size: 30rpx;
   color: #333;
+  margin-right: 45rpx;
 }
 
 .shop_list_container .swiper-container .address_info .address-detail .p:nth-of-type(1) {
@@ -101,33 +103,42 @@
 .shop_list_container .swiper-container .address_info .address-detail .tips span:nth-child(odd) {
   width: 69%;
 }
-
+.shop_list_container .swiper-container .address_info .address-detail .tuan {
+  margin-top:50rpx;
+}
 .shop_list_container .swiper-container .address_info .address-detail .address-tuan {
   width: 93%;
 }
 
 .shop_list_container .swiper-container .address_info .address-detail .icon {
-  width: 24rpx;
+  width: 32rpx;
+  height: 32rpx;
   float: left;
   margin-top: 6rpx;
 }
-
 .shop_list_container .swiper-container .address_info .address-detail .tip_box {
-  width: 560rpx;
-  height: 134rpx;
+  position: relative;
+  z-index: 99;
+  top: -116rpx;
+  right: -45rpx;
+}
+.shop_list_container .swiper-container .address_info .address-detail .tip_box text {
   font-size: 24rpx;
   color: #e4372e;
   display: block;
   padding: 20rpx 24rpx;
-  background: url('../../../static/images/group/tip_box.png') no-repeat 0 0;
-  background-size: 100% 100%;
-  box-sizing: border-box;
-  line-height: 1.45;
+  z-index: 100;
+  position: relative;
+  height: 58rpx;
+  top: -57rpx;
+
+}
+.shop_list_container .swiper-container .address_info .address-detail .tip_box image {
+  width: 560rpx;
+  height: 134rpx;
   position: absolute;
-  top: -114rpx;
-  right: -40rpx;
-  z-index: 4;
-  pointer-events: none;
+  top: 0;
+  right: 0;
 }
 
 .shop_list_container .swiper-container .address_info .address-detail .add-icon {
