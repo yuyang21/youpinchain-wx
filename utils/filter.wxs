@@ -19,7 +19,10 @@ var moneyFormat = function(money) {
  * @param timestamp 时间戳
  * @param option 返回格式 notime hh:mm:ss, nosecond yyyy-MM-dd hh:mm
  */
-var formatDate = function (timestamp,option) {
+var formatDate = function (timestamp,option,format) {
+  if (!format) {
+    format = '-';
+  }
   var date = getDate(parseInt(timestamp));
   var year = date.getFullYear();
   var month = date.getMonth() + 1;
@@ -43,14 +46,20 @@ var formatDate = function (timestamp,option) {
     return date.getSeconds();
   }
 
-  if (option=='notime'){  //不需要时间
-    return year + '-' + month + '-' + day;
+  if (option=='notime'){
+    return year + format + month + format + day;
   }
-  if (option=='nosecond'){  //不需要时间
-    return year + '-' + month + '-' + day + ' ' + hour() + ':' + minute();
+  if (option=='nosecond'){
+    return year + format + month + format + day + ' ' + hour() + ':' + minute();
+  }
+  if (option == 'date_md') {
+    return month + format + day;
+  }
+  if (option == 'date_hm') {
+    return hour() + ':' + minute();
   }
 
-  return year + '-' + month + '-' + day + ' ' + hour() + ':' + minute() + ":" + second();
+  return year + format + month + format + day + ' ' + hour() + ':' + minute() + ":" + second();
 }
 
 // 接口返回时间格式含有‘T’ 处理为yy-MM-dd HH:mm

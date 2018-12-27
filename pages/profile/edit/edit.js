@@ -1,6 +1,7 @@
 const util = require('../../../utils/util')
 const api = require('../../../config/api')
-Page({
+var commonMixin = require('../../../mixins/commonMixin');
+Page(Object.assign({
   data: {
     showAlertTip: false, //弹出框
     deleteNumber: "",
@@ -13,9 +14,9 @@ Page({
     provinces: [],
     city: [],
     area: [],
-    provincesId: [],
-    cityId: [],
-    areaId: [],
+    provinceIds: [],
+    cityIds: [],
+    areaIds: [],
     queryPath: ''
   },
   onLoad: function (options) {
@@ -52,13 +53,16 @@ Page({
   // 保存地址
   submitAddress(e) {
     var address = e.detail.value;
-    console.log(address)
+    address.id = this.data.address.id;
+    if (!util.checkAddress(address)) {
+      return;
+    }
     if (address.id) {
       util.request(api.updateAddress + address.id, {
         name: address.name,
         provinceId: this.data.provinceId,
-        cityId: this.data.cityId,
-        areaId: this.data.areaId,
+        cityIds: this.data.cityIds,
+        areaIds: this.data.areaIds,
         mobile: address.mobile,
         address: address.address
       }, 'PUT').then(res => {
@@ -109,6 +113,10 @@ Page({
       showAlertTip: !this.data.showAlertTip
     })
     var that = this;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     if (e.detail.type == 1 && that.data.address.id) {
       util.request(api.deleteAddress + that.data.address.id, {}, 'DELETE').then(res => {
         if (res.errno == 0) {
@@ -116,6 +124,7 @@ Page({
           if (sessionAddr && JSON.parse(sessionAddr).id == that.data.address.id) {
             wx.removeStorageSync('choosedAddress');
           }
+          wx.hideLoading();
           wx.navigateBack({
             delta: 1
           })
@@ -134,7 +143,6 @@ Page({
     let city = this.data.region[1][arr[1]];
     let area = this.data.region[2][arr[2]];
     let address = this.data.address;
-    console.log(this.data.address)
     address.tipText = provinces + ' ' + city + ' ' + area;
     this.setData({
       address: address
@@ -158,34 +166,31 @@ Page({
       pid: pid
     }).then((res) => {
       let provinces = res.data;
+      let provinceId = provinces[0].id;
       region[0] = that.returnListName(provinces, 'name');
-      let provincesId = that.returnListName(provinces, 'id');
-      // console.log(region[0])
-      // console.log(provincesId)
       util.request(api.getRegionsList, {
-        pid: provinces[0].id
+        pid: provinceId
       }).then((res) => {
         let city = res.data;
-        let cityId = that.returnListName(city, 'id');
+        let cityId = city[0].id;
         region[1] = that.returnListName(city, 'name');
-        // console.log(region[1])
-        // console.log(cityId)
         util.request(api.getRegionsList, {
-          pid: city[0].id
+          pid: cityId
         }).then((res) => {
           let area = res.data;
-          let areaId = that.returnListName(area, 'id');
+          let areaIds = area[0].id;
           region[2] = that.returnListName(area, 'name');
-          // console.log(region[2])
-          // console.log(areaId)
           that.setData({
             region: region,
             provinces: region[0],
             city: region[1],
             area: region[2],
-            provincesId: provincesId,
+            provinceIds: that.returnListName(provinces, 'id'),
+            cityIds: that.returnListName(city, 'id'),
+            areaIds: that.returnListName(area, 'id'),
+            provinceId: provinceId,
             cityId: cityId,
-            areaId: areaId
+            areaId: areaIds
           })
         })
       })
@@ -194,9 +199,6 @@ Page({
   },
   bindMultiPickerColumnChange(e) {
     // console.log('修改的列为', e.detail.column, '，值为', e.detail.value)
-    // this.setData({
-    //   region: [[],[],[]]
-    // })
     switch (e.detail.column) {
       case 0:
         var region = [this.data.provinces, [],
@@ -204,13 +206,13 @@ Page({
         ];
         var that = this;
         util.request(api.getRegionsList, {
-          pid: this.data.provincesId[e.detail.value]
+          pid: this.data.provinceIds[e.detail.value]
         }).then((res) => {
           let city = res.data;
-          let cityId = [];
+          let cityIds = [];
           city.forEach(p => {
             region[1].push(p.name);
-            cityId.push(p.id);
+            cityIds.push(p.id);
           })
           util.request(api.getRegionsList, {
             pid: city[0].id
@@ -219,8 +221,11 @@ Page({
             area.forEach(p => {
               region[2].push(p.name);
               that.setData({
-                cityId: cityId,
-                region: region
+                cityIds: cityIds,
+                region: region,
+                provinceId: this.data.provinceIds[e.detail.value],
+                cityId: city[0].id,
+                areaId: area[0].id
               })
             })
           })
@@ -229,20 +234,25 @@ Page({
       case 1:
         var region = [this.data.provinces, this.data.city, []];
         var that = this;
-        // console.log(that.data.cityId);
-        // console.log(e.detail.value);
         util.request(api.getRegionsList, {
-          pid: that.data.cityId[e.detail.value]
+          pid: that.data.cityIds[e.detail.value]
         }).then((res) => {
           let area = res.data;
           area.forEach(p => {
             region[2].push(p.name);
             that.setData({
-              region: region
+              region: region,
+              cityId: that.data.cityIds[e.detail.value],
+              areaId: area[0].id
             })
           })
         })
         break;
+      case 2:
+        this.setData({
+          areaId: this.data.areaIds[e.detail.value]
+        })
+        break;
     }
   }
-})
+}, commonMixin))

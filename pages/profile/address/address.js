@@ -20,6 +20,10 @@ Page({
     }
   },
   onShow: function () {
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     this.loadAddresses();
   },
   loadAddresses () {
@@ -43,6 +47,7 @@ Page({
           }
         });
       }
+      wx.hideLoading();
     })
   }, 
   selectOrEdit (event) {

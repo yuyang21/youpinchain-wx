@@ -65,7 +65,11 @@ function request(url, data = {}, method = "GET") {
     })
   });
 }
-
+/**
+ * 转发设置内容
+ * @param {转发来源} option 
+ * @param { title: 标题, path: 路径, imgUrl: 图片链接} obj 
+ */
 const shareEvent = (option, obj) => {
   let shareObj = {
     title: obj.title,
@@ -93,7 +97,10 @@ const shareEvent = (option, obj) => {
   }
   return shareObj;
 }
-
+/**
+ * 使用组件中倒计时变量名必须为 endTimeDown
+ * @param {*} that.data.endTimeDown 倒计时时间戳
+ */
 function countdown(that) {
   var second = that.data.endTimeDown
   if (second == 0) {
@@ -108,11 +115,40 @@ function countdown(that) {
     countdown(that);
   }, 1000)
 }
+/**
+ * 校验地址表单
+ * @param {地址对象} address 
+ */
+function checkAddress(address) {
+  if (!address.name) {
+    this.showErrorToast('请填写姓名')
+    return false;
+  }
+  if (!address.mobile) {
+    this.showErrorToast('请填写手机号')
+    return false;
+  }
+  if (address.mobile.length < 11) {
+    this.showErrorToast('请填写正确的手机号')
+    return false;
+  }
+  if (!address.tipText) {
+    this.showErrorToast('请选择所在地区')
+    return false;
+  }
+  if (!address.address) {
+    this.showErrorToast('请填写详细地址')
+    return false;
+  }
+
+  return true;
+}
 
 module.exports = {
   formatTime,
   request,
   showErrorToast,
   shareEvent,
-  countdown
+  countdown,
+  checkAddress
 }

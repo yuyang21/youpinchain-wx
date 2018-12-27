@@ -1,18 +1,19 @@
 {
   "pages": [
+    "pages/group/current/current",
+    "pages/profile/address/address",
     "pages/profile/profile/profile",
     "pages/profile/inviteList/inviteList",
     "pages/profile/income/my/income",
     "pages/profile/income/detail/detail",
-    "pages/group/current/current",
     "pages/group/confirmGroup/confirmGroup",
     "pages/group/groupMy/groupMy",
     "pages/group/groupDet/groupDet",
     "pages/profile/coupon/coupon",
-    "pages/profile/address/address",
     "pages/profile/edit/edit",
     "pages/order/list/list",
     "pages/order/detail/detail",
+    "pages/order/track/track",
     "pages/auth/login/login"
   ],
   "window": {

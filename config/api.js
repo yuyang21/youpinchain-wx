@@ -23,4 +23,5 @@ module.exports = {
   deleteAddress: '/addresses/', //删除收货地址
   groupSuit: '/groups/', //根据拼团id查询商品详情
   expressCost: '/express/', //运费查询
+  inviteCode: '/act/bounty/home/inv', //获取我的分享码
 };

@@ -47,8 +47,6 @@ Page(Object.assign({
     areaId: []
   },
   onLoad: function (options) {
-    // wx.removeStorageSync('choosedAddress');
-    // wx.setStorageSync('choosedAddress', '{"name": "yuy","mobile": "17611121231","tipText": "北京市 市辖区 东城区","address": "qqqq","provinceId": "1","provinceName": "北京市","cityId": "32","cityName": "北京市","areaId": "376","areaName": "东城区","id": 47}')
     this.setData({
       productType: parseInt(options.productType),
       groupType: parseInt(options.type),
@@ -61,13 +59,7 @@ Page(Object.assign({
       ),
       suitTypes: JSON.parse(
         wx.getStorageSync(options.suitTypeKey)
-      ),
-      coupon: wx.getStorageSync('choosedCoupon') ? JSON.parse(
-        wx.getStorageSync('choosedCoupon')
-      ): null,
-      choosedAddress: wx.getStorageSync('choosedAddress') ? JSON.parse(
-        wx.getStorageSync('choosedAddress')
-      ) : null
+      )
     })
     this.data.suitTypes.forEach(t => {
       if (t.type === 1) {
@@ -84,7 +76,13 @@ Page(Object.assign({
   },
   onShow: function () {
     this.setData({
-      suitTypes: this.data.suitTypes
+      suitTypes: this.data.suitTypes,
+      coupon: wx.getStorageSync('choosedCoupon') ? JSON.parse(
+        wx.getStorageSync('choosedCoupon')
+      ) : null,
+      choosedAddress: wx.getStorageSync('choosedAddress') ? JSON.parse(
+        wx.getStorageSync('choosedAddress')
+      ) : null
     })
     if (!this.data.choosedAddress) {
       this.setRegions(0, 0);
@@ -318,35 +316,11 @@ Page(Object.assign({
       fare: fare
     })
   },
-  checkAddress(address) {
-    if (!address.name) {
-      util.showErrorToast('请填写收件人姓名')
-      return false;
-    }
-    if (!address.mobile) {
-      util.showErrorToast('请填写收货人手机号')
-      return false;
-    }
-    if (address.mobile.length < 11) {
-      util.showErrorToast('请填写正确的收货人手机号')
-      return false;
-    }
-    if (!address.tipText) {
-      util.showErrorToast('请选择您的所在地区')
-      return false;
-    }
-    if (!address.address) {
-      util.showErrorToast('请填写详细地址')
-      return false;
-    }
-
-    return true;
-  },
   submitAddress(e) {
     // let address = e.detail.value;
     let address = e.currentTarget.dataset.address;
     console.log(address)
-    if (!this.checkAddress(address)) {
+    if (!util.checkAddress(address)) {
       return;
     }
     util.request(api.addAddress, {
@@ -452,31 +426,28 @@ Page(Object.assign({
     }).then((res) => {
       let provinces = res.data;
       region[0] = that.returnListName(provinces, 'name');
-      let provincesId = that.returnListName(provinces, 'id');
-      // console.log(region[0])
-      // console.log(provincesId)
+      let provinceId = provinces[0].id;
       util.request(api.getRegionsList, {
-        pid: provinces[0].id
+        pid: provinceId
       }).then((res) => {
         let city = res.data;
-        let cityId = that.returnListName(city, 'id');
+        let cityId = city[0].id;
         region[1] = that.returnListName(city, 'name');
-        // console.log(region[1])
-        // console.log(cityId)
         util.request(api.getRegionsList, {
-          pid: city[0].id
+          pid: cityId
         }).then((res) => {
           let area = res.data;
-          let areaId = that.returnListName(area, 'id');
+          let areaId = area[0].id;
           region[2] = that.returnListName(area, 'name');
-          // console.log(region[2])
-          // console.log(areaId)
           that.setData({
             region: region,
             provinces: region[0],
             city: region[1],
             area: region[2],
-            provincesId: provincesId,
+            provinceIds: that.returnListName(provinces, 'id'),
+            cityIds: that.returnListName(city, 'id'),
+            areaIds: that.returnListName(area, 'id'),
+            provinceId: provinceId,
             cityId: cityId,
             areaId: areaId
           })
@@ -487,9 +458,6 @@ Page(Object.assign({
   },
   bindMultiPickerColumnChange (e) {
     // console.log('修改的列为', e.detail.column, '，值为', e.detail.value)
-    // this.setData({
-    //   region: [[],[],[]]
-    // })
     switch (e.detail.column) {
       case 0:
         var region = [this.data.provinces, [], []];
@@ -498,10 +466,10 @@ Page(Object.assign({
           pid: this.data.provincesId[e.detail.value]
         }).then((res) => {
           let city = res.data;
-          let cityId = [];
+          let cityIds = [];
           city.forEach(p => {
             region[1].push(p.name);
-            cityId.push(p.id);
+            cityIds.push(p.id);
           })
           util.request(api.getRegionsList, {
             pid: city[0].id
@@ -510,8 +478,11 @@ Page(Object.assign({
             area.forEach(p => {
               region[2].push(p.name);
               that.setData({
-                cityId: cityId,
-                region: region
+                cityIds: cityIds,
+                region: region,
+                provinceId: this.data.provinceIds[e.detail.value],
+                cityId: city[0].id,
+                areaId: area[0].id
               })
             })
           })
@@ -520,8 +491,6 @@ Page(Object.assign({
       case 1:
         var region = [this.data.provinces, this.data.city, []];
         var that = this;
-        // console.log(that.data.cityId);
-        // console.log(e.detail.value);
         util.request(api.getRegionsList, {
           pid: that.data.cityId[e.detail.value]
         }).then((res) => {
@@ -529,9 +498,16 @@ Page(Object.assign({
           area.forEach(p => {
             region[2].push(p.name);
             that.setData({
-              region: region
+              region: region,
+              cityId: that.data.cityIds[e.detail.value],
+              areaId: area[0].id
             })
           })
+        })
+        break;
+      case 2:
+        this.setData({
+          areaId: this.data.areaIds[e.detail.value]
         })
         break;
     }

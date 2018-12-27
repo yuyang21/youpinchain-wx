@@ -10,7 +10,7 @@
               <view class="ui-padding-block">
                 <view class="input-new">
                   <span>姓名</span>
-                  <input name="name" type="text" placeholder="请填写收件人姓名" value="{{address.name}}"  bindinput="updateValue" data-name='address.name'/>
+                  <input name="name" type="text" placeholder="请填写收件人姓名" value="{{address.name}}" bindinput="updateValue" data-name='address.name'/>
                 </view>
                 <view class="add-detail">
                   <view class="input-new">

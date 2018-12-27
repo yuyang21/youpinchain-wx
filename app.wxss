@@ -85,3 +85,9 @@ input {
   padding: 30rpx 0;
   text-align: center;
 }
+
+.errAddress {
+  font-size: 28rpx !important;
+  color: #e4372e !important;
+  font-weight: bold;
+}
