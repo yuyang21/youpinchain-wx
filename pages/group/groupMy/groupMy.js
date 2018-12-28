@@ -1,5 +1,6 @@
 const util = require('../../../utils/util.js');
 const api = require('../../../config/api.js');
+const drawQrcode = require('../../../utils/weapp.qrcode.min.js');
 Page({
   data: {
     showShare: false,
@@ -17,6 +18,7 @@ Page({
     shareLink: '',
     qrcode: Object,
     output: null,
+    url: '',
     sameAddressPrice: 0,
     diffetentAddressPrice: 0,
     sex: ''
@@ -82,10 +84,138 @@ Page({
       })
     })
   },
-  showShareBox () {
-    this.setData({
-      showShare: !this.data.showShare
+  showShareBox (e) {
+    let that = this;
+    let type = e.currentTarget.dataset.type;
+    if (type === 'close') {
+      that.setData({
+        showShare: false
+      })
+      return
+    }
+    if (that.data.output) {
+      that.setData({
+        showShare: true
+      })
+      return;
+    }
+    let url = '';
+    that.setData({
+      showShare: true
     })
+    drawQrcode({
+      width: 130,
+      height: 130,
+      canvasId: 'myQrcode',
+      text: that.data.shareLink
+    })
+    setTimeout(function(){
+      wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: 130,
+        height: 130,
+        destWidth: 130,
+        destHeight: 130,
+        canvasId: 'myQrcode',
+        success(res) {
+          console.log(res.tempFilePath);
+          url = res.tempFilePath;
+
+          that.setData({
+            url: url,
+            showShare: true
+          })
+
+          const ctx = wx.createCanvasContext('myCanvas');
+          ctx.fillStyle="#FFFFFF";
+          ctx.fillRect(0,0,650,835);
+
+          ctx.setFontSize(12);
+          ctx.setFillStyle("#000");
+          ctx.fillText(that.data.leaderAddress.consignee, 75, 30);
+          ctx.setFontSize(11);
+          ctx.setFillStyle("#3B3B3B");
+          ctx.fillText('邀请您参加它的团购', 115, 30);
+
+          if (that.data.groupMy.groupSuitType === 2) {
+            let address = '同一收货地址：' + that.data.leaderAddress.address;
+            ctx.setFontSize(10);
+            ctx.setFillStyle("#3B3B3B");
+            ctx.fillText(address, 75, 45);
+          }
+
+          ctx.fillStyle = "#A40000";
+          ctx.fillRect(15, 50, 236, 180);
+          ctx.drawImage(that.data.groupSuit.sharePic, 18, 53, 230, 140);
+          const icon_src = '../../../static/images/group/icon_share.png';
+          ctx.drawImage(icon_src, 15, 15, 51, 50);
+          ctx.setFontSize(18);
+          ctx.setFillStyle("#fff");
+          ctx.fillText('¥ ' + that.data.groupMy.discountPrice, 25, 220);
+          ctx.setFontSize(12);
+          ctx.fillText('/份', 76, 220);
+          ctx.setFontSize(11);
+          ctx.fillText(that.data.groupSuit.minimum + '份起订', 106, 220);
+          ctx.fillStyle = "#FFFF00";
+          ctx.fillRect(160, 208, 75, 13); 
+          ctx.setFontSize(10);
+          ctx.setFillStyle("#A40000");
+          ctx.fillText('拼团中', 185, 218);
+          ctx.arc(161, 214.5, 6.5, 0, Math.PI * 2, false);
+          ctx.setFillStyle('#FFFF00');
+          ctx.fill();
+          ctx.arc(236, 214.5, 6.5, 0, Math.PI * 2, false);
+          ctx.setFillStyle('#FFFF00');
+          ctx.fill();
+          ctx.setFontSize(15);
+          ctx.setFillStyle("#262424");
+          ctx.fillText(that.data.groupSuit.suitName, 15, 255);
+          ctx.setFontSize(11);
+          ctx.setFillStyle("#434343");
+          ctx.fillText(that.data.groupSuit.describe, 15, 271);
+          ctx.setFontSize(13);
+          ctx.setFillStyle("#A40000");
+          ctx.fillText('同一地址团购：¥ ' + that.data.sameAddressPrice, 15, 295);
+          ctx.setFontSize(11);
+          ctx.setFillStyle("#000");
+          ctx.fillText('不同地址团购：¥ ' + that.data.diffetentAddressPrice, 15, 316);
+          ctx.setFontSize(11);
+          ctx.setFillStyle("#000");
+          ctx.fillText('单买价：¥ ' + that.data.groupSuit.suitPrice, 15, 336);
+
+          ctx.drawImage(url, 158, 250, 98, 98);
+
+          ctx.draw();
+          that.print();
+        }
+      })
+    }, 500)
+  },
+  print() {
+    let that = this;
+    wx.showToast({
+      title: '分享图片生成中...',
+      icon: 'loading',
+      duration:1000
+    });
+    setTimeout(function(){
+      wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: 650,
+        height: 835,
+        destWidth: 650,
+        destHeight: 835,
+        canvasId: 'myCanvas',
+        success(res) {
+          console.log(res.tempFilePath);
+          that.setData({
+            output: res.tempFilePath
+          })
+        }
+      })
+    }, 1000)
   },
   getMembers(page, size) {
     let that = this;

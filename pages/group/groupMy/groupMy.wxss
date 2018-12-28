@@ -428,3 +428,12 @@
   background: #000;
   margin-top: 20rpx;
 }
+.invite_landing image, canvas {
+  width: 650rpx;
+  height: 835rpx;
+}
+.myQrcode {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

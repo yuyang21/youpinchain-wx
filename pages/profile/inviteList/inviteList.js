@@ -1,5 +1,6 @@
 const util = require('../../../utils/util');
 const api = require('../../../config/api');
+const drawQrcode = require('../../../utils/weapp.qrcode.min.js');
 Page({
   data: {
     list: [],
@@ -13,7 +14,9 @@ Page({
     size: 10,
     totalPage: 1,
     loaded: false,
-    loading: false
+    loading: false,
+    windowHeight: wx.getSystemInfoSync().windowHeight,
+    windowWidth: wx.getSystemInfoSync().windowWidth
   },
   onLoad: function (options) {
 
@@ -59,31 +62,84 @@ Page({
       })
       return;
     }
-    //获取我的分享码
-    util.request(api.inviteCode).then(res => {
+    if (that.data.output) {
       that.setData({
-        url: res.data,
         showPoster: true
       })
-      // that.qrcode = new QRCode(document.getElementById('qrcode_1'), {
-      //   text: that.url,
-      //   width: 150,
-      //   height: 150,
-      //   colorDark: '#000000',
-      //   colorLight: '#ffffff'
-      // })
-      if (that.data.finishedDraw) {
-        return
-      }
-      setTimeout(function () {
-        if (that.data.url) {
-          // that.print()
-        }
-      }, 100)
-      that.setData({
-        finishedDraw: true
+      return;
+    }
+    let url = '';
+    util.request(api.inviteCode).then(res => {
+      url = res.data;
+
+      drawQrcode({
+        width: 130,
+        height: 130,
+        canvasId: 'myQrcode',
+        text: url
       })
+      setTimeout(function(){
+        wx.canvasToTempFilePath({
+          x: 0,
+          y: 0,
+          width: 130,
+          height: 130,
+          destWidth: 130,
+          destHeight: 130,
+          canvasId: 'myQrcode',
+          success(res) {
+            console.log(res.tempFilePath);
+            url = res.tempFilePath;
+
+            const ctx = wx.createCanvasContext('myCanvas');
+            const bg_src = '../../../static/images/bounty-plan/share_poster.png';
+            ctx.drawImage(bg_src, 0, 0, 240, 425);
+
+            ctx.setFontSize(11);
+            ctx.setFillStyle("#333");
+            ctx.fillText('领金条   拍大奖', 100, 142);
+            ctx.fillText('拣金钻   兑好物', 100, 158);
+
+            ctx.drawImage(url, 50, 180, 130, 130);
+
+            ctx.setFontSize(10);
+            ctx.setFillStyle("#333");
+            ctx.fillText('争做创世居民，送无门槛竞拍', 55, 335);
+            ctx.fillText('礼包，有实惠，优先享。', 55, 350);
+
+            ctx.draw();
+            that.print();
+          }
+        })
+      }, 500)
+    })
+    that.setData({
+      showPoster: true
     })
   },
-  print() {}
+  print() {
+    let that = this;
+    wx.showToast({
+      title: '分享图片生成中...',
+      icon: 'loading',
+      duration:1000
+    });
+    setTimeout(function(){
+      wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: 240,
+        height: 425,
+        destWidth: 240,
+        destHeight: 425,
+        canvasId: 'myCanvas',
+        success(res) {
+          console.log(res.tempFilePath);
+          that.setData({
+            output: res.tempFilePath
+          })
+        }
+      })
+    }, 500)
+  }
 })

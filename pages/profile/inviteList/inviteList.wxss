@@ -98,10 +98,12 @@
 }
 
 .poster .invite_landing image {
-  display: block;
+  /* display: block;
   position: relative;
   right: -2rpx;
-  bottom: -4rpx;
+  bottom: -4rpx; */
+  width: 100%;
+  height: 768rpx;
 }
 
 .poster .invite_landing .box {
@@ -148,4 +150,8 @@
   border-radius: 10rpx;
   background: #000;
   margin: 24rpx 52rpx;
+}
+canvas {
+  width:432rpx;
+  height:768rpx;
 }
