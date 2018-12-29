@@ -95,7 +95,7 @@
                       <view class="name">{{item.productName + ' ' +
                           item.productNetContent}}*1{{item.productPacking}}</view>
                       <view class="desr">{{item.productDescribe}}</view>
-                      <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view>
+                      <!-- <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view> -->
                       <view class="cart_btns right">
                         <span class="subduction" bindtap="addNumber" data-index="{{index}}" data-number="-1"><image src="../../../static/images/sub-icon.png"/></span>
                         <span class="num">{{item.suitNum}}</span>

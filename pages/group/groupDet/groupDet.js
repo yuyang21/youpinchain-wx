@@ -117,11 +117,8 @@ Page({
     if (this.data.groupSuit.type === 2) {
       this.data.suitDet.forEach(s => {
         console.log(s.suitNum)
-        if (s.suitNum === 0) {
-          isNO = true;
-        } else {
+        if (s.suitNum >= 1) {
           isNO = false;
-          return
         }
       })
     } else {

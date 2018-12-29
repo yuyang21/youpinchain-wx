@@ -44,7 +44,9 @@ Page(Object.assign({
     area: [],
     provincesId: [],
     cityId: [],
-    areaId: []
+    areaId: [],
+    isAddress: true,
+    groupSuitId: 0
   },
   onLoad: function (options) {
     this.setData({
@@ -59,7 +61,11 @@ Page(Object.assign({
       ),
       suitTypes: JSON.parse(
         wx.getStorageSync(options.suitTypeKey)
-      )
+      ),
+      
+    })
+    this.setData({
+      groupSuitId: this.data.groupSuit.id
     })
     this.data.suitTypes.forEach(t => {
       if (t.type === 1) {
@@ -116,6 +122,18 @@ Page(Object.assign({
       })
       that.data.groupMyId ? that.getGroupMyAddress() : that.reComputePrice();
     })
+    util.request(api.getAddressByGroupSuit + that.data.groupSuit.id).then(res => {
+      let addressList = res.data;
+      let isAddress = true;
+      addressList.forEach(a => {
+        if (a.id === this.data.choosedAddress.id){
+          isAddress = false;
+        }
+      })
+      that.setData({
+        isAddress: isAddress
+      })
+    })
   },
   paymentCall() {
     let that = this;
@@ -167,7 +185,7 @@ Page(Object.assign({
         groupSuitType: groupSuitType,
         suitNum: suitNum,
         groupMyId: groupMyId
-      }).then((res) => {
+      }, 'POST').then((res) => {
         // 开团失败时
         if (res.errno !== 0) {
           util.showErrorToast(res.errmsg);
@@ -189,7 +207,7 @@ Page(Object.assign({
       message: message,
       suitNum: suitNum,
       groupMyId: groupMyId
-    }).then(res => {
+    }, 'POST').then(res => {
       if (res.errno !== 0) {
         util.showErrorToast(res.errmsg);
         that.setData({
@@ -198,14 +216,14 @@ Page(Object.assign({
         return;
       }
       that.setData({
-        orderId: res.data.orderId
+        orderId: res.data
       })
       that.doPay(that.data.orderId, groupMyId);
     })
   },
   doPay(orderId, groupMyId) {
     let that = this;
-    util.request('/orders/' + orderId + '/prepay').then(resp => {
+    util.request('/orders/' + orderId + '/prepay', {}, 'POST').then(resp => {
       wx.showLoading({
         title: '加载中',
         mask: true
@@ -271,7 +289,25 @@ Page(Object.assign({
       this.setData({
         productList: productList
       })
+      this.countGoodsPrice();
     }
+  },
+  countGoodsPrice() {
+    let productList = this.data.productList;
+    let price = 0;
+    productList.forEach(p => {
+      p.groupProductPrice.forEach(gp => {
+        if (gp.buyType === 2 && this.data.groupSuitType === 1) {
+          price = price + gp.presentPrice * p.suitNum
+        }
+        if (gp.buyType === 3 && this.data.groupSuitType === 2) {
+          price = price + gp.presentPrice * p.suitNum
+        }
+      })
+    })
+    this.setData({
+      goodsPrice: price.toFixed(2)
+    })
   },
   reComputePrice() {
     this.setData({
@@ -313,8 +349,11 @@ Page(Object.assign({
       goodsPrice: goodsPrice,
       packPrice: packPrice,
       totalPrice: goodsPrice,
-      fare: fare
+      fare: fare.toFixed(2)
     })
+    if (this.data.productType === 2) {
+      this.countGoodsPrice()
+    }
   },
   submitAddress(e) {
     // let address = e.detail.value;

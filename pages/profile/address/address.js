@@ -5,7 +5,10 @@ Page({
     adressList: [], //地址列表,
     choosedAddressIndex: -1, // 用户选中的地址
     selectedAddress: true,
-    queryPath: ''
+    queryPath: '',
+    addressList: [],
+    groupSuitId: 0,
+    isAddressList: []
   },
   onLoad: function (options) {
     if (options.path) {
@@ -15,7 +18,11 @@ Page({
     }
     if (this.data.queryPath !== 'confirmOrder') {
       this.setData({
-        selectedAddress: false
+        selectedAddress: false,
+      })
+    } else {
+      this.setData({
+        groupSuitId: options.groupSuitId
       })
     }
   },
@@ -23,6 +30,11 @@ Page({
     wx.showLoading({
       title: '加载中',
       mask: true
+    })
+    util.request(api.getAddressByGroupSuit + this.data.groupSuitId).then(res => {
+      this.setData({
+        isAddressList: res.data
+      })
     })
     this.loadAddresses();
   },
@@ -32,8 +44,17 @@ Page({
       page: 1,
       pageSize: 100
     }).then(res => {
+      let newAddressList = [];
+      res.data.forEach(a => {
+        this.data.isAddressList.forEach(address => {
+          if (address.id == a.id) {
+            a.isAddress = true
+          }
+        })
+        newAddressList.push(a);
+      })
       that.setData({
-        adressList: res.data
+        adressList: newAddressList
       })
       if (wx.getStorageSync('choosedAddress')) {
         var index = -1;

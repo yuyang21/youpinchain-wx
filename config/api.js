@@ -20,6 +20,7 @@ module.exports = {
   userInvites: '/accounts/0/userInvites', //我的邀请记录
   updateAddress: '/addresses/', //更新收货地址
   addAddress: '/addresses', //添加收货地址
+  getAddressByGroupSuit: '/addresses/groupSuit/', //查询商品我的可够地址
   deleteAddress: '/addresses/', //删除收货地址
   groupSuit: '/groups/', //根据拼团id查询商品详情
   expressCost: '/express/', //运费查询
