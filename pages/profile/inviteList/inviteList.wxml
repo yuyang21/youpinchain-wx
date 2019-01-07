@@ -12,7 +12,7 @@
     <text class="p">1.长按屏幕保存图片</text>
     <text class="p">2.将图片分享给好友或朋友圈</text>
     <view class="invite_landing">
-      <canvas canvas-id="myCanvas" wx:if="{{!output}}"></canvas>
+      <canvas canvas-id="myCanvas" wx:if="{{!output}}" style="width: {{width + 'px'}}; height: {{height + 'px'}}"></canvas>
       <canvas canvas-id="myQrcode" wx:if="{{!output}}"></canvas>
       <image src="{{output}}" width="100%" wx:if="{{output}}"/>
     </view>

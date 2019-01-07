@@ -15,8 +15,8 @@ Page({
     totalPage: 1,
     loaded: false,
     loading: false,
-    windowHeight: wx.getSystemInfoSync().windowHeight,
-    windowWidth: wx.getSystemInfoSync().windowWidth
+    width: wx.getSystemInfoSync().windowWidth * 0.57,
+    height: wx.getSystemInfoSync().windowWidth * 1.1
   },
   onLoad: function (options) {
 
@@ -71,10 +71,9 @@ Page({
     let url = '';
     util.request(api.inviteCode).then(res => {
       url = res.data;
-
       drawQrcode({
-        width: 130,
-        height: 130,
+        width: that.data.width * 0.59,
+        height: that.data.width * 0.61,
         canvasId: 'myQrcode',
         text: url
       })
@@ -82,10 +81,10 @@ Page({
         wx.canvasToTempFilePath({
           x: 0,
           y: 0,
-          width: 130,
-          height: 130,
-          destWidth: 130,
-          destHeight: 130,
+          width: that.data.width * 0.59,
+          height: that.data.width * 0.61,
+          destWidth: that.data.width * 0.59,
+          destHeight: that.data.width * 0.61,
           canvasId: 'myQrcode',
           success(res) {
             console.log(res.tempFilePath);
@@ -93,19 +92,19 @@ Page({
 
             const ctx = wx.createCanvasContext('myCanvas');
             const bg_src = '../../../static/images/bounty-plan/share_poster.png';
-            ctx.drawImage(bg_src, 0, 0, 240, 425);
+            ctx.drawImage(bg_src, 0, 0, that.data.width, that.data.height);
 
             ctx.setFontSize(11);
             ctx.setFillStyle("#333");
-            ctx.fillText('领金条   拍大奖', 100, 142);
-            ctx.fillText('拣金钻   兑好物', 100, 158);
+            ctx.fillText('领金条   拍大奖', that.data.width * 0.42, that.data.height * 0.34);
+            ctx.fillText('拣金钻   兑好物', that.data.width * 0.42, that.data.height * 0.38);
 
-            ctx.drawImage(url, 50, 180, 130, 130);
+            ctx.drawImage(url, that.data.width * 0.21, that.data.height * 0.43, that.data.width * 0.59, that.data.width * 0.61);
 
             ctx.setFontSize(10);
             ctx.setFillStyle("#333");
-            ctx.fillText('争做创世居民，送无门槛竞拍', 55, 335);
-            ctx.fillText('礼包，有实惠，优先享。', 55, 350);
+            ctx.fillText('争做创世居民，送无门槛竞拍', that.data.width * 0.22, that.data.height * 0.81);
+            ctx.fillText('礼包，有实惠，优先享。', that.data.width * 0.22, that.data.height * 0.85);
 
             ctx.draw();
             that.print();
@@ -128,10 +127,10 @@ Page({
       wx.canvasToTempFilePath({
         x: 0,
         y: 0,
-        width: 240,
-        height: 425,
-        destWidth: 240,
-        destHeight: 425,
+        width: that.data.width,
+        height: that.data.height,
+        destWidth: that.data.width,
+        destHeight: that.data.height,
         canvasId: 'myCanvas',
         success(res) {
           console.log(res.tempFilePath);

@@ -48,7 +48,7 @@
 .presell_box .right_tip {
   position: relative;
   width: 240rpx;
-  height: 128rpx;
+  height: 130rpx;
   text-align: center;
   background-color: #FB9D1C;
   margin-top: -16rpx;
@@ -66,7 +66,7 @@
   position: absolute;
   display: block;
   top: 56rpx;
-  left: -10rpx;
+  left: -8rpx;
   border-top: 10rpx solid transparent;
   border-right: 10rpx solid #FB9D1C;
   border-bottom: 10rpx solid transparent;
@@ -189,6 +189,9 @@
 
 .add_cart_container.activityEnd_btns .cart_btn {
   line-height: 70rpx;
+}
+.add_cart_container .cart_btn_center {
+  line-height: 2.25;
 }
 
 .assembling_process {

@@ -151,7 +151,3 @@
   background: #000;
   margin: 24rpx 52rpx;
 }
-canvas {
-  width:432rpx;
-  height:768rpx;
-}

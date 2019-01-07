@@ -113,24 +113,17 @@ Page({
     })
   },
   toSubmitOrder(event) {
-    let isNO = true;
+    let isNum = 0;
     if (this.data.groupSuit.type === 2) {
+      let isNum = 0;
       this.data.suitDet.forEach(s => {
-        console.log(s.suitNum)
-        if (s.suitNum >= 1) {
-          isNO = false;
-        }
+        isNum += s.buyNum
       })
-    } else {
-      isNO = false;
     }
-    if (isNO) {
-      util.showErrorToast('至少选择一件');
-      return;
-    }
-    let type = event.currentTarget.dataset.type;
-    if (this.data.groupMyId && this.data.endTimeDown <= 0) {
-      wx.navigateTo({
+    let isAloneBuy = event.currentTarget.dataset.isAloneBuy;
+    let isOpenGroup = event.currentTarget.dataset.isOpenGroup;
+    if (!this.data.groupMyId && this.data.endTimeDown <= 0) {
+      wx.switchTab({
         url: '../current/current'
       })
       return;
@@ -151,8 +144,12 @@ Page({
       "suitType_" + currentTime,
       JSON.stringify(this.data.suitTypes)
     );
+    let path = "../confirmGroup/confirmGroup?isAloneBuy="+isAloneBuy+"&groupKey=groupSuit_"+currentTime+"&suitKey=suit_" + currentTime+"&suitTypeKey=suitType_" + currentTime;
+    if (!isOpenGroup) {
+      path = path + '&groupMyId=' + groupMyId;
+    }
     wx.navigateTo({
-      url: '../confirmGroup/confirmGroup?type=' + type + '&groupKey=groupSuit_' + currentTime + '&suitKey=suit_' + currentTime + '&suitTypeKey=suitType_' + currentTime + '&groupMyId=' + groupMyId + '&productType=' + groupSuit.type
+      url: path
     })
   }
 })

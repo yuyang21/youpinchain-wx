@@ -40,7 +40,7 @@
           </view>
         </view>
         <view class="right_tip right {{endTimeDown <= 0 ? 'activityEnd' : ''}}" wx:if="{{endTimeDown <= 0}}">
-          <text>{{endTimeDown}}拼团结束</text>
+          <text>拼团结束</text>
         </view>
       </view>
       <view class="title">
@@ -109,21 +109,21 @@
     </view>
   </view>
   <view class="add_cart_container" wx:if="{{endTimeDown>0 && startTimeDown<1}}">
-    <view class="cart_btn right" wx:if="{{groupMyId}}" bindtap="toSubmitOrder" data-type="1">
-      <view>￥{{groupMy.discountPrice}}</view>
+    <view class="cart_btn right {{groupSuit.type == 2 ? 'cart_btn_center' : ''}}" wx:if="{{groupMyId}}" bindtap="toSubmitOrder" data-is-alone-buy="false">
+      <view wx:if="{{groupSuit.type != 2}}">￥{{groupMy.discountPrice}}</view>
       <view>参与拼团</view>
     </view>
-    <view class="cart_btn right" wx:else bindtap="toSubmitOrder" data-type="1">
-      <view>￥{{groupPrice}}</view>
+    <view class="cart_btn right {{groupSuit.type == 2 ? 'cart_btn_center' : ''}}" wx:else bindtap="toSubmitOrder" data-is-alone-buy="false">
+      <view wx:if="{{groupSuit.type != 2}}">￥{{groupPrice}}</view>
       <view>发起拼团</view>
     </view>
-    <view class="cart_btn_alone right" bindtap="toSubmitOrder" data-type="0">
-      <view>￥{{groupSuit.suitPrice}}</view>
-      <view>单独购买</view>
+    <view class="cart_btn_alone right {{groupSuit.type == 2 ? 'cart_btn_center' : ''}}" bindtap="toSubmitOrder" data-is-alone-buy="true">
+      <view wx:if="{{groupSuit.type != 2}}">￥{{groupSuit.suitPrice}}</view>
+      <view>立即支付</view>
     </view>
   </view>
   <view class="add_cart_container activityEnd_btns" wx:if="{{endTimeDown <= 0}}">
-    <view class="cart_btn right" bindtap="toSubmitOrder" data-type="1">{{!groupMyId ? '我要开团' : '查看其他拼团'}}</view>
+    <view class="cart_btn right" bindtap="toSubmitOrder" data-is-alone-buy="false" data-is-open-group="true">{{groupMyId ? '我要开团' : '查看其他拼团'}}</view>
     <view class="cart_btn_alone right">拼团结束</view>
   </view>
 </view>

@@ -4,6 +4,8 @@ Page({
   data: {
     userInfo: {
     },
+    userImgUrl: '',
+    username: '',
     showAlertTip: false
   },
   onLoad: function () {
@@ -48,10 +50,8 @@ Page({
     util.request(api.userInfo).then(function (res) {
       if (res.errno == 0) {
         that.setData({
-          userInfo: {
-            userImgUrl: res.data.headImgUrl.replace("http://", "https://"),
-            username: res.data.nickName
-          }
+          userImgUrl: res.data.headImgUrl.replace("http://", "https://"),
+          username: res.data.nickName
         })
       }
     })

@@ -3,13 +3,13 @@
     <view class="profile-top-red"></view>
     <view class="profile-number">
       <view class="profile-link">
-        <image src="{{userInfo.userImgUrl}}" class="privateImage" wx:if="{{userInfo && userInfo.userImgUrl}}"/>
+        <image src="{{userImgUrl}}" class="privateImage" wx:if="{{userImgUrl}}"/>
         <view class="privateImage" wx:else>
           <svg class="privateImage-svg">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
           </svg>
         </view>
-        <view class="user-name">{{userInfo.username}}</view>
+        <view class="user-name">{{username}}</view>
       </view>
     </view>
     <view class="info-data">

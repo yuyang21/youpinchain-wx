@@ -44,20 +44,20 @@
               choosedAddress.cityName + choosedAddress.areaName +
               choosedAddress.address}}</view>
             <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}"><text decode="{{true}}">{{choosedAddress.name}}&emsp;{{choosedAddress.mobile}}</text></view>
-            <view class="errAddress" wx:if="{{isAddress}}">当前商品不支持配送至该地址</view>
-            <view class="groupSuitType" wx:if="{{!groupMyId && groupType === 1}}">
+            <!-- <view class="errAddress" wx:if="{{isAddress}}">当前商品不支持配送至该地址</view> -->
+            <view class="groupSuitType" wx:if="{{!groupMy && !isAloneBuy}}">
               <view class="left">拼团方式</view>
               <view class="right" bindtap="showTipsBox" data-type="suitTypeBox">
                 <span>{{!groupSuitType ? '请选择拼团方式': groupSuitType === 1 ? '普通拼团': '同一地址拼团(推荐)'}}</span>
                 <image src="../../../static/images/path.png" alt=""/>
               </view>
             </view>
-            <view class="tips" wx:if="{{!groupMy && groupSuitType === 2 && groupType === 1}}">
+            <view class="tips" wx:if="{{!groupMy && groupSuitType === 2 && !isAloneBuy}}">
               <text>选择同一地址拼团，支持“大美乡村计划”—扶持农业，收获健康，感谢您选择更环保·更温暖的生活方式。</text>
               <span class="left">团长职责：</span><span class="left">邀请您附近伙伴拼团，团长统一收货并组织团员取货。</span>
               <span class="left">大美奖励：</span><span class="left">订单结束后团长获得鼓励金</span>
             </view>
-            <view class="tips" wx:if="{{!groupMy && groupSuitType === 1 && groupType === 1}}">
+            <view class="tips" wx:if="{{!groupMy && groupSuitType === 1 && !isAloneBuy}}">
               快来邀请好友分享美味吧~
               <span>3人即可成团享受优惠价格，如收货地址相同推荐选择“同一地址拼团”更划算，更温暖。</span>
             </view>
@@ -91,11 +91,11 @@
               </view>
             </view>
             <view class="cart_btns">
-              <span class="number" wx:if="{{productType === 1}}">x {{item.suitNumber}}</span>
+              <span class="number" wx:if="{{groupSuit.type === 1}}">x {{item.suitNumber}}</span>
               <block wx:else>
-                <span class="subduction" bindtap="addNumber" data-index="{{index}}" data-number="-1"><image src="../../../static/images/sub-icon.png"/></span>
-                <span class="num">{{item.suitNum}}</span>
-                <span class="add" bindtap="addNumber" data-index="{{index}}" data-number="1"><image src="../../../static/images/add-icon.png"/></span>
+                <span class="subduction" bindtap="addProNum" data-product-id="{{item.productId}}" data-number="-1"><image src="../../../static/images/sub-icon.png"/></span>
+                <span class="num">{{item.buyNum ? item.buyNum: 0}}</span>
+                <span class="add" bindtap="addProNum" data-product-id="{{item.productId}}" data-number="1"><image src="../../../static/images/add-icon.png"/></span>
               </block>
             </view>
           </view>
@@ -104,7 +104,7 @@
             <image src="../../../static/images/path-2.png" width="4%"/>
           </view> -->
         </view>
-        <block wx:if="{{productType === 1}}">
+        <block wx:if="{{groupSuit.type === 1}}">
           <view class="purchase_num">
             <text class="left">购买数量</text>
             <view class="cart_btns right">
@@ -125,10 +125,10 @@
             <view>商品总价</view>
             <view><span class="RMB">￥</span>{{goodsPrice}}</view>
           </view>
-          <navigator class="li" hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../../profile/coupon/coupon?path=confirmOrder'}}">
+          <!-- <navigator class="li" hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../../profile/coupon/coupon?path=confirmOrder'}}">
             <view>优惠价格</view>
             <view class="RMB coupon">-￥{{coupon ? coupon.money : 0}}</view>
-          </navigator>
+          </navigator> -->
           <view class="li">
             <view>运费{{fareInfo}}</view>
             <view><span class="RMB">￥</span>{{fare}}</view>

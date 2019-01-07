@@ -21,7 +21,9 @@ Page({
     url: '',
     sameAddressPrice: 0,
     diffetentAddressPrice: 0,
-    sex: ''
+    sex: '',
+    width: wx.getSystemInfoSync().windowWidth * 0.84,
+    height: wx.getSystemInfoSync().windowWidth * 1.15
   },
   onLoad: function (options) {
     this.setData({
@@ -129,62 +131,62 @@ Page({
 
           const ctx = wx.createCanvasContext('myCanvas');
           ctx.fillStyle="#FFFFFF";
-          ctx.fillRect(0,0,650,835);
+          ctx.fillRect(0, 0, that.data.width, that.data.height);
 
           ctx.setFontSize(12);
           ctx.setFillStyle("#000");
-          ctx.fillText(that.data.leaderAddress.consignee, 75, 30);
+          ctx.fillText(that.data.leaderAddress.consignee, that.data.width * 0.28, that.data.height * 0.08);
           ctx.setFontSize(11);
           ctx.setFillStyle("#3B3B3B");
-          ctx.fillText('邀请您参加它的团购', 115, 30);
+          ctx.fillText('邀请您参加它的团购', that.data.width * 0.43, that.data.height * 0.08);
 
           if (that.data.groupMy.groupSuitType === 2) {
             let address = '同一收货地址：' + that.data.leaderAddress.address;
             ctx.setFontSize(10);
             ctx.setFillStyle("#3B3B3B");
-            ctx.fillText(address, 75, 45);
+            ctx.fillText(address, that.data.width * 0.28, that.data.height * 0.125);
           }
 
           ctx.fillStyle = "#A40000";
-          ctx.fillRect(15, 50, 236, 180);
-          ctx.drawImage(that.data.groupSuit.sharePic, 18, 53, 230, 140);
+          ctx.fillRect(that.data.width * 0.049, that.data.height * 0.138, that.data.width * 0.89, that.data.height * 0.49);
+          ctx.drawImage(that.data.groupSuit.sharePic, that.data.width * 0.064, that.data.height * 0.15, that.data.width * 0.86, that.data.height * 0.38);
           const icon_src = '../../../static/images/group/icon_share.png';
-          ctx.drawImage(icon_src, 15, 15, 51, 50);
-          ctx.setFontSize(18);
+          ctx.drawImage(icon_src, that.data.width * 0.05, that.data.height * 0.04, that.data.width * 0.2, that.data.width * 0.19);
+          ctx.setFontSize(17);
           ctx.setFillStyle("#fff");
-          ctx.fillText('¥ ' + that.data.groupMy.discountPrice, 25, 220);
+          ctx.fillText('¥100.0' + that.data.groupMy.discountPrice, that.data.width * 0.075, that.data.height * 0.6);
           ctx.setFontSize(12);
-          ctx.fillText('/份', 76, 220);
+          ctx.fillText('/份', that.data.width * 0.28, that.data.height * 0.598);
           ctx.setFontSize(11);
-          ctx.fillText(that.data.groupSuit.minimum + '份起订', 106, 220);
+          ctx.fillText(that.data.groupSuit.minimum + '份起订', that.data.width * 0.37, that.data.height * 0.598);
           ctx.fillStyle = "#FFFF00";
-          ctx.fillRect(160, 208, 75, 13); 
+          ctx.fillRect(that.data.width * 0.585, that.data.height * 0.566, that.data.width * 0.29, that.data.height * 0.034); 
           ctx.setFontSize(10);
           ctx.setFillStyle("#A40000");
-          ctx.fillText('拼团中', 185, 218);
-          ctx.arc(161, 214.5, 6.5, 0, Math.PI * 2, false);
+          ctx.fillText('拼团中', that.data.width * 0.68, that.data.height * 0.593);
+          ctx.arc(that.data.width * 0.585, that.data.height * 0.583, that.data.height * 0.034 / 2, 0, Math.PI * 2, false);
           ctx.setFillStyle('#FFFF00');
           ctx.fill();
-          ctx.arc(236, 214.5, 6.5, 0, Math.PI * 2, false);
+          ctx.arc(that.data.width * 0.88, that.data.height * 0.583, that.data.height * 0.034 / 2, 0, Math.PI * 2, false);
           ctx.setFillStyle('#FFFF00');
           ctx.fill();
           ctx.setFontSize(15);
           ctx.setFillStyle("#262424");
-          ctx.fillText(that.data.groupSuit.suitName, 15, 255);
+          ctx.fillText(that.data.groupSuit.suitName, that.data.width * 0.049, that.data.height * 0.698);
           ctx.setFontSize(11);
           ctx.setFillStyle("#434343");
-          ctx.fillText(that.data.groupSuit.describe, 15, 271);
+          ctx.fillText(that.data.groupSuit.describe, that.data.width * 0.049, that.data.height * 0.748);
           ctx.setFontSize(13);
           ctx.setFillStyle("#A40000");
-          ctx.fillText('同一地址团购：¥ ' + that.data.sameAddressPrice, 15, 295);
+          ctx.fillText('同一地址团购：¥ ' + that.data.sameAddressPrice, that.data.width * 0.049, that.data.height * 0.818);
           ctx.setFontSize(11);
           ctx.setFillStyle("#000");
-          ctx.fillText('不同地址团购：¥ ' + that.data.diffetentAddressPrice, 15, 316);
+          ctx.fillText('不同地址团购：¥ ' + that.data.diffetentAddressPrice, that.data.width * 0.049, that.data.height * 0.87);
           ctx.setFontSize(11);
           ctx.setFillStyle("#000");
-          ctx.fillText('单买价：¥ ' + that.data.groupSuit.suitPrice, 15, 336);
+          ctx.fillText('单买价：¥ ' + that.data.groupSuit.suitPrice, that.data.width * 0.049, that.data.height * 0.918);
 
-          ctx.drawImage(url, 158, 250, 98, 98);
+          ctx.drawImage(url, that.data.width * 0.56, that.data.height * 0.68, that.data.width * 0.38, that.data.width * 0.38);
 
           ctx.draw();
           that.print();
@@ -203,10 +205,10 @@ Page({
       wx.canvasToTempFilePath({
         x: 0,
         y: 0,
-        width: 650,
-        height: 835,
-        destWidth: 650,
-        destHeight: 835,
+        width: that.data.width, 
+        height: that.data.height,
+        destWidth: that.data.width, 
+        destHeight: that.data.height,
         canvasId: 'myCanvas',
         success(res) {
           console.log(res.tempFilePath);

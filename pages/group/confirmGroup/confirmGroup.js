@@ -23,8 +23,7 @@ Page(Object.assign({
     },
     orderId: 0,
     message: '',
-    groupType: '',
-    productType: '',
+    isAloneBuy: false,
     groupMyId: null,
     groupMy: null,
     payButton: false,
@@ -50,8 +49,7 @@ Page(Object.assign({
   },
   onLoad: function (options) {
     this.setData({
-      productType: parseInt(options.productType),
-      groupType: parseInt(options.type),
+      isAloneBuy: options.isAloneBuy === 'true',
       groupMyId: parseInt(options.groupMyId),
       productList: JSON.parse(
         wx.getStorageSync(options.suitKey)
@@ -136,6 +134,11 @@ Page(Object.assign({
     })
   },
   paymentCall() {
+    // 自定义购买商品判断
+    if (this.data.groupSuit.type === 2 && this.data.buyNum <= 0) {
+      util.showErrorToast('请至少选择一件商品！')
+      return
+    }
     let that = this;
     if (!that.data.groupSuitType) {
       that.setData({
@@ -172,16 +175,17 @@ Page(Object.assign({
     let that = this;
     let suitId = that.data.groupSuit.id;
     let addressId = that.data.choosedAddress.id;
-    let type = Number(that.data.groupType);
+    let isAloneBuy = Boolean(that.data.isAloneBuy);
     let groupSuitType = that.data.groupSuitType;
     let suitNum = that.data.suitNum;
     let groupMyId = !that.data.groupMyId ? null : Number(that.data.groupMyId);
+    let products = that.data.productList;
 
     // 开团
     if (!groupMyId) {
       util.request('/groups/' + suitId + '/groupMys', {
         suitId: suitId,
-        type: type,
+        isAloneBuy: isAloneBuy,
         groupSuitType: groupSuitType,
         suitNum: suitNum,
         groupMyId: groupMyId
@@ -192,13 +196,13 @@ Page(Object.assign({
           return;
         }
         groupMyId = res.data;
-        that.submitGroup(suitId, addressId, that.couponId, that.message, suitNum, groupMyId);
+        that.submitGroup(suitId, addressId, that.couponId, that.message, suitNum, groupMyId, products);
       })
     } else { // 参团
-      that.submitGroup(suitId, addressId, that.couponId, that.message, suitNum, groupMyId);
+      that.submitGroup(suitId, addressId, that.couponId, that.message, suitNum, groupMyId, products);
     }
   },
-  submitGroup(suitId, addressId, couponId, message, suitNum, groupMyId) {
+  submitGroup(suitId, addressId, couponId, message, suitNum, groupMyId, products) {
     let that = this;
     util.request('/groups/' + suitId + '/groupMys/' + groupMyId + '/order', {
       suitId: suitId,
@@ -206,7 +210,8 @@ Page(Object.assign({
       couponId: couponId,
       message: message,
       suitNum: suitNum,
-      groupMyId: groupMyId
+      groupMyId: groupMyId,
+      products: products
     }, 'POST').then(res => {
       if (res.errno !== 0) {
         util.showErrorToast(res.errmsg);
@@ -244,7 +249,7 @@ Page(Object.assign({
             that.setData({
               payButton: false
             })
-            if (that.data.groupType === 1) {
+            if (!that.data.isAloneBuy) {
               wx.navigateTo({
                 url: '../groupMy/groupMy?groupMyId' + groupMyId
               })
@@ -262,52 +267,40 @@ Page(Object.assign({
     })
   },
   addNumber(e) {
-    if (this.data.productType === 1) {
-      let number = e.currentTarget.dataset.number;
-      let suitNum = e.currentTarget.dataset.suitNum;
-      let minimum = this.data.groupSuit.minimum;
-      if (number < 0 && suitNum <= minimum) {
-        if (minimum > 1) {
-          util.showErrorToast('至少购买' + minimum + '份');
-        }
-        return;
+    let number = e.currentTarget.dataset.number;
+    let suitNum = e.currentTarget.dataset.suitNum;
+    let minimum = this.data.groupSuit.minimum;
+    if (number < 0 && suitNum <= minimum) {
+      if (minimum > 1) {
+        util.showErrorToast('至少购买' + minimum + '份');
       }
-      suitNum = suitNum + number;
-      this.setData({
-        suitNum: suitNum
-      })
-      this.reComputePrice();
-    } else {
-      let number = parseInt(e.currentTarget.dataset.number);
-      let index = e.currentTarget.dataset.index;
-      if (this.data.productList[index].suitNum <= 0 && number < 0) {
-        util.showErrorToast('购买数量大于0');
-        return
-      }
-      let productList = this.data.productList;
-      productList[index].suitNum = this.data.productList[index].suitNum + number;
-      this.setData({
-        productList: productList
-      })
-      this.countGoodsPrice();
+      return;
     }
-  },
-  countGoodsPrice() {
-    let productList = this.data.productList;
-    let price = 0;
-    productList.forEach(p => {
-      p.groupProductPrice.forEach(gp => {
-        if (gp.buyType === 2 && this.data.groupSuitType === 1) {
-          price = price + gp.presentPrice * p.suitNum
-        }
-        if (gp.buyType === 3 && this.data.groupSuitType === 2) {
-          price = price + gp.presentPrice * p.suitNum
-        }
-      })
-    })
     this.setData({
-      goodsPrice: price.toFixed(2)
+      suitNum: suitNum + number
     })
+    this.reComputePrice();
+  },
+  addProNum(e) {
+    let productId = e.currentTarget.dataset.productId;
+    let number = parseInt(e.currentTarget.dataset.number);
+    let that = this
+    let productList = that.data.productList;
+    productList.forEach(item =>{
+      if(item.productId === productId){
+        if (item.buyNum <= (item.minimum ? item.minimum : 0) && number <= 0) {
+          if (item.minimum > 0) {
+            util.showErrorToast('至少购买' + item.minimum + '份');
+          }
+          return
+        }
+        item.buyNum = item.buyNum + number
+      }
+    })
+    that.setData({
+      productList: productList
+    })
+    that.reComputePrice();
   },
   reComputePrice() {
     this.setData({
@@ -316,44 +309,96 @@ Page(Object.assign({
     })
     let goodsPrice = 0;
     let packPrice = 0;
-    // 参团
-    if (this.data.groupMy) {
-      packPrice = this.data.groupMy.discountPrice;
-      goodsPrice = goodsPrice + (this.data.groupMy.discountPrice * this.data.suitNum);
-    } else {
-      // 开团根据拼团的类型计算不同的套装价格
-      let that = this
-      if (that.data.groupType === 0) {
-        packPrice = that.data.groupSuit.suitPrice;
-        goodsPrice = goodsPrice + (that.data.groupSuit.suitPrice * that.data.suitNum);
+    let buyNum = 0
+    if (this.data.groupSuit.type === 1) {
+      // 参团
+      if (this.data.groupMy) {
+        packPrice = this.data.groupMy.discountPrice;
+        goodsPrice = goodsPrice + (this.data.groupMy.discountPrice * this.data.suitNum);
       } else {
-        that.data.suitTypes.forEach(suitType => {
-          if (suitType.type === that.data.groupSuitType) {
-            if (that.data.groupSuit.id === suitType.productId) {
-              packPrice = suitType.discountPrice;
-              goodsPrice = goodsPrice + (suitType.discountPrice * that.data.suitNum);
+        // 开团根据拼团的类型计算不同的套装价格
+        let that = this
+        if (that.data.isAloneBuy) {
+          packPrice = that.data.groupSuit.suitPrice;
+          goodsPrice = goodsPrice + (that.data.groupSuit.suitPrice * that.data.suitNum);
+        } else {
+          that.data.suitTypes.forEach(suitType => {
+            if (suitType.type === that.data.groupSuitType) {
+              if (that.data.groupSuit.id === suitType.productId) {
+                packPrice = suitType.discountPrice;
+                goodsPrice = goodsPrice + (suitType.discountPrice * that.data.suitNum);
+              }
             }
-          }
-        })
+          })
+        }
       }
+    } else if (this.data.groupSuit.type === 2) { // 自定义拼团
+      this.setData({
+        buyNum: 0
+      })
+      let that = this
+      // 单独购买
+      if (that.data.isAloneBuy) {
+        that.data.productList.forEach(pro => {
+          pro.groupProductPrice.forEach(productPrice => {
+            if (productPrice.buyType === 1) {
+              pro.realProductPrice = productPrice.presentPrice;
+              goodsPrice = goodsPrice + pro.buyNum * productPrice.presentPrice;
+              buyNum = buyNum + pro.buyNum;
+            }
+          })
+        })
+      } else {
+        // 参团
+        if (that.data.groupMy) {
+          that.setData({
+            groupSuitType: that.data.groupMy.groupSuitType
+          })
+        }
+        // 根据拼团的类型计算不同的套装价格
+        if (that.data.groupSuitType === 1) { //普通拼团，不同地址
+          that.data.productList.forEach(pro => {
+            pro.groupProductPrice.forEach(productPrice => {
+              if (productPrice.buyType === 2) {
+                pro.realProductPrice = productPrice.presentPrice;
+                goodsPrice = goodsPrice + pro.buyNum * productPrice.presentPrice;
+                buyNum = buyNum + pro.buyNum;
+              }
+            })
+          })
+        } else { // 同一地址拼团
+          that.data.productList.forEach(pro => {
+            pro.groupProductPrice.forEach(productPrice => {
+              if (productPrice.buyType === 3) {
+                pro.realProductPrice = productPrice.presentPrice;
+                goodsPrice = goodsPrice + pro.buyNum * productPrice.presentPrice;
+                buyNum = buyNum + pro.buyNum;
+              }
+            })
+          })
+        }
+      }
+    }
+    if (this.data.groupSuit.type === 2) {
+        buyNum = buyNum;
+    } else {
+        buyNum = this.data.suitNum
     }
     wx.setStorageSync('goodsPrice', JSON.stringify(goodsPrice));
     let expressCostData = this.data.expressCostData;
     let fare = expressCostData.expressPrice;
     if (expressCostData.freeExpress === 1 && goodsPrice >= expressCostData.freeExpressValue) { // 金额包邮
       fare = 0;
-    } else if (expressCostData.freeExpress === 2 && this.data.suitNum >= expressCostData.freeExpressValue) { // 数量包邮
+    } else if (expressCostData.freeExpress === 2 && buyNum >= expressCostData.freeExpressValue) { // 数量包邮
       fare = 0;
     }
     this.setData({
-      goodsPrice: goodsPrice,
-      packPrice: packPrice,
-      totalPrice: goodsPrice,
-      fare: fare.toFixed(2)
+      goodsPrice: goodsPrice.toFixed(2),
+      packPrice: packPrice.toFixed(2),
+      totalPrice: goodsPrice.toFixed(2),
+      fare: fare.toFixed(2),
+      buyNum: buyNum
     })
-    if (this.data.productType === 2) {
-      this.countGoodsPrice()
-    }
   },
   submitAddress(e) {
     // let address = e.detail.value;
