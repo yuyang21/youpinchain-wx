@@ -60,7 +60,7 @@ input {
   text-align: center;
 }
 .RMB {
-  font-size: .24rpx;
+  font-size: 24rpx;
   font-weight: normal;
   margin-right: 3rpx;
 }

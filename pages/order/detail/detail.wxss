@@ -154,7 +154,6 @@
   border-radius: 10rpx;
   width: 190rpx;
   height: 190rpx;
-  background-color: #000;
   vertical-align: middle;
   margin-left: 10rpx;
 }

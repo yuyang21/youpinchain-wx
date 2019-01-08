@@ -48,7 +48,7 @@
             <view class="groupSuitType" wx:if="{{!groupMy && !isAloneBuy}}">
               <view class="left">拼团方式</view>
               <view class="right" bindtap="showTipsBox" data-type="suitTypeBox">
-                <span>{{!groupSuitType ? '请选择拼团方式': groupSuitType === 1 ? '普通拼团': '同一地址拼团(推荐)'}}</span>
+                <span>{{!groupSuitType ? '请选择拼团方式': groupSuitType === 1 ? '不同地址拼团': '同一地址拼团(推荐)'}}</span>
                 <image src="../../../static/images/path.png" alt=""/>
               </view>
             </view>
@@ -59,7 +59,7 @@
             </view>
             <view class="tips" wx:if="{{!groupMy && groupSuitType === 1 && !isAloneBuy}}">
               快来邀请好友分享美味吧~
-              <span>3人即可成团享受优惠价格，如收货地址相同推荐选择“同一地址拼团”更划算，更温暖。</span>
+              <view>3人即可成团享受优惠价格，如收货地址相同推荐选择“同一地址拼团”更划算，更温暖。</view>
             </view>
             <view wx:if="{{groupMy && groupMy.groupSuitType === 2}}" class="tuan">
               <view class="position-re">
@@ -85,18 +85,19 @@
           <view class="li" wx:for="{{productList}}" wx:key="{{item.id}}">
             <image src="{{item.productThumbnailPic}}" alt="" class="img"/>
             <view class="goods_info">
-              <view class="name">{{item.productName}}</view>
-              <view class="li" wx:for="{{item.groupProductPrice}}">
-                <view class="price" wx:if="{{(groupSuitType === 2 && item.buyType === 3) || (groupSuitType === 1 && item.buyType === 2)}}"><span class="RMB">￥</span>{{item.presentPrice}}</view>
-              </view>
+              <view class="name">{{item.productName + ' ' + item.productNetContent}}</view>
+              <view class="price"><span class="RMB">￥</span>{{item.realProductPrice}}</view>
             </view>
-            <view class="cart_btns">
-              <span class="number" wx:if="{{groupSuit.type === 1}}">x {{item.suitNumber}}</span>
-              <block wx:else>
+            <view class="cart_btns" wx:if="{{groupSuit.type === 1}}">
+              <span class="number">x {{item.suitNumber}}</span>
+            </view>
+            <view class="cart_btns" wx:else>
+              <block wx:if="{{item.productStock > 0}}">
                 <span class="subduction" bindtap="addProNum" data-product-id="{{item.productId}}" data-number="-1"><image src="../../../static/images/sub-icon.png"/></span>
                 <span class="num">{{item.buyNum ? item.buyNum: 0}}</span>
                 <span class="add" bindtap="addProNum" data-product-id="{{item.productId}}" data-number="1"><image src="../../../static/images/add-icon.png"/></span>
               </block>
+              <view class="desr" wx:else>卖光了</view>
             </view>
           </view>
           <!-- <view wx:if="{{showTotal}}" class="load_more" bindtap="loadAllProducts">

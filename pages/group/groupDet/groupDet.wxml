@@ -6,9 +6,9 @@
         <image src="{{groupSuit.normalPic}}" alt="" class="show" />
       </view>
       <swiper wx:else class="swiper" indicator-dots="true" autoplay="true" interval="1500" duration="1000" circular="true" indicator-color="#b5b5b5" indicator-active-color="#e4372e">
-        <block wx:for="{{headPic}}" wx:key="{{id}}" class="header_image">
+        <block wx:for="{{headPic}}" wx:key="{{index}}" class="header_image">
           <swiper-item>
-            <image src="{{item.pictureUrl}}" class="slide-image show" />
+            <image src="{{item}}" class="slide-image show" />
           </swiper-item>
         </block>
       </swiper>
@@ -77,13 +77,6 @@
         <view class="mode">模式二：<span>同一地址拼团，团长选择收货地址，团员线下与团长进行后续收货服务。团长获得劳动鼓励金。</span></view>
       </view>
     </view>
-    <!-- 拼团详情 -->
-    <view class="goods_info" wx:if="{{footPic && footPic.length > 0}}">
-      <view class="panel_title">拼团详情</view>
-      <view class="goodsImgs">
-        <image src="{{item}}" alt="" wx:for="{{footPic}}" wx:key="index" mode="widthFix"/>
-      </view>
-    </view>
     <!-- 拼团商品 -->
     <view class="goods_info" wx:if="{{groupSuit.type === 2}}">
       <view class="panel_title">拼团商品</view>
@@ -93,18 +86,27 @@
                   <image src="{{item.productThumbnailPic}}" alt="" class="left {{!item.productThumbnailPic ? 'noImage' : ''}}"/>
                   <view class="left goods_li">
                       <view class="name">{{item.productName + ' ' +
-                          item.productNetContent}}*1{{item.productPacking}}</view>
-                      <view class="desr">{{item.productDescribe}}</view>
+                          item.productNetContent}}</view>
+                      <!-- <view class="desr">{{item.productDescribe}}</view> -->
                       <!-- <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view> -->
-                      <view class="cart_btns right">
+                      <view class="cart_btns right" wx:if="{{item.productStock > 0}}">
                         <span class="subduction" bindtap="addNumber" data-index="{{index}}" data-number="-1"><image src="../../../static/images/sub-icon.png"/></span>
-                        <span class="num">{{item.suitNum}}</span>
+                        <span class="num">{{item.buyNum}}</span>
                         <span class="add" bindtap="addNumber" data-index="{{index}}" data-number="1"><image src="../../../static/images/add-icon.png"/></span>
                       </view>
-                      <!-- &lt;!&ndash;<view class="single_price">单买价￥{{item.productOriginalPrice}}</view>&ndash;&gt; -->
+                      <view class="cart_btns right" wx:else>
+                        <view class="desr">卖光了</view>
+                      </view>
                   </view>
               <!-- </navigator> -->
           </view>
+      </view>
+    </view>
+    <!-- 拼团详情 -->
+    <view class="goods_info" wx:if="{{footPic && footPic.length > 0}}">
+      <view class="panel_title">拼团详情</view>
+      <view class="goodsImgs">
+        <image src="{{item}}" alt="" wx:for="{{footPic}}" wx:key="index" mode="widthFix"/>
       </view>
     </view>
   </view>

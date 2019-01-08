@@ -87,12 +87,11 @@ Page({
   addNumber(e) {
     let number = parseInt(e.currentTarget.dataset.number);
     let index = e.currentTarget.dataset.index;
-    if (this.data.suitDet[index].suitNum <= 0 && number < 0) {
-      util.showErrorToast('购买数量大于0');
+    if (this.data.suitDet[index].buyNum <= 0 && number < 0) {
       return
     }
     let suitDet = this.data.suitDet;
-    suitDet[index].suitNum = this.data.suitDet[index].suitNum + number;
+    suitDet[index].buyNum = suitDet[index].buyNum + number;
     this.setData({
       suitDet: suitDet
     })
@@ -113,21 +112,20 @@ Page({
     })
   },
   toSubmitOrder(event) {
-    let isNum = 0;
     if (this.data.groupSuit.type === 2) {
       let isNum = 0;
       this.data.suitDet.forEach(s => {
         isNum += s.buyNum
       })
     }
-    let isAloneBuy = event.currentTarget.dataset.isAloneBuy;
-    let isOpenGroup = event.currentTarget.dataset.isOpenGroup;
     if (!this.data.groupMyId && this.data.endTimeDown <= 0) {
       wx.switchTab({
         url: '../current/current'
       })
       return;
     }
+    let isAloneBuy = event.currentTarget.dataset.isAloneBuy;
+    let isOpenGroup = event.currentTarget.dataset.isOpenGroup;
     let suitDet = this.data.suitDet
     let groupSuit = this.data.groupSuit
     let currentTime = new Date().getTime();

@@ -51,7 +51,6 @@
   height: 128rpx;
   margin-right: 20rpx;
   border-radius: 12rpx;
-  background: #000;
 }
 
 .order_list_ul .order_list_li .order_item_top_header{

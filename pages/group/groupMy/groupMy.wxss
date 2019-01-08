@@ -140,7 +140,6 @@
   width: 84rpx;
   height: 84rpx;
   border-radius: 50%;
-  background-color: #000000;
 }
 
 .info_box .aid_friend .friend_list .li view {

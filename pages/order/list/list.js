@@ -50,7 +50,8 @@ Page({
     if (this.data.activeTab !== index) {
       this.setData({
         activeTab: index,
-        orderList: []
+        orderList: [],
+        page: 1 
       })
       this.getOrderList(this.data.page, this.data.size, index);
     }

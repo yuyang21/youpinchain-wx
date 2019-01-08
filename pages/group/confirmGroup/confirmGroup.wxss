@@ -277,7 +277,6 @@
   border-radius: 10rpx;
   width: 190rpx;
   height: 189rpx;
-  background-color: #000;
   vertical-align: middle;
   margin-left: 10rpx;
 }
@@ -363,8 +362,8 @@
 
 .shop_list_container .shop_info .goods .cart_btns {
   position: absolute;
-  right: 40rpx;
-  bottom: 50rpx;
+  right: 0rpx;
+  bottom: 0rpx;
 }
 
 .shop_list_container .shop_info .cart_btns .number {

@@ -148,6 +148,5 @@
   width: 240rpx;
   height: 240rpx;
   border-radius: 10rpx;
-  background: #000;
   margin: 24rpx 52rpx;
 }

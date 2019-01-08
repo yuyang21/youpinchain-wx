@@ -52,17 +52,16 @@ Page(Object.assign({
   },
   // 保存地址
   submitAddress(e) {
-    var address = e.detail.value;
-    address.id = this.data.address.id;
+    let address = Object.assign(e.detail.value, this.data.address);
     if (!util.checkAddress(address)) {
       return;
     }
     if (address.id) {
       util.request(api.updateAddress + address.id, {
         name: address.name,
-        provinceId: this.data.provinceId,
-        cityIds: this.data.cityIds,
-        areaIds: this.data.areaIds,
+        provinceId: address.provinceId,
+        cityId: address.cityId,
+        areaId: address.areaId,
         mobile: address.mobile,
         address: address.address
       }, 'PUT').then(res => {
@@ -77,14 +76,16 @@ Page(Object.assign({
               delta: 1
             })
           }
+        } else {
+          util.showErrorToast(res.errmsg)
         }
       });
     } else {
       util.request(api.addAddress, {
         name: address.name,
-        provinceId: this.data.provinceId,
-        cityId: this.data.cityId,
-        areaId: this.data.areaId,
+        provinceId: address.provinceId,
+        cityId: address.cityId,
+        areaId: address.areaId,
         mobile: address.mobile,
         address: address.address,
         isDefault: this.data.toggle
@@ -92,7 +93,7 @@ Page(Object.assign({
         address.id = res.data;
         if (res.errno == 0) {
           if (this.data.queryPath == 'confirmOrder') {
-            wx.getStorageSync('choosedAddress', JSON.stringify(address));
+            wx.setStorageSync('choosedAddress', JSON.stringify(address));
             wx.navigateBack({
               delta: 2
             })
@@ -101,6 +102,8 @@ Page(Object.assign({
               delta: 1
             })
           }
+        } else {
+          util.showErrorToast(res.errmsg)
         }
       });
     }
@@ -113,11 +116,11 @@ Page(Object.assign({
       showAlertTip: !this.data.showAlertTip
     })
     var that = this;
-    wx.showLoading({
-      title: '加载中',
-      mask: true
-    })
     if (e.detail.type == 1 && that.data.address.id) {
+      wx.showLoading({
+        title: '删除中',
+        mask: true
+      })
       util.request(api.deleteAddress + that.data.address.id, {}, 'DELETE').then(res => {
         if (res.errno == 0) {
           var sessionAddr = wx.getStorageSync('choosedAddress');
@@ -139,11 +142,14 @@ Page(Object.assign({
   },
   changeRegin(e) {
     let arr = e.detail.value;
-    let provinces = this.data.region[0][arr[0]];
-    let city = this.data.region[1][arr[1]];
-    let area = this.data.region[2][arr[2]];
     let address = this.data.address;
-    address.tipText = provinces + ' ' + city + ' ' + area;
+    address.provinceId = this.data.provinceId;
+    address.cityId = this.data.cityId;
+    address.areaId = this.data.areaId;
+    address.provinceName = this.data.region[0][arr[0]];
+    address.cityName = this.data.region[1][arr[1]];
+    address.areaName = this.data.region[2][arr[2]];
+    address.tipText = address.provinceName + ' ' + address.cityName + ' ' + address.areaName;
     this.setData({
       address: address
     });
@@ -201,9 +207,7 @@ Page(Object.assign({
     // console.log('修改的列为', e.detail.column, '，值为', e.detail.value)
     switch (e.detail.column) {
       case 0:
-        var region = [this.data.provinces, [],
-          []
-        ];
+        var region = [this.data.provinces, [], []];
         var that = this;
         util.request(api.getRegionsList, {
           pid: this.data.provinceIds[e.detail.value]

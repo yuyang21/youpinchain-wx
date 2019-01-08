@@ -41,7 +41,7 @@ Page(Object.assign({
     provinces: [],
     city: [],
     area: [],
-    provincesId: [],
+    provinceId: [],
     cityId: [],
     areaId: [],
     isAddress: true,
@@ -67,7 +67,7 @@ Page(Object.assign({
     })
     this.data.suitTypes.forEach(t => {
       if (t.type === 1) {
-        t.textType = '普通拼团';
+        t.textType = '不同地址拼团';
       } else if (t.type === 2) {
         t.textType = '同一地址拼团';
       }
@@ -161,7 +161,7 @@ Page(Object.assign({
       wx.hideLoading();
     }, 3000);
     if (!that.data.choosedAddress) {
-      if (!that.checkAddress(that.data.address)) {
+      if (!util.checkAddress(that.data.address)) {
         that.setData({
           payButton: false
         })
@@ -307,9 +307,11 @@ Page(Object.assign({
       goodsPrice: 0,
       totalPrice: 0
     })
+    let that = this;
     let goodsPrice = 0;
     let packPrice = 0;
-    let buyNum = 0
+    let buyNum = 0;
+    let productList = this.data.productList;
     if (this.data.groupSuit.type === 1) {
       // 参团
       if (this.data.groupMy) {
@@ -336,10 +338,9 @@ Page(Object.assign({
       this.setData({
         buyNum: 0
       })
-      let that = this
       // 单独购买
       if (that.data.isAloneBuy) {
-        that.data.productList.forEach(pro => {
+        productList.forEach(pro => {
           pro.groupProductPrice.forEach(productPrice => {
             if (productPrice.buyType === 1) {
               pro.realProductPrice = productPrice.presentPrice;
@@ -357,7 +358,7 @@ Page(Object.assign({
         }
         // 根据拼团的类型计算不同的套装价格
         if (that.data.groupSuitType === 1) { //普通拼团，不同地址
-          that.data.productList.forEach(pro => {
+          productList.forEach(pro => {
             pro.groupProductPrice.forEach(productPrice => {
               if (productPrice.buyType === 2) {
                 pro.realProductPrice = productPrice.presentPrice;
@@ -367,7 +368,7 @@ Page(Object.assign({
             })
           })
         } else { // 同一地址拼团
-          that.data.productList.forEach(pro => {
+          productList.forEach(pro => {
             pro.groupProductPrice.forEach(productPrice => {
               if (productPrice.buyType === 3) {
                 pro.realProductPrice = productPrice.presentPrice;
@@ -397,21 +398,21 @@ Page(Object.assign({
       packPrice: packPrice.toFixed(2),
       totalPrice: goodsPrice.toFixed(2),
       fare: fare.toFixed(2),
-      buyNum: buyNum
+      buyNum: buyNum,
+      productList: productList
     })
   },
   submitAddress(e) {
     // let address = e.detail.value;
-    let address = e.currentTarget.dataset.address;
-    console.log(address)
+    let address = Object.assign(e.currentTarget.dataset.address, this.data.address);
     if (!util.checkAddress(address)) {
       return;
     }
     util.request(api.addAddress, {
       name: address.name,
-      provinceId: this.data.provincesId,
-      cityId: this.data.cityId,
-      areaId: this.data.areaId,
+      provinceId: address.provinceId,
+      cityId: address.cityId,
+      areaId: address.areaId,
       mobile: address.mobile,
       address: address.address
     }, 'POST').then(res => {
@@ -486,11 +487,14 @@ Page(Object.assign({
   },
   changeRegin (e) {
     let arr = e.detail.value;
-    let provinces = this.data.region[0][arr[0]];
-    let city = this.data.region[1][arr[1]];
-    let area = this.data.region[2][arr[2]];
     let address = this.data.address;
-    address.tipText = provinces + ' ' + city + ' ' + area;
+    address.provinceId = this.data.provinceId;
+    address.cityId = this.data.cityId;
+    address.areaId = this.data.areaId;
+    address.provinceName = this.data.region[0][arr[0]];
+    address.cityName = this.data.region[1][arr[1]];
+    address.areaName = this.data.region[2][arr[2]];
+    address.tipText = address.provinceName + ' ' + address.cityName + ' ' + address.areaName;
     this.setData({
       address: address
     });
@@ -547,7 +551,7 @@ Page(Object.assign({
         var region = [this.data.provinces, [], []];
         var that = this;
         util.request(api.getRegionsList, {
-          pid: this.data.provincesId[e.detail.value]
+          pid: this.data.provinceIds[e.detail.value]
         }).then((res) => {
           let city = res.data;
           let cityIds = [];
@@ -576,7 +580,7 @@ Page(Object.assign({
         var region = [this.data.provinces, this.data.city, []];
         var that = this;
         util.request(api.getRegionsList, {
-          pid: that.data.cityId[e.detail.value]
+          pid: that.data.cityIds[e.detail.value]
         }).then((res) => {
           let area = res.data;
           area.forEach(p => {
