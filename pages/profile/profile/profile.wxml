@@ -22,15 +22,15 @@
       </navigator>
       <view class="ul clear">
         <navigator  hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=101" class="li info-data-link">
-          <span class="info-data-top"><image src="../../../static/images/mine-icon-dzf.png"/><b class="red-points" wx:if="{{userInfo.unpaid}}">{{userInfo.unpaid}}</b></span>
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-dzf.png"/><b class="red-points" wx:if="{{userInfo.unpaid > 0}}">{{userInfo.unpaid}}</b></span>
           <span class="info-data-bottom">待支付</span>
         </navigator>
         <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=201" class="li info-data-link">
-          <span class="info-data-top"><image src="../../../static/images/mine-icon-dfh.png"/><b class="red-points" wx:if="{{userInfo.undelivery}}">{{userInfo.undelivery}}</b></span>
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-dfh.png"/><b class="red-points" wx:if="{{userInfo.undelivery > 0}}">{{userInfo.undelivery}}</b></span>
           <span class="info-data-bottom">待发货</span>
         </navigator>
         <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=301" class="li info-data-link">
-          <span class="info-data-top"><image src="../../../static/images/mine-icon-yfh.png"/><b class="red-points" wx:if="{{userInfo.delivered}}">{{userInfo.delivered}}</b></span>
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-yfh.png"/><b class="red-points" wx:if="{{userInfo.delivered > 0}}">{{userInfo.delivered}}</b></span>
           <span class="info-data-bottom">已发货</span>
         </navigator>
       </view>

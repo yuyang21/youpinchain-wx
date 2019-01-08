@@ -16,32 +16,24 @@ Page({
   },
   getOrderStat () {
     let that = this;
+    let userInfo = this.data.userInfo;
     util.request(api.orderStat).then(res => {
       if (res.errno !== 0) {
         return;
       }
       res.data.orderStat.forEach(stat => {
         if (stat.status == 101) {
-          that.setData({
-            userInfo: {
-              unpaid: stat.count
-            }
-          })
+          userInfo.unpaid = stat.count;
         }
         if (stat.status == 201) {
-          that.setData({
-            userInfo: {
-              undeliry: stat.count
-            }
-          })
+          userInfo.undeliry = stat.count;
         }
         if (stat.status == 301) {
-          that.setData({
-            userInfo: {
-              delived: stat.count
-            }
-          })
+          userInfo.delived = stat.count;
         }
+        that.setData({
+          userInfo: userInfo
+        })
       })
     })
   },

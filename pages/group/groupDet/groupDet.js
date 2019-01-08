@@ -39,10 +39,15 @@ Page({
   },
   initData () {
     let that = this;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     util.request(api.groupDet + that.data.groupSuitId).then(function (res) {
       if (res.errno !== 0) {
         return;
       }
+      wx.hideLoading();
       that.setData({
         groupSuit: res.data.groupSuit,
         headTitle: res.data.groupSuit.suitName,

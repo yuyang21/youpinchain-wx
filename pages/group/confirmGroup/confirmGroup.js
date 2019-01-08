@@ -228,14 +228,15 @@ Page(Object.assign({
   },
   doPay(orderId, groupMyId) {
     let that = this;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     util.request('/orders/' + orderId + '/prepay', {}, 'POST').then(resp => {
-      wx.showLoading({
-        title: '加载中',
-        mask: true
-      })
       that.setData({
         payButton: false
       })
+      wx.hideLoading();
       if (resp.errno === 403) {
         util.showErrorToast(resp.errmsg);
       } else {
@@ -260,7 +261,7 @@ Page(Object.assign({
             }
           },
           fail(res) {
-            util.showErrorToast('支付失败');
+            util.showErrorToast(res.errMsg);
           }
         })
       }
@@ -397,7 +398,7 @@ Page(Object.assign({
       goodsPrice: goodsPrice.toFixed(2),
       packPrice: packPrice.toFixed(2),
       totalPrice: goodsPrice.toFixed(2),
-      fare: fare.toFixed(2),
+      fare: fare,
       buyNum: buyNum,
       productList: productList
     })
