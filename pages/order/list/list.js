@@ -42,6 +42,9 @@ Page({
     })
   },
   onShow: function () {
+    this.setData({
+      orderList: []
+    })
     this.getOrderList(this.data.page, this.data.size, this.data.activeTab);
     wx.showTabBar()
   },

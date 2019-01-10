@@ -237,6 +237,7 @@ Page(Object.assign({
         payButton: false
       })
       wx.hideLoading();
+      console.log(resp.errno);
       if (resp.errno === 403) {
         util.showErrorToast(resp.errmsg);
       } else {
