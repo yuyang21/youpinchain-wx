@@ -70,13 +70,13 @@ image.noImage {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 150rpx;
-  height: 60rpx;
+  width: 200rpx;
+  height: 68rpx;
   font-size: 34rpx;
   color: #E42826;
   border: 2rpx solid rgba(228, 40, 38, 1);
   border-radius: 5rpx;
-  transform: scale(.55) translateX(-60rpx);
+  transform: scale(.55) translateX(-70rpx);
 }
 
 .single_price {
@@ -109,7 +109,8 @@ image.noImage {
   border-radius: 5rpx;
   background: #E42826;
   width: 135rpx;
-  height: 55rpx;
+  height: 50rpx;
+  margin-top: 10rpx;
 }
 .shopping_cart p {
   line-height: 1.5;

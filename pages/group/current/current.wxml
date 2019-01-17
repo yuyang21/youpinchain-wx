@@ -15,9 +15,9 @@
           <text class="name ellipsis">{{item.suitName}}</text>
           <text class="desr ellipsis">{{item.describe}}</text>
           <view class="left">
-            <view class="price"><span class="lable">3人成团</span><span class="RMB red">￥</span>{{item.minimumPrice}}</view>
+            <view class="price"><span class="lable">拼团更划算</span><span class="RMB red">￥</span>{{item.minimumPrice}}</view>
           </view>
-          <view class="right shopping_cart"><p>立即拼团</p></view>
+          <view class="right shopping_cart"><p>抢购</p></view>
       </view>
     </navigator>
     <view class="text-center loadText">
