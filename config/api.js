@@ -25,4 +25,11 @@ module.exports = {
   groupSuit: '/groups/', //根据拼团id查询商品详情
   expressCost: '/express/', //运费查询
   inviteCode: '/act/bounty/home/inv', //获取我的分享码
+  productHotList: '/products/hot', //查询热卖商品列表
+  findCart: '/carts', //查询用户购物车
+  addToCart: '/carts', //添加到购物车 @param {商品id} productId @param {数量} number
+  updateCart: '/carts/', //更新购物车 @param {购物车Id} cartId @param {数量} number
+  deleteCart: '/carts/', //删除购物车
+  cartProductCount: '/carts/stat', //购物车中商品数量
+  submitOrder: '/orders', //提交订单
 };

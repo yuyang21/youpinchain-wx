@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/cart/cart",
     "pages/group/current/current",
     "pages/profile/address/address",
     "pages/profile/profile/profile",
@@ -7,6 +8,7 @@
     "pages/profile/income/my/income",
     "pages/profile/income/detail/detail",
     "pages/group/confirmGroup/confirmGroup",
+    "pages/group/confirmOrder/confirmOrder",
     "pages/group/groupMy/groupMy",
     "pages/group/groupDet/groupDet",
     "pages/profile/coupon/coupon",
@@ -31,9 +33,15 @@
     "list": [
       {
         "pagePath": "pages/group/current/current",
-        "iconPath": "static/images/tabBar/tab-group-normal.png",
-        "selectedIconPath": "static/images/tabBar/tab-group-highlight.png",
-        "text": "拼团购"
+        "iconPath": "static/images/tabBar/tab-home-normal.png",
+        "selectedIconPath": "static/images/tabBar/tab-home-highlight.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "static/images/tabBar/tab-buy-normal.png",
+        "selectedIconPath": "static/images/tabBar/tab-buy-highlight.png",
+        "text": "购物车"
       },
       {
         "pagePath": "pages/profile/profile/profile",

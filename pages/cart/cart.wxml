@@ -1,0 +1,106 @@
+<wxs src="../../utils/filter.wxs" module="filter" />
+<view class="container">
+  <view class="shop_list_container">
+    <view class="swiper-container" wx:if="{{carts.length > 0}}">
+      <view class="topBG">
+        <image src="../../static/images/gwc-bg.png"/>
+      </view>
+      <view class="shop_info">
+        <view wx:for="{{carts}}" wx:key="{{index}}" wx:for-item="cartList" class="lists {{index === carts.length - 1 ? 'border-no': ''}}">
+          <view class="title">
+            <span class="{{cartList.choose ? 'choose' : 'unselected'}}" bindtap="checkCart" data-cartList="{{cartList}}">
+              <image wx:if="{{cartList.choose}}" src="../../static/images/selected.png"/>
+            </span>
+            <span>{{cartList.brandName}}</span>
+          </view>
+          <view class="goods">
+            <view class="left">
+              <view class="li" wx:for="{{cartList.cartListDtos}}" wx:key="{{item.cartId}}">
+                <span class="{{item.choose && item.available ? 'choose' : 'unselected'}}" bindtap="checkCart" data-cartList="{{item}}">
+                  <image wx:if="{{item.choose && item.available}}" src="../../static/images/selected.png" />
+                </span>
+              </view>
+            </view>
+            <view class="right">
+              <view class="li" wx:for="{{cartList.cartListDtos}}" wx:key="{{item.cartId}}">
+                <image src="{{item.thumbnailPic}}" alt="" class="img {{!item.thumbnailPic ? 'noImage': ''}}"/>
+                <view class="goods_info">
+                  <view class="name" style="-webkit-box-orient: vertical;">{{item.productName}}</view>
+                  <view class="price"><span class="RMB">￥</span>{{item.presentPrice}}</view>
+                </view>
+                <view class="cart_btns">
+                  <span class="subduction {{item.number <= 1 ? 'disabled': ''}}" bindtap="item.number > 1 ? addNumber : deleteCart" data-cart="{{item}}" data-number="-1">
+                    <image wx:if="{{item.number > 1}}" src="../../static/images/sub-icon.png"/>
+                    <image wx:else src="../../static/images/sub-disable-icon.png"/>
+                  </span>
+                  <span class="num">{{item.number}}</span>
+                  <span class="add" bindtap="addNumber" data-cart="{{item}}" data-number="1">
+                    <image src="../../static/images/add-icon.png"/>
+                  </span>
+                </view>
+                <view class="red" wx:if="{{!item.isShow}}">已下架</view>
+                <view class="red" wx:elif="{{!item.available}}">库存不足</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="payment_info">
+          <view class="li">
+            <view>商品总价</view>
+            <view><span class="RMB">￥</span>{{filter.numberFormatFloat(goodsPrice)}}</view>
+          </view>
+          <view class="li">
+            <view>商品实付</view>
+            <view><span class="RMB">￥</span>{{filter.numberFormatFloat(payment)}}</view>
+          </view>
+          <view class="li">
+            <view>运费</view>
+            <view><span class="RMB">￥</span>{{fare}}</view>
+          </view>
+        </view>
+        <view class="right totalPrice">
+          合计
+          <view><span class="RMB">￥</span>{{filter.numberFormatFloat(totalPrice)}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="no_list" wx:else>
+      <image src="../../static/images/buy-icon-n-normol.png" alt="您还没有添加任何商品哦～" width="15%"/>
+      <view>您还没有添加任何商品哦～</view>
+    </view>
+  </view>
+  <!-- 推荐商品 -->
+  <view class="recommend_nav" wx:if="{{hotgoodslist.length > 0}}">
+    <view class="recommend_header">推荐商品</view>
+    <view class="recommend_list">
+      <view wx:for="{{hotgoodslist}}" wx:key="{{item.id}}">
+        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'/goods/' + item.id}}"><img src="{{item.thumbnailPic}}" alt="" class="img"/>
+        </navigator>
+        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'/goods/' + item.id}}" class="left">
+          <view class="name">{{item.name + ' ' + item.netContent}}*1{{item.packing}}</view>
+          <view class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s class="RMB">￥{{item.originalPrice}}</s>
+          </view>
+        </navigator>
+        <view class="right add_cart {{item.stock <= 0 ? 'shopping_cart_disabled': ''}}" touchstart="addToCart" data-cart="{{item}}"></view>
+      </view>
+    </view>
+    <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="/home" class="load_more" wx:if="{{hasMore}}">查看更多商品</navigator>
+  </view>
+  <!-- <transition appear @after-appear='afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot"
+              :key="index">
+      <span class="move_dot" v-if="item"></span>
+  </transition> -->
+  <!-- 底部总计 -->
+  <view class="settlement">
+    <view class="li" bindtap="checkSelectAll">
+      <span class="{{selectAll ? 'selectAll' : 'unselected'}}">
+        <image wx:if="{{selectAll}}" src="../../static/images/selected.png"/>
+      </span> 全选
+    </view>
+    <view class="li">
+      <view><text decode="{{true}}">合计 &emsp;&emsp;</text><span class="red"><span class="RMB">￥</span>{{filter.numberFormatFloat(totalPrice)}}</span></view>
+      <view><text decode="{{true}}">运费 &emsp;&emsp;</text><span class="RMB">￥</span>{{filter.numberFormatFloat(fare)}}</view>
+    </view>
+    <view class="li" bindtap="toSubmitOrder">去结算</view>
+  </view>
+</view>
