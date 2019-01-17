@@ -1,0 +1,111 @@
+<wxs src="../../../utils/filter.wxs" module="filter" />
+<view class="confirmOrderContainer">
+  <view class="shop_list_container">
+    <view class="swiper-container" wx:if="{{productList.length}}">
+      <view class="topBG" wx:if="{{choosedAddress}}"><image src="../../../static/images/gwc-bg.png"/></view>
+      <view class="address">
+        <view class="no_address" wx:if="{{!choosedAddress}}">
+          <view class="adddetail">
+            <form>
+              <view class="ui-padding-block">
+                <view class="input-new">
+                  <span>姓名</span>
+                  <input name="name" type="text" placeholder="请填写收件人姓名" value="{{address.name}}" bindinput="updateValue" data-name='address.name'/>
+                </view>
+                <view class="add-detail">
+                  <view class="input-new">
+                    <span>联系电话</span>
+                    <input name="mobile" type="number" maxlength="11" placeholder="请填写收货人手机号" value="{{address.mobile}}" bindinput="updateValue" data-name='address.mobile'/>
+                  </view>
+                </view>
+                <picker bindchange="changeRegin" bindcolumnchange="bindMultiPickerColumnChange" mode="multiSelector" range="{{region}}" class="input-new">
+                  <span>所在地区</span>
+                  <input type="text" id="address-input" disabled style="width:500rpx;" placeholder="请选择"
+                    value="{{address.tipText}}" />
+                  <image src="../../../static/images/path.png"/>
+                </picker>
+                <view class="input-new">
+                  <span>地址</span>
+                  <textarea name="address" placeholder="请填写详细地址" id="adinfo" rows="2" value="{{address.address}}" bindinput="updateValue" data-name='address.address'></textarea>
+                </view>
+              </view>
+              <view id="container"></view>
+            </form>
+          </view>
+          <view class="addbutton">
+            <button class="{{butpart ? 'butopacity' : ''}}" bindtap="submitAddress" data-address="{{address}}">保存</button>
+          </view>
+        </view>
+        <view class="address_info" wx:else>
+          <view class="address-detail">
+            <image src="../../../static/images/gwc-icon-add.png" class="add-icon"/>
+            <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}">
+              {{choosedAddress.provinceName +
+              choosedAddress.cityName + choosedAddress.areaName +
+              choosedAddress.address}}</view>
+            <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}"><text decode="{{true}}">{{choosedAddress.name}}&emsp;{{choosedAddress.mobile}}</text></view>
+          </view>
+          <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../profile/address/address?path=confirmOrder&groupSuitId={{groupSuitId}}" class="deletesite">
+            <image src="../../../static/images/path.png"/>
+          </navigator>
+        </view>
+      </view>
+      <view class="shop_info">
+        <view class="goods">
+          <view class="li" wx:for="{{productList}}" wx:key="{{item.id}}">
+            <image src="{{item.thumbnailPic}}" alt="" class="img"/>
+            <view class="goods_info">
+              <view class="name">{{item.productName}}</view>
+              <view class="price"><span class="RMB">￥</span>{{item.presentPrice}}</view>
+            </view>
+            <view class="cart_btns">
+              <span class="number">x {{item.number}}</span>
+            </view>
+          </view>
+          <!-- <view wx:if="{{showTotal}}" class="load_more" bindtap="loadAllProducts">
+            共{{productList.length}}件
+            <image src="../../../static/images/path-2.png" width="4%"/>
+          </view> -->
+        </view>
+      </view>
+      <view class="shop_info margin-t-p3">
+        <view class="payment_info">
+          <view class="li">
+            <view>商品总价</view>
+            <view><span class="RMB">￥</span>{{goodsPrice}}</view>
+          </view>
+          <!-- <navigator class="li" hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../../profile/coupon/coupon?path=confirmOrder'}}">
+            <view>优惠价格</view>
+            <view class="RMB coupon">-￥{{coupon ? coupon.money : 0}}</view>
+          </navigator> -->
+          <view class="li">
+            <view>运费{{fareInfo}}</view>
+            <view><span class="RMB">￥</span>{{fare}}</view>
+          </view>
+          <view class="li">
+            <view>包装费</view>
+            <view><span class="RMB">￥</span>{{packingFee}}</view>
+          </view>
+          <view class="li">
+            <view>包装费减免</view>
+            <view><span class="RMB">￥</span>{{packingFeeReduction}}</view>
+          </view>
+        </view>
+        <view class="right totalPrice">
+          实际支付
+          <view><span class="RMB">￥</span>{{filter.numberFormatFloat(goodsPrice * 1 + fare * 1)}}</view>
+        </view>
+      </view>
+      <view class="shop_info message">
+        <view class="input-new">
+            <span>留言</span>
+            <input type="text" maxlength="50" style="width: 100%;" placeholder="建议留言前先与客服进行确认，50字以内" value="{{message}}"/>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="settlement">
+    <view class="li" bindtap="paymentCall">去付款</view>
+    <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{filter.numberFormatFloat(goodsPrice * 1 + fare * 1)}}</span></view>
+  </view>
+</view>

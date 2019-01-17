@@ -570,3 +570,7 @@
   color: #e4372e;
   border: 2rpx solid #e4372e;
 }
+.message .input-new {
+  font-size: 30rpx;
+  color: #666;
+}
