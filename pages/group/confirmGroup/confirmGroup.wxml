@@ -86,7 +86,7 @@
             <image src="{{item.productThumbnailPic}}" alt="" class="img"/>
             <view class="goods_info">
               <view class="name">{{item.productName + ' ' + item.productNetContent}}</view>
-              <view class="price"><span class="RMB">￥</span>{{item.realProductPrice}}</view>
+              <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view>
             </view>
             <view class="cart_btns" wx:if="{{groupSuit.type === 1}}">
               <span class="number">x {{item.suitNumber}}</span>

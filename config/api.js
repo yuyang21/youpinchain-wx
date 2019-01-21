@@ -32,4 +32,5 @@ module.exports = {
   deleteCart: '/carts/', //删除购物车
   cartProductCount: '/carts/stat', //购物车中商品数量
   submitOrder: '/orders', //提交订单
+  cancelOrder: '/orders/', //取消订单
 };

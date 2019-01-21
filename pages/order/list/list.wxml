@@ -38,14 +38,14 @@
           <view class="order_item_bottom">
             <span class="order_text">实际支付<b class="red"><span class="RMB">￥</span><strong class="order_price_size">{{item.actualPrice}}</strong></b></span>
             <view class="order_button_border_grey" bindtap="toggleAlert">联系客服</view>
-            <computeTime class="detailStyle" wx:if="{{item.handleOption.pay}}" time="{{item.expiryTime}}" bindtap="toPay(item.id)"></computeTime>
-            <span class="order_button_border_red" bindtap="cancelOrder(item.id)" wx:if="{{item.handleOption.cancel}}">取消订单</span>
-            <span class="order_button_border_red" bindtap="refundCom(item.id)" wx:if="{{item.handleOption.refund}}">申请退款</span>
-            <navigator url="{{'/track?expNo=' + item.expNo + '&expCode=' + item.expCode}}" class="order_button_border_red"
+            <computeTime class="detailStyle" wx:if="{{item.handleOption.pay}}" time="{{item.expiryTime}}" bindtap="toPay" data-order-id="{{item.id}}"></computeTime>
+            <!-- <span class="order_button_border_red" bindtap="cancelOrder" data-order-id="{{item.id}}" wx:if="{{item.handleOption.cancel}}">取消订单</span> -->
+            <span class="order_button_border_red" bindtap="refundCom" data-order-id="{{item.id}}" wx:if="{{item.handleOption.refund}}">申请退款</span>
+            <navigator url="{{'../track/track?expNo=' + item.expNo + '&expCode=' + item.expCode}}" class="order_button_border_red"
               wx:if="{{item.handleOption.confirm}}">查看物流
             </navigator>
-            <span class="order_button_border_red" bindtap="confirmOrder(item.id)" wx:if="{{item.handleOption.confirm}}">确认收货</span>
-            <span class="order_button_border_red" bindtap="rebuy(item.id)" wx:if="{{item.handleOption.rebuy}}">再次购买</span>
+            <span class="order_button_border_red" bindtap="confirmOrder" data-order-id="{{item.id}}" wx:if="{{item.handleOption.confirm}}">确认收货</span>
+            <span class="order_button_border_red" bindtap="rebuy" data-order-id="{{item.id}}" wx:if="{{item.handleOption.rebuy}}">再次购买</span>
           </view>
         </view>
       </view>

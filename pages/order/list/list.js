@@ -45,6 +45,10 @@ Page({
     this.setData({
       orderList: []
     })
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     this.getOrderList(this.data.page, this.data.size, this.data.activeTab);
     wx.showTabBar()
   },
@@ -60,73 +64,81 @@ Page({
     }
   },
   // 取消订单
-  cancelOrder(orderId) {
-    cancelOrder(orderId).then(res => {
+  cancelOrder(e) {
+    let orderId = e.currentTarget.dataset.orderId;
+    util.request(api.cancelOrder + orderId, {}, 'DELETE').then(res => {
       if (res.errno !== 0) {
-        util.showErrorToast("失败");
+        util.showErrorToast(res.errmsg);
         return;
       }
-      util.showErrorToast("成功");
-      this.list();
+      util.showSuccessToast("成功");
+      this.getOrderList(this.data.page, this.data.size, this.data.activeTab);
     })
   },
   // 申请退款调出窗口
-  refundCom(orderId) {
-    this.showRefundOrderTip = !this.showRefundOrderTip
-    this.refundOrderId = orderId
+  refundCom(e) {
+    let orderId = e.currentTarget.dataset.orderId;
+    this.setData({
+      showRefundOrderTip: !this.data.showRefundOrderTip,
+      refundOrderId: orderId
+    })
   },
   // 申请退款
   refundOrderTip(orderId, refund) {
-    refundOrder(orderId, refund).then(res => {
+    util.request('/orders/' + orderId + '/refund', {
+      refund: refund
+    }, 'POST').then(res => {
       if (res.errno !== 0) {
-        util.showErrorToast("失败");
+        util.showErrorToast(res.errmsg);
         return;
       }
-      util.showErrorToast("成功");
-      this.list();
+      util.showSuccessToast("成功");
+      this.getOrderList(this.data.page, this.data.size, this.data.activeTab);
     })
   },
   // 确认收货
-  confirmOrder(orderId) {
-    confirmOrder(orderId).then(res => {
+  confirmOrder(e) {
+    let orderId = e.currentTarget.dataset.orderId;
+    util.request('/orders/' + orderId + '/confirm', {}, "POST").then(res => {
       if (res.errno !== 0) {
         util.showErrorToast("失败");
         return;
       }
-      util.showErrorToast("成功");
-      this.list()
+      util.showSuccessToast("成功");
+      this.getOrderList(this.data.page, this.data.size, this.data.activeTab);
     })
   },
-  toPay(orderId) {
-    var that = this;
-    prepayOrder(orderId).then(resp => {
+  toPay(e) {
+    let orderId = e.currentTarget.dataset.orderId;
+    util.request('/orders/' + orderId + '/prepay', {
+      type: '1111111111'
+    }, "POST").then(resp => {
       if (resp.errno === 403) {
-        util.showErrorToast(resp.errmsg)
+        util.showErrorToast(resp.errmsg);
       } else {
-        WeixinJSBridge.invoke(
-          'getBrandWCPayRequest', {
-            "appId": resp.data.appId, //公众号名称，由商户传入
-            "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
-            "nonceStr": resp.data.nonceStr, //随机串
-            "package": resp.data.packageValue,
-            "signType": resp.data.signType, //微信签名方式：
-            "paySign": resp.data.paySign //微信签名
+        wx.requestPayment({
+          timeStamp: resp.data.timeStamp, //时间戳，自1970年以来的秒数
+          nonceStr: resp.data.nonceStr, //随机串
+          package: resp.data.packageValue,
+          signType: resp.data.signType, //微信签名方式：
+          paySign: resp.data.paySign, //微信签名
+          success(res) {
+            wx.navigateTo({
+              url: '../../order/list/list'
+            })
           },
-          function (res) {
-            if (res.err_msg == "get_brand_wcpay_request:ok") {
-              that.$router.push('/order/undelivery');
-            }
-            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+          fail(res) {
+            util.showErrorToast(res.errMsg);
           }
-        );
+        });
       }
     })
   },
-  rebuy(orderId) {
-    rebuy(orderId).then(res => {
-      console.info(res)
+  rebuy(e) {
+    let orderId = e.currentTarget.dataset.orderId;
+    util.request('/orders/' + orderId + "/rebuy").then(res => {
       if (res.errno !== 0) {
-        util.showErrorToast("失败");
+        util.showErrorToast(res.errmsg);
         return;
       }
       var arr = [];
@@ -158,6 +170,7 @@ Page({
       size: size,
       showType: that.data.activeTab
     }).then(res => {
+      wx.hideLoading();
       let arr = res.data.orderVoList;
       that.setData({
         totalPage: res.data.totalPages,
@@ -173,6 +186,17 @@ Page({
       showAlertTip: !this.data.showAlertTip
     })
   },
+  myrefundOrderTip (e) {
+    let type = e.detail.type;
+    let orderId = e.detail.orderId;
+    let refund = e.detail.refund;
+    this.setData({
+      showRefundOrderTip: false
+    })
+    if (type === '1') {
+      this.refundOrderTip(orderId, refund);
+    }
+  },
   /**
    * 页面上拉触底事件的处理函数
    */
@@ -187,16 +211,5 @@ Page({
       page: this.data.page + 1
     })
     this.getOrderList(this.data.page, this.data.size);
-  },
-  myrefundOrderTip (e) {
-    let type = e.detail.type;
-    let orderId = e.detail.orderId;
-    let refund = e.detail.refund;
-    this.setData({
-      showRefundOrderTip: false
-    })
-    if (type === '1') {
-      this.refundOrderTip(orderId, refund)
-    }
   }
 })

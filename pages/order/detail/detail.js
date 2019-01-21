@@ -47,7 +47,7 @@ Page({
         showLoading: false
       })
       if (that.data.orderData.handleOption.confirm && that.data.orderData.expNo) {
-        expresses('/expresses/' + that.data.orderData.expCode + '/' + that.data.orderData.expNo).then(res => {
+        util.request('/expresses/' + that.data.orderData.expCode + '/' + that.data.orderData.expNo).then(res => {
           if (res.errno !== 0) {
             return;
           }
@@ -72,49 +72,57 @@ Page({
     })
   },
   // 取消订单
-  cancelOrder(orderId) {
+  cancelOrder(e) {
     var that = this;
-    cancelOrder(orderId).then(res => {
+    let orderId = e.currentTarget.dataset.orderId;
+    util.request(api.cancelOrder + orderId, {}, 'DELETE').then(res => {
       if (res.errno !== 0) {
         that.showErrMsg("失败");
         return;
       }
-      that.$router.push('/order/undelivery');
+      wx.navigateTo({
+        url: '../../order/list/list?showType=201'
+      })
     })
   },
   // 确认收货
-  confirmOrder(orderId) {
+  confirmOrder(e) {
     var that = this;
-    confirmOrder(orderId).then(res => {
+    let orderId = e.currentTarget.dataset.orderId;
+    util.request('/orders/' + orderId + '/confirm', {}, "POST").then(res => {
       if (res.errno !== 0) {
         that.showErrMsg("失败");
         return;
       }
-      that.$router.push('/order/completed');
+      wx.navigateTo({
+        url: '../../order/list/list?showType=401'
+      })
     })
   },
-  toPay(orderId) {
+  toPay(e) {
     var that = this;
-    prepayOrder(orderId).then(resp => {
+    let orderId = e.currentTarget.dataset.orderId;
+    util.request('/orders/' + orderId + '/prepay', {
+      type: '1111111111'
+    }, 'POST').then(resp => {
       if (resp.errno === 403) {
         that.showErrMsg(resp.errmsg)
       } else {
-        WeixinJSBridge.invoke(
-          'getBrandWCPayRequest', {
-            "appId": resp.data.appId, //公众号名称，由商户传入
-            "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
-            "nonceStr": resp.data.nonceStr, //随机串
-            "package": resp.data.packageValue,
-            "signType": resp.data.signType, //微信签名方式：
-            "paySign": resp.data.paySign //微信签名
+        wx.requestPayment({
+          timeStamp: resp.data.timeStamp, //时间戳，自1970年以来的秒数
+          nonceStr: resp.data.nonceStr, //随机串
+          package: resp.data.packageValue,
+          signType: resp.data.signType, //微信签名方式：
+          paySign: resp.data.paySign, //微信签名
+          success(res) {
+            wx.navigateTo({
+              url: '../../order/list/list'
+            })
           },
-          function (res) {
-            if (res.err_msg == "get_brand_wcpay_request:ok") {
-              that.$router.push('/order/undelivery');
-            }
-            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+          fail(res) {
+            util.showErrorToast(res.errMsg);
           }
-        );
+        });
       }
     })
   },

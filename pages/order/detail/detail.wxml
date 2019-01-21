@@ -107,11 +107,11 @@
   </view>
   <view class="sale_after">
     <span class="red" bindtap="toggleAlert">联系客服</span>
-    <computeTime class="detailStyle" wx:if="{{orderData.handleOption.pay}}" time="{{orderData.expiryTime}}" bindtap="toPay(orderData.id)"></computeTime>
-    <span class="grey" bindtap="cancelOrder" wx:if="{{orderData.handleOption.cancel}}">取消订单</span>
+    <computeTime class="detailStyle" wx:if="{{orderData.handleOption.pay && orderData.expiryTime}}" time="{{orderData.expiryTime}}" bindtap="toPay" data-order-id="{{orderData.id}}"></computeTime>
+    <span class="grey" bindtap="cancelOrder" data-order-id="{{orderData.id}}" wx:if="{{orderData.handleOption.cancel}}">取消订单</span>
     <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../rack/?expNo=' + orderData.expNo + '&expCode=' + orderData.expCode}}" class="grey"
       wx:if="{{orderData.handleOption.confirm}}">查看物流</navigator>
-    <span class="grey" bindtap="confirmOrder(orderData.id)" wx:if="{{orderData.handleOption.confirm}}">确认收货</span>
+    <span class="grey" bindtap="confirmOrder" data-order-id="{{orderData.id}}" wx:if="{{orderData.handleOption.confirm}}">确认收货</span>
   </view>
   <alertTip bindmyevent="toggleAlert" wx:if="{{showAlertTip}}" alertText="<p>请添加客服微信 <br> Lsyp-123</p>"></alertTip>
 </view>

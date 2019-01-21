@@ -61,7 +61,7 @@ Page({
       if (res.errno !== 0) {
         util.showErrorToast(res.errmsg);
       } else {
-        util.showErrorToast('提现成功');
+        util.showSuccessToast('提现成功');
         that.getInfo();
       }
     })

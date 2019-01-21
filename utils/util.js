@@ -21,6 +21,14 @@ function showErrorToast(msg) {
   })
 }
 
+function showSuccessToast(msg) {
+  wx.showToast({
+    title: msg,
+    icon: 'success',
+    duration: 2000
+  })
+}
+
 /**
  * 封封微信的的request
  */
@@ -148,6 +156,7 @@ module.exports = {
   formatTime,
   request,
   showErrorToast,
+  showSuccessToast,
   shareEvent,
   countdown,
   checkAddress
