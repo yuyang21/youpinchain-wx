@@ -16,7 +16,7 @@ Page({
   },
   getOrderStat () {
     let that = this;
-    let userInfo = this.data.userInfo;
+    let userInfo = {};
     util.request(api.orderStat).then(res => {
       if (res.errno !== 0) {
         return;
