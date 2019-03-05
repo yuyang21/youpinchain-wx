@@ -1,8 +1,8 @@
 <wxs src="../../../utils/filter.wxs" module="filter" />
 <view class="confirmOrderContainer">
   <view class="shop_list_container">
-    <view class="swiper-container" wx:if="{{productList.length}}">
-      <view class="topBG" wx:if="{{choosedAddress}}"><image src="../../../static/images/gwc-bg.png"/></view>
+    <view class="swiper-container">
+      <view class="topBG" wx:if="{{choosedAddress}}"></view>
       <view class="address">
         <view class="no_address" wx:if="{{!choosedAddress}}">
           <view class="adddetail">
@@ -39,61 +39,76 @@
         <view class="address_info" wx:else>
           <view class="address-detail">
             <image src="../../../static/images/gwc-icon-add.png" class="add-icon"/>
-            <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}">
+            <view class="p">
               {{choosedAddress.provinceName +
               choosedAddress.cityName + choosedAddress.areaName +
               choosedAddress.address}}</view>
-            <view class="p {{groupMy && groupMy.groupSuitType === 2 ? 'line-through' : ''}}"><text decode="{{true}}">{{choosedAddress.name}}&emsp;{{choosedAddress.mobile}}</text></view>
+            <view class="p"><text decode="{{true}}">{{choosedAddress.name}}&emsp;{{choosedAddress.mobile}}</text></view>
+            <!-- <view class="errAddress" wx:if="{{isAddress}}">当前商品不支持配送至该地址</view> -->
+            <!-- <view class="groupSuitType" wx:if="{{isAloneBuy === 'false'}}">
+              <view class="left">拼团方式</view>
+              <view class="right" bindtap="showTipsBox" data-type="suitTypeBox">
+                <span>{{!groupSuitType ? '请选择拼团方式': groupSuitType === 1 ? '不同地址拼团': '同一地址拼团(推荐)'}}</span>
+                <image src="../../../static/images/path.png" alt=""/>
+              </view>
+            </view> -->
+            <!-- <view class="tips" wx:if="{{groupSuitType === 2 && isAloneBuy === 'false'}}">
+              <text>选择同一地址拼团，支持“大美乡村计划”—扶持农业，收获健康，感谢您选择更环保·更温暖的生活方式。</text>
+              <span class="left">团长职责：</span><span class="left">邀请您附近伙伴拼团，团长统一收货并组织团员取货。</span>
+              <span class="left">大美奖励：</span><span class="left">订单结束后团长获得鼓励金</span>
+            </view>
+            <view class="tips" wx:if="{{groupSuitType === 1 && isAloneBuy === 'false'}}">
+              快来邀请好友分享美味吧~
+              <view>3人即可成团享受优惠价格，如收货地址相同推荐选择“同一地址拼团”更划算，更温暖。</view>
+            </view> -->
+            <view class="tips" wx:if="{{!isAloneBuy && products.data.rulesNum > 1 && !groupMy}}">
+            您只需邀请身边{{products.data.rulesNum - 1}}个小伙伴一起品尝美食，就能享受优惠价格。拼团更划算、更温暖哦!
+            </view>
+            <view class="tips" wx:if="{{groupMy && groupMy.joinNum + 1 < groupMy.rulesNum}}">
+              您只需邀请身边{{groupMy.rulesNum - groupMy.joinNum}}个小伙伴一起品尝美食，就能享受优惠价格。拼团更划算、更温暖哦!
+            </view>
           </view>
-          <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../profile/address/address?path=confirmOrder&groupSuitId={{groupSuitId}}" class="deletesite">
+          <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../profile/address/address?path=confirmOrder&groupSuitId={{products.data.id}}" class="deletesite">
             <image src="../../../static/images/path.png"/>
           </navigator>
         </view>
       </view>
       <view class="shop_info">
         <view class="goods">
-          <view class="li" wx:for="{{productList}}" wx:key="{{item.id}}">
-            <image src="{{item.thumbnailPic}}" alt="" class="img"/>
+          <view class="li">
+            <image mode='aspectFill' src="{{products.data.normalPic}}" alt="" class="img"/>
             <view class="goods_info">
-              <view class="name">{{item.productName}}</view>
-              <view class="price"><span class="RMB">￥</span>{{item.presentPrice}}</view>
+              <view class="name">{{products.data.name}}</view>
+              <view class="price"><span class="RMB">￥</span>{{products.data.minPrice}}</view>
             </view>
             <view class="cart_btns">
-              <span class="number">x {{item.number}}</span>
+              <span class="number">x {{products.data.number}}</span>
             </view>
           </view>
-          <!-- <view wx:if="{{showTotal}}" class="load_more" bindtap="loadAllProducts">
-            共{{productList.length}}件
-            <image src="../../../static/images/path-2.png" width="4%"/>
-          </view> -->
         </view>
       </view>
       <view class="shop_info margin-t-p3">
         <view class="payment_info">
           <view class="li">
             <view>商品总价</view>
-            <view><span class="RMB">￥</span>{{goodsPrice}}</view>
+            <view><span class="RMB">￥</span>{{filter.numberFormatFloat(goodsPrice)}}</view>
           </view>
-          <!-- <navigator class="li" hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../../profile/coupon/coupon?path=confirmOrder'}}">
-            <view>优惠价格</view>
-            <view class="RMB coupon">-￥{{coupon ? coupon.money : 0}}</view>
-          </navigator> -->
           <view class="li">
             <view>运费{{fareInfo}}</view>
             <view><span class="RMB">￥</span>{{fare}}</view>
           </view>
-          <view class="li">
+          <!-- <view class="li">
             <view>包装费</view>
             <view><span class="RMB">￥</span>{{packingFee}}</view>
           </view>
           <view class="li">
             <view>包装费减免</view>
             <view><span class="RMB">￥</span>{{packingFeeReduction}}</view>
-          </view>
+          </view> -->
         </view>
         <view class="right totalPrice">
           实际支付
-          <view><span class="RMB">￥</span>{{filter.numberFormatFloat(goodsPrice * 1 + fare * 1)}}</view>
+          <view><span class="RMB">￥</span>{{filter.numberFormatFloat(goodsPrice + fare)}}</view>
         </view>
       </view>
       <view class="shop_info message">
@@ -107,5 +122,20 @@
   <view class="settlement">
     <view class="li" bindtap="paymentCall">去付款</view>
     <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{filter.numberFormatFloat(goodsPrice * 1 + fare * 1)}}</span></view>
+  </view>
+  <view class="mask_box" hidden="{{!showTip}}" bindtap="showTipsBox" style="height:{{maskBoxH}}px;"></view>
+  <view class="suitTypeBox" hidden="{{!suitTypeBox}}">
+    <view class="title">
+      拼团方式
+      <view class="right" bindtap="showTipsBox" data-close="true">
+        <image src="../../../static/images/close.png" alt=""/>
+      </view>
+    </view>
+    <view class="levels">
+      <view class="label {{groupSuitType === item.type ? 'selected' : ''}}" wx:for="{{suitTypes}}" wx:key="index" wx:for-item="item"
+        bindtap="selectSuitType" data-suit-type="{{item.type}}">
+        <text>{{item.textType}}</text>
+      </view>
+    </view>
   </view>
 </view>

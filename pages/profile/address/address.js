@@ -16,7 +16,7 @@ Page({
         queryPath: options.path
       })
     }
-    if (this.data.queryPath !== 'confirmOrder') {
+    if (this.data.queryPath !== 'confirmOrder' && this.data.queryPath !== 'confirmCart' && this.data.queryPath !== 'confirmGroup') {
       this.setData({
         selectedAddress: false,
       })
@@ -24,17 +24,17 @@ Page({
       this.setData({
         groupSuitId: options.groupSuitId
       })
+      util.request(api.getAddressByGroupSuit + this.data.groupSuitId).then(res => {
+        this.setData({
+          isAddressList: res.data
+        })
+      })
     }
   },
   onShow: function () {
     wx.showLoading({
       title: '加载中',
       mask: true
-    })
-    util.request(api.getAddressByGroupSuit + this.data.groupSuitId).then(res => {
-      this.setData({
-        isAddressList: res.data
-      })
     })
     this.loadAddresses();
   },
@@ -46,11 +46,11 @@ Page({
     }).then(res => {
       let newAddressList = [];
       res.data.forEach(a => {
-        this.data.isAddressList.forEach(address => {
-          if (address.id == a.id) {
-            a.isAddress = true
-          }
-        })
+        // that.data.isAddressList.forEach(address => {
+        //   if (address.id == a.id) {
+        //     a.isAddress = true
+        //   }
+        // })
         newAddressList.push(a);
       })
       that.setData({

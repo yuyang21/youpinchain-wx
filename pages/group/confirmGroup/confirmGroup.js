@@ -77,6 +77,11 @@ Page(Object.assign({
         })
       }
     });
+    if (this.data.suitTypes.length === 1){
+      this.setData({
+        groupSuitType: this.data.suitTypes[0].type
+      })
+    }
   },
   onShow: function () {
     this.setData({
@@ -183,12 +188,11 @@ Page(Object.assign({
 
     // 开团
     if (!groupMyId) {
-      util.request('/groups/' + suitId + '/groupMys', {
+      util.request('/groupMy/1/' + suitId, {
         suitId: suitId,
-        isAloneBuy: isAloneBuy,
+        productType: 1,
         groupSuitType: groupSuitType,
-        suitNum: suitNum,
-        groupMyId: groupMyId
+        suitNum: suitNum
       }, 'POST').then((res) => {
         // 开团失败时
         if (res.errno !== 0) {
@@ -204,8 +208,11 @@ Page(Object.assign({
   },
   submitGroup(suitId, addressId, couponId, message, suitNum, groupMyId, products) {
     let that = this;
-    util.request('/groups/' + suitId + '/groupMys/' + groupMyId + '/order', {
-      suitId: suitId,
+    let type = that.data.groupSuit.type === 2 ? 3 : 1;
+    util.request('/order/' + type, {
+      groupSuitType: that.data.groupSuit.type,
+      productType: 1,
+      groupSuitId: suitId,
       addressId: addressId,
       couponId: couponId,
       message: message,
@@ -232,12 +239,13 @@ Page(Object.assign({
       title: '加载中',
       mask: true
     })
-    util.request('/orders/' + orderId + '/prepay', {}, 'POST').then(resp => {
+    util.request('/orders/' + orderId + '/prepay', {
+      type: '1111111111'
+    }, 'POST').then(resp => {
       that.setData({
         payButton: false
       })
       wx.hideLoading();
-      console.log(resp.errno);
       if (resp.errno === 403) {
         util.showErrorToast(resp.errmsg);
       } else {
@@ -590,7 +598,8 @@ Page(Object.assign({
             that.setData({
               region: region,
               cityId: that.data.cityIds[e.detail.value],
-              areaId: area[0].id
+              areaId: area[0].id,
+              areaIds: that.returnListName(area, 'id')
             })
           })
         })

@@ -1,0 +1,7 @@
+.report {
+    width: 100%;
+}
+.report image {
+    width: 100%;
+    display: block;
+}

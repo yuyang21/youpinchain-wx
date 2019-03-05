@@ -13,6 +13,13 @@ var timeArry = function(number, index) {
 var moneyFormat = function(money) {
   return money.toFixed(2);
 }
+var substring = function(str, startIndex, endIndex) {
+  if (str.length > endIndex) {
+    return str.slice(startIndex, endIndex) + '...';
+  } else {
+    return str;
+  }
+}
 
 /**
  * 
@@ -25,8 +32,8 @@ var formatDate = function (timestamp,option,format) {
   }
   var date = getDate(parseInt(timestamp));
   var year = date.getFullYear();
-  var month = date.getMonth() + 1;
-  var day = date.getDate();
+  var month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+  var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
   var hour = function() {
     if (date.getHours()<10) {
       return '0' + date.getHours();
@@ -58,6 +65,9 @@ var formatDate = function (timestamp,option,format) {
   if (option == 'date_hm') {
     return hour() + ':' + minute();
   }
+  if (option == 'date_hmd') {
+    return hour() + ':' + minute() + ":" + second();
+  }
 
   return year + format + month + format + day + ' ' + hour() + ':' + minute() + ":" + second();
 }
@@ -75,6 +85,10 @@ var numberFormatFloat = function (value) {
   var v = parseFloat(value) //强转Float，毕竟有可能返回是String类型的数字
   return v.toFixed(2)
 }
+
+var indexOf = function (value, keyword) {
+  return value.indexOf(keyword) !== -1
+}
  
 /*
  * 导出
@@ -85,5 +99,7 @@ module.exports = {
   formatDate: formatDate,
   timeformat: timeformat,
   numberFormat: numberFormat,
-  numberFormatFloat: numberFormatFloat
+  numberFormatFloat: numberFormatFloat,
+  substring: substring,
+  indexOf: indexOf
 }

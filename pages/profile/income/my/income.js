@@ -27,16 +27,16 @@ Page({
         todayInfo: res.data
       })
     })
-    util.request(api.rewardGrade).then((res) => {
-      that.setData({
-        level: res.data.sortNo
-      })
-    })
-    util.request(api.rewardGrades).then(res => {
-      that.setData({
-        levels: res.data.data
-      })
-    })
+    // util.request(api.rewardGrade).then((res) => {
+    //   that.setData({
+    //     level: res.data.sortNo
+    //   })
+    // })
+    // util.request(api.rewardGrades).then(res => {
+    //   that.setData({
+    //     levels: res.data.data
+    //   })
+    // })
   },
   withdraws(event) {
     let that = this;
@@ -61,7 +61,7 @@ Page({
       if (res.errno !== 0) {
         util.showErrorToast(res.errmsg);
       } else {
-        util.showSuccessToast('提现成功');
+        util.showErrorToast('提现成功');
         that.getInfo();
       }
     })

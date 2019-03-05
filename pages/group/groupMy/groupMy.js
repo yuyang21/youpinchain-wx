@@ -57,10 +57,10 @@ Page({
       that.setData({
         groupMy: res.data.groupMy,
         leaderAddress: res.data.orderAddressVo,
-        endTimeDown: res.data.groupMy.endTime - that.data.systemTime
+        endTimeDown: res.data.groupMy.endTime / 1000 - that.data.systemTime
       })
       util.countdown(that);
-      util.request(api.groupSuit + that.data.groupMy.groupSuitId).then(res => {
+      util.request(api.groupSuit + that.data.groupMy.groupSuitId,{groupMyId:that.data.groupMy.id}).then(res => {
         that.setData({
           groupSuit: res.data.groupSuit
         })

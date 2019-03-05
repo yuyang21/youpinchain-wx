@@ -1,14 +1,16 @@
 <wxs src="../../../utils/filter.wxs" module="filter" />
 <view class="goods">
+  <header goBack="true" isShare="true" class="{{backgroundColor}}" bindmyevent="showShareBox"></header>
   <view class="scrollBox">
     <view class="top_main">
       <view wx:if="{{headPic && headPic.length <= 0}}">
         <image src="{{groupSuit.normalPic}}" alt="" class="show" />
       </view>
-      <swiper wx:else class="swiper" indicator-dots="true" autoplay="true" interval="1500" duration="1000" circular="true" indicator-color="#b5b5b5" indicator-active-color="#e4372e">
+      <swiper wx:else class="swiper" indicator-dots="{{headPic.length > 1}}" interval="1500" duration="1000" circular="true" indicator-color="#b5b5b5" indicator-active-color="#e4372e" style="height:{{Height}}rpx;">
         <block wx:for="{{headPic}}" wx:key="{{index}}" class="header_image">
           <swiper-item>
-            <image src="{{item}}" class="slide-image show" />
+            <video src="{{item.src}}" controls wx:if="{{item.type === 'video'}}"></video>
+            <image src="{{item.src}}" class="slide-image show" wx:else />
           </swiper-item>
         </block>
       </swiper>
@@ -23,7 +25,7 @@
           </view>
         </view>
         <view class="right_tip right" wx:if="{{!groupMyId && endTimeDown>0 && startTimeDown<1}}">
-          <view>距开团结束</view>
+          <view>应季尝鲜还有</view>
           <view wx:if="endTimeDown > 24*60*60">
             <span class="shadow_box">{{endTimeDown/60/60/24 | Int}}</span>天<span class="shadow_box">{{filter.timeArry((endTimeDown - (endTimeDown/24/60/60 | Int) * 24*60*60),0)}}</span>时<span class="shadow_box">{{filter.timeArry(endTimeDown,1)}}</span>分
           </view>
@@ -52,7 +54,7 @@
       </view>
     </view>
     <!-- 拼团流程 -->
-    <view class="assembling_process">
+    <!-- <view class="assembling_process">
       <view class="panel_title">拼团流程</view>
       <view class="content">
         <view class="process">
@@ -76,7 +78,7 @@
         <view class="mode">模式一：<span>普通拼团，享受价格优惠</span></view>
         <view class="mode">模式二：<span>同一地址拼团，团长选择收货地址，团员线下与团长进行后续收货服务。团长获得劳动鼓励金。</span></view>
       </view>
-    </view>
+    </view> -->
     <!-- 拼团商品 -->
     <view class="goods_info" wx:if="{{groupSuit.type === 2}}">
       <view class="panel_title">拼团商品</view>
@@ -85,8 +87,7 @@
               <!-- <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'/goods/' + item.productId}}"> -->
                   <image src="{{item.productThumbnailPic}}" alt="" class="left {{!item.productThumbnailPic ? 'noImage' : ''}}"/>
                   <view class="left goods_li">
-                      <view class="name">{{item.productName + ' ' +
-                          item.productNetContent}}</view>
+                      <view class="name">{{item.productName}}</view>
                       <!-- <view class="desr">{{item.productDescribe}}</view> -->
                       <!-- <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view> -->
                       <view class="cart_btns right" wx:if="{{item.productStock > 0}}">
@@ -102,9 +103,9 @@
           </view>
       </view>
     </view>
-    <!-- 拼团详情 -->
+    <!-- 产品详情 -->
     <view class="goods_info" wx:if="{{footPic && footPic.length > 0}}">
-      <view class="panel_title">拼团详情</view>
+      <view class="panel_title">产品详情</view>
       <view class="goodsImgs">
         <image src="{{item}}" alt="" wx:for="{{footPic}}" wx:key="index" mode="widthFix"/>
       </view>
@@ -121,11 +122,15 @@
     </view>
     <view class="cart_btn_alone right {{groupSuit.type == 2 ? 'cart_btn_center' : ''}}" bindtap="toSubmitOrder" data-is-alone-buy="true">
       <view wx:if="{{groupSuit.type != 2}}">￥{{groupSuit.suitPrice}}</view>
-      <view>立即支付</view>
+      <view>单独购买</view>
+    </view>
+    <view class="add_cart_btn right" bindtap="addCart">
+      <view>加入购物车</view>
     </view>
   </view>
   <view class="add_cart_container activityEnd_btns" wx:if="{{endTimeDown <= 0}}">
     <view class="cart_btn right" bindtap="toSubmitOrder" data-is-alone-buy="false" data-is-open-group="true">{{groupMyId ? '我要开团' : '查看其他拼团'}}</view>
     <view class="cart_btn_alone right">拼团结束</view>
   </view>
+  <poster bindmyevent="showShareBox" currentPage="{{currentPage}}" goods='{{goods}}' wx:if="{{showPoster}}"></poster>
 </view>

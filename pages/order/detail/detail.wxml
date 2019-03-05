@@ -1,15 +1,18 @@
 <wxs src="../../../utils/filter.wxs" module="filter" />
-<view wx:if="{{!showLoading}}" class="order_detail_page">
+<view wx:if="{{!showLoading}}" class="order_detail_page {{showAlertTip || showPoster ? 'position-fix' : ''}}">
   <view class="page-top-red"></view>
-  <view class="order_titel border_radius" bindtap="goTrack">
+  <view class="order_titel border_radius">
     <view class="status-img"><image src="../../../static/images/status1.png"/></view>
     <view>{{orderData.orderStatusText}}</view>
-    <image src="../../../static/images/path.png" wx:if="{{orderData.handleOption.confirm}}"/>
   </view>
-  <view class="distribution-information border_radius" wx:if="{{orderData.handleOption.confirm}}">
+  <view class="distribution-information border_radius position-re" wx:if="{{orderData.handleOption.confirm}}" bindtap="goTrack">
     <image src="../../../static/images/ddxq-ps.png" alt=""/>
     <view>
-      <text>{{exp.context}}</text>
+      <text class="show">{{orderData.expName}}</text>
+      <text>单号：{{orderData.expNo}}</text>
+      <text catchtap="copyExpNo" class="copy">复制</text>
+      <text class="show">最新：{{exp.context}}</text>
+      <image class="path" src="../../../static/images/path.png" wx:if="{{orderData.handleOption.confirm}}"/>
     </view>
   </view>
   <view class="address border_radius">
@@ -17,6 +20,31 @@
       <image src="../../../static/images/gwc-icon-add.png"/>
       <view>{{orderData.address}}</view>
       <view><span>{{orderData.consignee}}</span><span>{{orderData.mobile}}</span></view>
+    </view>
+  </view>
+  <view class="sharing border_radius position-re" wx:if="{{orderData.status === 200}}">
+    <view class="sharing-detail">
+      <view>
+        <view class="text">待分享，还差<span class="red"> {{joinNum}} </span>人</view>
+        <view class="shareBtn" bindtap="showShareBox">邀请好友</view>
+      </view>
+      <view class="countDown">剩余 <text class="red">{{filter.timeArry(endTimeDown, 0)}}:{{filter.timeArry(endTimeDown, 1)}}:{{filter.timeArry(endTimeDown, 2)}}</text></view>
+      <view class="aid_friend">
+        <view class="friend_list">
+          <block wx:if="members.length > 0">
+            <view class="li" wx:for="{{members}}" wx:key="index"><image src="{{item.headImgUrl}}"/>
+              <view wx:if="{{index === 0}}">团长</view>
+            </view>
+          </block>
+          <view class="li none">
+            <text>?</text>
+            <view>待邀请</view>
+          </view>
+          <view class="li none" wx:if="{{totalPages > 1}}" bindtap="loadMoreMember">
+            <view><span>查看更多</span></view>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
   <view class="food_list border_radius">
@@ -28,7 +56,7 @@
     </view>
     <view class="goods">
       <view class="li" wx:for="{{orderProduct}}" wx:key="item.id">
-        <image src="{{item.picUrl}}" alt="" class="img"/>
+        <image mode='aspectFill' src="{{item.picUrl}}" alt="" class="img"/>
         <view class="goods_info">
           <view class="name">{{item.productName}}</view>
           <view class="price"><span>￥</span>{{item.retailPrice}}</view>
@@ -50,7 +78,7 @@
     <view class="item_style">
       <text class="item_left">优惠价格</text>
       <view class="item_right">
-        <text>-￥0</text>
+        <text>-￥{{orderData.couponPrice || 0}}</text>
       </view>
     </view>
     <view class="item_style">
@@ -59,7 +87,7 @@
         <text>+￥{{orderData.freightPrice}}</text>
       </view>
     </view>
-    <view class="item_style">
+    <!-- <view class="item_style">
       <text class="item_left">包装费</text>
       <view class="item_right">
         <text>+￥0</text>
@@ -70,7 +98,7 @@
       <view class="item_right">
         <text>-￥0</text>
       </view>
-    </view>
+    </view> -->
     <view class="item_style">
       <text class="item_left">实际支付</text>
       <view class="item_right">
@@ -95,23 +123,24 @@
     <view class="item_style">
       <text class="item_left">下单时间</text>
       <view class="item_right">
-        <text>{{filter.timeformat(orderData.addTime)}}</text>
+        <text>{{filter.longDateformat(orderData.addTime)}}</text>
       </view>
     </view>
-    <view class="item_style">
-      <text class="item_left">预计送达时间</text>
-      <view class="item_right">
-        <text>--</text>
-      </view>
-    </view>
+    <!--<view class="item_style">-->
+      <!--<text class="item_left">预计送达时间</text>-->
+      <!--<view class="item_right">-->
+        <!--<text>&#45;&#45;</text>-->
+      <!--</view>-->
+    <!--</view>-->
   </view>
   <view class="sale_after">
     <span class="red" bindtap="toggleAlert">联系客服</span>
-    <computeTime class="detailStyle" wx:if="{{orderData.handleOption.pay && orderData.expiryTime}}" time="{{orderData.expiryTime}}" bindtap="toPay" data-order-id="{{orderData.id}}"></computeTime>
-    <span class="grey" bindtap="cancelOrder" data-order-id="{{orderData.id}}" wx:if="{{orderData.handleOption.cancel}}">取消订单</span>
-    <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../rack/?expNo=' + orderData.expNo + '&expCode=' + orderData.expCode}}" class="grey"
-      wx:if="{{orderData.handleOption.confirm}}">查看物流</navigator>
-    <span class="grey" bindtap="confirmOrder" data-order-id="{{orderData.id}}" wx:if="{{orderData.handleOption.confirm}}">确认收货</span>
+    <!--<computeTime class="detailStyle" wx:if="{{orderData.handleOption.pay}}" time="{{orderData.expiryTime}}" bindtap="toPay(orderData.id)"></computeTime>-->
+    <!-- <span class="grey" bindtap="cancelOrder" wx:if="{{orderData.handleOption.cancel}}">取消订单</span> -->
+    <!-- <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../rack/?expNo=' + orderData.expNo + '&expCode=' + orderData.expCode}}" class="grey"
+      wx:if="{{orderData.handleOption.confirm}}">查看物流</navigator> -->
+    <span class="grey" bindtap="confirmOrder(orderData.id)" wx:if="{{orderData.handleOption.confirm}}">确认收货</span>
   </view>
   <alertTip bindmyevent="toggleAlert" wx:if="{{showAlertTip}}" alertText="<p>请添加客服微信 <br> Lsyp-123</p>"></alertTip>
+  <poster bindmyevent="closeMask" currentPage="{{currentPage}}" goods='{{goods}}' groupPrice='{{groupPrice}}' wx:if="{{showPoster}}"></poster>
 </view>

@@ -2,7 +2,7 @@
 <view class="confirmOrderContainer">
   <view class="shop_list_container">
     <view class="swiper-container" wx:if="{{productList.length}}">
-      <view class="topBG" wx:if="{{choosedAddress}}"><image src="../../../static/images/gwc-bg.png"/></view>
+      <view class="topBG" wx:if="{{choosedAddress}}"></view>
       <view class="address">
         <view class="no_address" wx:if="{{!choosedAddress}}">
           <view class="adddetail">
@@ -85,8 +85,8 @@
           <view class="li" wx:for="{{productList}}" wx:key="{{item.id}}">
             <image src="{{item.productThumbnailPic}}" alt="" class="img"/>
             <view class="goods_info">
-              <view class="name">{{item.productName + ' ' + item.productNetContent}}</view>
-              <view class="price"><span class="RMB">￥</span>{{item.productPresentPrice}}</view>
+              <view class="name">{{item.productName}}</view>
+              <view class="price"><span class="RMB">￥</span>{{item.realProductPrice}}</view>
             </view>
             <view class="cart_btns" wx:if="{{groupSuit.type === 1}}">
               <span class="number">x {{item.suitNumber}}</span>

@@ -1,23 +1,23 @@
 <wxs src="../../../utils/filter.wxs" module="filter" />
-<view class="order_page">
+<view class="order_page {{showAlertTip || showPoster || showRefundOrderTip ? 'position-fix' : ''}}">
   <view class="nav_tab">
     <view wx:for="{{tabList}}" wx:key="index" class="li {{activeTab == item.showType ? 'active' : ''}}" bindtap="findOrder" data-show-type="{{item.showType}}">{{item.tab}}</view>
   </view>
-  <view class="order_list_ul">
+  <view class="order_list_ul" wx:if="{{activeTab != 200}}">
     <view wx:if="{{orderList.length <= 0}}" class="no_list">暂无订单记录</view>
     <block wx:else>
-      <view wx:for="{{orderList}}" wx:key="item.id" class="order_list_li">
+      <view wx:for="{{orderList}}" wx:key="item.order.id" class="order_list_li">
         <view class="order_item_top">
           <view>
             <view class="order_item_top_header">
-              <view class="order_time">{{filter.timeformat(item.addTime)}}</view>
+              <view class="order_time">{{filter.formatDate(item.addTime, 'nosecond', '.')}}</view>
               <view class="order_status">
                 <view wx:if="{{item.groupMyType == 2}}">(拼团成功)</view>
                 <view wx:if="{{item.groupMyType == 3}}">(拼团失败)</view>
                 {{item.orderStatusText}}
               </view>
             </view>
-            <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" wx:if="{{item.groupOrderDto}}" url="{{'../../group/groupMy/groupMy?groupMyId=' + item.groupMyId}}" class="order_item_top_header_group">
+            <!-- <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" wx:if="{{item.groupOrderDto}}" url="{{'../../group/groupMy/groupMy?groupMyId=' + item.groupMyId}}" class="order_item_top_header_group">
               <view class="ul">
                 <text>{{item.groupOrderDto.suitName}}拼团中</text>
                 <text>
@@ -25,10 +25,10 @@
                 </text>
               </view>
               <image class="image" src="../../../static/images/path.png"/>
-            </navigator>
-            <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../detail/detail?orderId=' + item.id}}" class="goods_img">
+            </navigator> -->
+            <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../detail/detail?orderId=' + item.id + '&groupMyId=' + item.groupMyId}}" class="goods_img">
               <view class="goods_box">
-                <image class="restaurant_image" wx:for="{{item.productList}}" wx:for-item="goods" src="{{goods.pictureUrl}}" wx:if="{{index < 4}}"
+                <image mode='aspectFill' class="restaurant_image" wx:for="{{item.productList}}" wx:for-item="goods" src="{{goods.pictureUrl}}" wx:if="{{index < 4}}"
                   wx:key="index"/>
               </view>
               <text>共{{item.productList.length}}件</text>
@@ -41,11 +41,11 @@
             <computeTime class="detailStyle" wx:if="{{item.handleOption.pay}}" time="{{item.expiryTime}}" bindtap="toPay" data-order-id="{{item.id}}"></computeTime>
             <!-- <span class="order_button_border_red" bindtap="cancelOrder" data-order-id="{{item.id}}" wx:if="{{item.handleOption.cancel}}">取消订单</span> -->
             <span class="order_button_border_red" bindtap="refundCom" data-order-id="{{item.id}}" wx:if="{{item.handleOption.refund}}">申请退款</span>
-            <navigator url="{{'../track/track?expNo=' + item.expNo + '&expCode=' + item.expCode}}" class="order_button_border_red"
+            <navigator url="{{'../track/track?expNo=' + item.expNo + '&expCode=' + item.expCode}}" class="order_button_border_red marg-lr-10"
               wx:if="{{item.handleOption.confirm}}">查看物流
             </navigator>
             <span class="order_button_border_red" bindtap="confirmOrder" data-order-id="{{item.id}}" wx:if="{{item.handleOption.confirm}}">确认收货</span>
-            <span class="order_button_border_red" bindtap="rebuy" data-order-id="{{item.id}}" wx:if="{{item.handleOption.rebuy}}">再次购买</span>
+            <span class="order_button_border_red marg-lr-10" bindtap="rebuy" data-order-id="{{item.id}}" wx:if="{{item.handleOption.rebuy}}">再次购买</span>
           </view>
         </view>
       </view>
@@ -55,6 +55,44 @@
       </view>
     </block>
   </view>
+  <view class="order_list_ul" wx:else>
+    <view wx:if="{{orderList.length <= 0}}" class="no_list">暂无订单记录</view>
+    <block wx:else>
+      <view wx:for="{{orderList}}" wx:key="item.order.id" class="order_list_li">
+        <view class="order_item_top">
+          <view>
+            <view class="order_item_top_header">
+              <view class="order_time">{{filter.formatDate(item.order.addTime, 'nosecond', '.')}}</view>
+              <view class="order_status">
+                待分享，还差<span class="red"> {{item.groupMy.rulesNum - item.groupMy.joinNum}} </span>人
+              </view>
+            </view>
+            <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../detail/detail?orderId=' + item.order.id + '&groupMyId=' + item.groupMy.id}}" bindtap="session" data-order="{{item}}" class="goods_img">
+              <view class="goods_box">
+                <image mode='aspectFill' class="restaurant_image left" src="{{item.product.normalPic}}"/>
+                <view class="left title">
+                  <view class="name">{{item.product.name.length > 12 ? item.product.shortName : item.product.name}}</view>
+                  <view class="describe">{{item.product.describe.length > 16 ? item.product.shortDescribe : item.product.describe}}</view>
+                </view>
+              </view>
+              <text>共1件</text>
+              <image class="image" src="../../../static/images/path.png"/>
+            </navigator>
+          </view>
+          <view class="order_item_bottom">
+            <span class="order_text">实际支付<b class="red"><span class="RMB">￥</span><strong class="order_price_size">{{item.order.actualPrice}}</strong></b></span>
+            <span class="sharing_red" data-order="{{item}}" bindtap="showShareBox">邀请好友拼单</span>
+            <span class="order_button_red sharing_red">剩余 {{filter.timeArry(item.groupMy.endTimeDown, 0)}}:{{filter.timeArry(item.groupMy.endTimeDown, 1)}}:{{filter.timeArry(item.groupMy.endTimeDown, 2)}}</span>
+          </view>
+        </view>
+      </view>
+      <view class="text-center loadText">
+        <text hidden="{{!loading}}">正在加载中....</text>
+        <text hidden="{{!loaded}}">到底喽，没有更多数据了...</text>
+      </view>
+    </block>
+  </view>
+  <poster bindmyevent="closeMask" currentPage="{{currentPage}}" goods='{{goods}}' groupPrice='{{groupPrice}}' wx:if="{{showPoster}}"></poster>
   <alertTip bindmyevent="toggleAlert" alertText='<p>请添加客服微信 <br> Lsyp-123</p>' wx:if="{{showAlertTip}}"></alertTip>
-  <refundOrderTip bindmyevent="myrefundOrderTip" orderId='refundOrderId' wx:if="{{showRefundOrderTip}}"></refundOrderTip>
+  <refundOrderTip bindmyevent="myrefundOrderTip" orderId='{{refundOrderId}}' wx:if="{{showRefundOrderTip}}"></refundOrderTip>
 </view>

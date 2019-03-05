@@ -1,0 +1,144 @@
+<wxs src="../../../utils/filter.wxs" module="filter" />
+<view class="confirmOrderContainer">
+  <view class="shop_list_container">
+    <view class="swiper-container">
+      <view class="topBG" wx:if="{{choosedAddress}}"></view>
+      <view class="address">
+        <view class="no_address" wx:if="{{!choosedAddress}}">
+          <view class="adddetail">
+            <form>
+              <view class="ui-padding-block">
+                <view class="input-new">
+                  <span>姓名</span>
+                  <input name="name" type="text" placeholder="请填写收件人姓名" value="{{address.name}}" bindinput="updateValue" data-name='address.name'/>
+                </view>
+                <view class="add-detail">
+                  <view class="input-new">
+                    <span>联系电话</span>
+                    <input name="mobile" type="number" maxlength="11" placeholder="请填写收货人手机号" value="{{address.mobile}}" bindinput="updateValue" data-name='address.mobile'/>
+                  </view>
+                </view>
+                <picker bindchange="changeRegin" bindcolumnchange="bindMultiPickerColumnChange" mode="multiSelector" range="{{region}}" class="input-new">
+                  <span>所在地区</span>
+                  <input type="text" id="address-input" disabled style="width:500rpx;" placeholder="请选择"
+                    value="{{address.tipText}}" />
+                  <image src="../../../static/images/path.png"/>
+                </picker>
+                <view class="input-new">
+                  <span>地址</span>
+                  <textarea name="address" placeholder="请填写详细地址" id="adinfo" rows="2" value="{{address.address}}" bindinput="updateValue" data-name='address.address'></textarea>
+                </view>
+              </view>
+              <view id="container"></view>
+            </form>
+          </view>
+          <view class="addbutton">
+            <button class="{{butpart ? 'butopacity' : ''}}" bindtap="submitAddress" data-address="{{address}}">保存</button>
+          </view>
+        </view>
+        <view class="address_info" wx:else>
+          <view class="address-detail">
+            <image src="../../../static/images/gwc-icon-add.png" class="add-icon"/>
+            <view class="p">
+              {{choosedAddress.provinceName +
+              choosedAddress.cityName + choosedAddress.areaName +
+              choosedAddress.address}}</view>
+            <view class="p"><text decode="{{true}}">{{choosedAddress.name}}&emsp;{{choosedAddress.mobile}}</text></view>
+            <!-- <view class="errAddress" wx:if="{{isAddress}}">当前商品不支持配送至该地址</view> -->
+            <view class="groupSuitType" wx:if="{{isAloneBuy === 'false'}}">
+              <view class="left">拼团方式</view>
+              <view class="right" bindtap="showTipsBox" data-type="suitTypeBox">
+                <span>{{!groupSuitType ? '请选择拼团方式': groupSuitType === 1 ? '不同地址拼团': '同一地址拼团(推荐)'}}</span>
+                <image src="../../../static/images/path.png" alt=""/>
+              </view>
+            </view>
+            <view class="tips" wx:if="{{groupSuitType === 2 && isAloneBuy === 'false'}}">
+              <text>选择同一地址拼团，支持“大美乡村计划”—扶持农业，收获健康，感谢您选择更环保·更温暖的生活方式。</text>
+              <span class="left">团长职责：</span><span class="left">邀请您附近伙伴拼团，团长统一收货并组织团员取货。</span>
+              <span class="left">大美奖励：</span><span class="left">订单结束后团长获得鼓励金</span>
+            </view>
+            <view class="tips" wx:if="{{groupSuitType === 1 && isAloneBuy === 'false'}}">
+              快来邀请好友分享美味吧~
+              <view>3人即可成团享受优惠价格，如收货地址相同推荐选择“同一地址拼团”更划算，更温暖。</view>
+            </view>
+          </view>
+          <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../profile/address/address?path=confirmOrder&groupSuitId={{groupSuitId}}" class="deletesite">
+            <image src="../../../static/images/path.png"/>
+          </navigator>
+        </view>
+      </view>
+      <view class="shop_info">
+        <view wx:for="{{cartList.cart}}" wx:key="{{index}}">
+          <view class="title">
+            <span>{{item.brandName}}</span>
+          </view>
+          <view class="goods">
+            <view class="li" wx:for="{{item.cartListDtos}}" wx:for-item="productList" wx:key="{{index}}">
+              <image mode='aspectFill' src="{{productList.normalPic}}" alt="" class="img"/>
+              <view class="goods_info">
+                <view class="name">{{productList.name}}</view>
+                <view class="price"><span class="RMB">￥</span>{{productList.minPrice}}</view>
+              </view>
+              <view class="cart_btns">
+                <span class="number">x {{productList.number}}</span>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="shop_info margin-t-p3">
+        <view class="payment_info">
+          <view class="li">
+            <view>商品总价</view>
+            <view><span class="RMB">￥</span>{{filter.numberFormatFloat(cartList.goodsPrice)}}</view>
+          </view>
+          <view class="li">
+            <view>优惠价格</view>
+            <view class="RMB coupon"><span class="RMB">-￥</span>{{cartList.coupon}}</view>
+          </view>
+          <view class="li">
+            <view>运费</view>
+            <view><span class="RMB">￥</span>{{cartList.totalFare}}</view>
+          </view>
+          <!-- <view class="li">
+            <view>包装费</view>
+            <view><span class="RMB">￥</span>{{packingFee}}</view>
+          </view>
+          <view class="li">
+            <view>包装费减免</view>
+            <view><span class="RMB">￥</span>{{packingFeeReduction}}</view>
+          </view> -->
+        </view>
+        <view class="right totalPrice">
+          实际支付
+          <view><span class="RMB">￥</span>{{filter.numberFormatFloat(cartList.goodsPrice + cartList.totalFare - cartList.coupon)}}</view>
+        </view>
+      </view>
+      <view class="shop_info message">
+        <view class="input-new">
+            <span>留言</span>
+            <input type="text" maxlength="50" style="width: 100%;" placeholder="建议留言前先与客服进行确认，50字以内" value="{{message}}"/>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="settlement">
+    <view class="li" bindtap="paymentCall">去付款</view>
+    <view class="li">付款 <span class="red"><span class="RMB">￥</span>{{filter.numberFormatFloat(cartList.goodsPrice + cartList.totalFare - cartList.coupon)}}</span></view>
+  </view>
+  <view class="mask_box" hidden="{{!showTip}}" bindtap="showTipsBox" style="height:{{maskBoxH}}px;"></view>
+  <view class="suitTypeBox" hidden="{{!suitTypeBox}}">
+    <view class="title">
+      拼团方式
+      <view class="right" bindtap="showTipsBox" data-close="true">
+        <image src="../../../static/images/close.png" alt=""/>
+      </view>
+    </view>
+    <view class="levels">
+      <view class="label {{groupSuitType === item.type ? 'selected' : ''}}" wx:for="{{suitTypes}}" wx:key="index" wx:for-item="item"
+        bindtap="selectSuitType" data-suit-type="{{item.type}}">
+        <text>{{item.textType}}</text>
+      </view>
+    </view>
+  </view>
+</view>

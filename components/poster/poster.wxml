@@ -1,0 +1,8 @@
+<view class="poster">
+    <view class="invite_landing">
+      <image bindtap="closeMask" src="../../static/images/group/close_model.png" width="30" class="close_model"/>
+      <canvas canvas-id="myCanvas" wx:if="{{!output}}" style="width: {{width + 'px'}}; height: {{height + 'px'}}"></canvas>
+      <image src="{{output}}" width="100%" wx:if="{{output}}" style="width: {{width + 'px'}}; height: {{height + 'px'}}"/>
+    </view>
+    <view class="saveBtn" bindtap="saveImg" wx:if="{{imageCreateSuccess}}">保存图片</view>
+</view>

@@ -1,0 +1,20 @@
+.brand {
+    text-align:center;
+    padding:60rpx 10rpx 0;
+}
+.brand image {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+}
+.brand .name {
+    font-size: 30rpx;
+    color: #333;
+    margin: 26rpx;
+    font-weight: bold;
+}
+.brand rich-text {
+    font-size: 24rpx;
+    color: #666;
+    text-align:justify;
+}

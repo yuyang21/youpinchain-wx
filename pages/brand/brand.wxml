@@ -1,0 +1,5 @@
+<view class="brand">
+    <image src="{{brand.pictureUrl}}"/>
+    <view class="name">{{brand.name}}</view>
+    <rich-text nodes="{{brand.story}}"></rich-text>
+</view>

@@ -1,0 +1,12 @@
+@import '../confirmGroup/confirmGroup.wxss';
+.shop_list_container .shop_info .title {
+    padding: 0rpx 0 30rpx 15rpx;
+    display: flex;
+    align-items: center;
+}
+.shop_list_container .shop_info .title span:last-child {
+    font-size: 32rpx;
+    color: #333;
+    font-weight: 500;
+    padding-left: 20rpx;
+}

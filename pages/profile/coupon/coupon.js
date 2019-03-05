@@ -14,15 +14,20 @@ Page({
   onLoad: function (options) {
     if (options.path === 'confirmOrder') {
       this.setData({
-        queryPath: options.path,
         goodsPrice: wx.getStorageSync('goodsPrice') ? JSON.parse(wx.getStorageSync('goodsPrice')) : null,
-        confirmOrder: true,
-        choosedCoupon: wx.getStorageSync('choosedCoupon') ? JSON.parse(wx.getStorageSync('choosedCoupon')) : null
+        confirmOrder: true
       })
-      
     }
+    this.setData({
+      queryPath: options.path ? options.path : '',
+      choosedCoupon: wx.getStorageSync('choosedCoupon') ? JSON.parse(wx.getStorageSync('choosedCoupon')) : null,
+      cartCoupon: wx.getStorageSync('cartCoupon') ? JSON.parse(wx.getStorageSync('cartCoupon')) : null
+    })
   },
   onShow: function () {
+    this.setData({
+      noCoupon: this.data.choosedCoupon === -1 ? true : false
+    })
     this.couponList(this.data.page, this.data.size);
   },
   couponList (page, size) {
@@ -30,33 +35,116 @@ Page({
       page: page,
       size: size
     }).then(res => {
+      let coupons = res.data;
+      coupons.forEach(c => {
+        c.choose = false;
+        c.unavailable = false;
+        if (this.data.choosedCoupon && this.data.choosedCoupon != -1) {
+          if (c.coupon.id === this.data.choosedCoupon.coupon.id) {
+            c.choose = true;
+          }
+        }
+        if (this.data.queryPath === 'cart') {
+          c.unavailable = true;
+          switch (c.coupon.useType) {
+            case 0: 
+              if (c.coupon.minPoint === 0 || c.coupon.minPoint <= this.data.cartCoupon.totalPrice) {
+                c.unavailable = false;
+              } else {
+                c.unavailable = true;
+              }
+              break;
+            case 1:
+              let list = c.couponProductCategoryRelations;
+              let cartGoodsPrice = 0;
+              if (list.length > 0) {
+                list.forEach(l => {
+                  if (c.unavailable) {
+                    this.data.cartCoupon.carts.forEach(o => {
+                      if (l.productCategoryId === o.categoryId) {
+                        cartGoodsPrice += (o.presentPrice * o.number);
+                        if (c.coupon.minPoint === 0 || c.coupon.minPoint <= cartGoodsPrice) {
+                          c.unavailable = false;
+                        } else {
+                          c.unavailable = true;
+                        }
+                      }
+                    })
+                  }
+                })
+              }
+              break;
+            case 2: // 指定商品
+              let arr = c.couponProductRelations;
+              let itemGoodsPrice = 0;
+              if (arr.length > 0) {
+                arr.forEach(a => {
+                  if (c.unavailable) {
+                    this.data.cartCoupon.carts.forEach(o => {
+                      if (a.productId === o.productId) {
+                        itemGoodsPrice += (o.presentPrice * o.number);
+                        if (c.coupon.minPoint === 0 || c.coupon.minPoint <= itemGoodsPrice) {
+                          c.unavailable = false;
+                        } else {
+                          c.unavailable = true;
+                        }
+                      }
+                      // if (a.productId === o.productId && (c.coupon.minPoint === 0 || c.coupon.minPoint <= this.data.cartCoupon.totalPrice)) {
+                      //   c.unavailable = false;
+                      // } else {
+                      //   c.unavailable = true;
+                      // }
+                    })
+                  }
+                })
+              }
+              break;
+            default: 
+              c.unavailable = false;
+          }
+        }
+      })
       this.setData({
-        coupons: res.data.couponUser
+        coupons: coupons
       })
       
     })
   }, 
-  selectOrEdit (event) {
+  selectCoupon (event) {
     let coupon = event.currentTarget.dataset.coupon;
-    if (this.goodsPrice < coupon.money || this.goodsPrice < coupon.condition) {
-      this.setData({
-        checked: true
-      })
+    if (coupon.unavailable) {
       return;
     }
-    if (this.data.queryPath === 'confirmOrder') {
-      wx.setStorageSync('choosedCoupon', JSON.stringify(coupon));
-      wx.navigateBack({
-        delta: 1
-      })
+    this.setData({
+      noCoupon: false
+    })
+    let couponIndex = event.currentTarget.dataset.couponIndex;
+    let coupons = this.data.coupons;
+    coupons[couponIndex].choose = true;
+    this.setData({
+      coupons: coupons
+    })
+    if (this.data.queryPath === 'cart') {
+      setTimeout(function (){
+        wx.setStorageSync('choosedCoupon', JSON.stringify(coupon));
+        wx.navigateBack({
+          delta: 1
+        })
+      }, 200)
     }
   },
   nonuse () {
-    if (this.data.checked) {
-      wx.setStorageSync('choosedCoupon', '');
-      this.setData({
-        choosedCoupon: ''
-      })
+    wx.setStorageSync('choosedCoupon', -1);
+    this.setData({
+      choosedCoupon: '',
+      noCoupon: true
+    })
+    if (this.data.queryPath === 'cart') {
+      setTimeout(function (){
+        wx.navigateBack({
+          delta: 1
+        })
+      }, 200)
     }
   }
 })

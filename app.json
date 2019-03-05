@@ -1,7 +1,10 @@
 {
   "pages": [
-    "pages/cart/cart",
     "pages/group/current/current",
+    "pages/cart/cart",
+    "pages/brand/brand",
+    "pages/report/report",
+    "pages/goods/goods",
     "pages/profile/address/address",
     "pages/profile/profile/profile",
     "pages/profile/inviteList/inviteList",
@@ -9,6 +12,7 @@
     "pages/profile/income/detail/detail",
     "pages/group/confirmGroup/confirmGroup",
     "pages/group/confirmOrder/confirmOrder",
+    "pages/group/confirmCart/confirmCart",
     "pages/group/groupMy/groupMy",
     "pages/group/groupDet/groupDet",
     "pages/profile/coupon/coupon",
@@ -18,13 +22,6 @@
     "pages/order/track/track",
     "pages/auth/login/login"
   ],
-  "window": {
-    "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#E42826",
-    "navigationBarTitleText": "链上臻品",
-    "navigationBarTextStyle": "white",
-    "enablePullDownRefresh": false
-  },
   "tabBar": {
     "backgroundColor": "#f7f7fa",
     "borderStyle": "white",
@@ -51,11 +48,18 @@
       }
     ]
   },
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#E42826",
+    "navigationBarTitleText": "链上臻品",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": false
+  },
   "networkTimeout": {
-    "request": 10000,
-    "connectSocket": 10000,
-    "uploadFile": 10000,
-    "downloadFile": 10000
+    "request": 20000,
+    "connectSocket": 20000,
+    "uploadFile": 20000,
+    "downloadFile": 20000
   },
   "debug": true
 }

@@ -1,5 +1,6 @@
 .order_page {
   background-color: #f1f1f1;
+  width:100%;
 }
 
 .nav_tab {
@@ -96,6 +97,14 @@
 .order_list_ul .order_list_li .goods_img .goods_box {
   width: 600rpx;
 }
+.goods_box .title .name {
+  font-size: 30rpx;
+  color: #333;
+}
+.goods_box .title .describe {
+  font-size: 24rpx;
+  color: #666;
+}
 
 .order_list_ul .order_list_li .goods_img text {
   line-height: 128rpx;
@@ -119,7 +128,8 @@
 
 .order_list_ul .order_list_li .order_item_bottom .order_button_border_red,
 .order_list_ul .order_list_li .order_item_bottom .order_button_border_grey,
-.order_list_ul .order_list_li .order_item_bottom .order_button_red {
+.order_list_ul .order_list_li .order_item_bottom .order_button_red,
+.sharing_red {
   width: 124rpx;
   height: 50rpx;
   display: inline-block;
@@ -134,7 +144,8 @@
   color: #666;
 }
 
-.order_list_ul .order_list_li .order_item_bottom .order_button_border_red {
+.order_list_ul .order_list_li .order_item_bottom .order_button_border_red,
+.sharing_red {
   border: 2rpx solid #e4372e;
   color: #e4372e;
 }
@@ -156,14 +167,21 @@
   font-weight: bold;
 }
 
+.sharing_red,
+.order_button_red .sharing_red {
+  width: 164rpx !important;
+  margin: 0 10rpx;
+}
 .detailStyle {
   width: 124rpx;
   height: 50rpx;
   border-radius: 32rpx;
   line-height: 50rpx;
-  margin: 0 10rpx;
+  margin: 0 20rpx;
   font-size: 24rpx;
   text-align: center;
   background: #e4372e;
-
+}
+.marg-lr-10 {
+  margin:0 10rpx;
 }

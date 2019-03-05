@@ -23,6 +23,9 @@ Page({
             });
         }
     },
+    onUnload: function () {
+        wx.removeStorageSync('choosedCoupon');
+    },
     onShow: function () {
         // util.request(api.productHotList).then(res => {
         //     this.setData({
@@ -30,8 +33,29 @@ Page({
         //         hasMore: res.data.totalPages > this.data.page
         //     })
         // })
+        this.setData({
+            choosedCoupon: wx.getStorageSync('choosedCoupon') ? JSON.parse(
+              wx.getStorageSync('choosedCoupon')
+            ) : null
+        })
         this.loadCarts();
-        // app.globalData.getCartNum();
+        this.getCoupon();
+    },
+    getCoupon () {
+      util.request(api.couponList, {
+        page: 1,
+        size: 100
+      }).then(res => {
+        if (res.errno !== 0) {
+            return;
+        }
+        this.setData({
+          coupon: res.data
+        })
+        if (res.data.length <= 0) {
+            wx.removeStorageSync('choosedCoupon');
+        }
+      })
     },
     loadCarts () {
         var that = this;
@@ -69,32 +93,43 @@ Page({
             util.showErrorToast('库存不足');
             return;
         }
-        // let elLeft = event.target.getBoundingClientRect().left;
-        // let elBottom = event.target.getBoundingClientRect().bottom;
-        // that.showMoveDot.push(true);
-        // that.showMoveDotFun(that.showMoveDot, elLeft, elBottom);
         util.request(api.addToCart, {
             productId: product.id, 
             number: 1
         }, 'POST').then(res => {
-            // that.$parent.getCartNum();
             that.loadCarts();
         })
     },
     checkCart (e) {
+        let carts = this.data.carts;
         let cart = e.currentTarget.dataset.cartList;
-        cart.choose = !cart.choose;
-        if (cart.cartListDtos) {
-            cart.cartListDtos.forEach(c => {
-                c.choose = cart.choose;
+        let brandIndex = e.currentTarget.dataset.brandIndex;
+        if (cart.cartListDtos) { // 商标选择
+            carts[brandIndex].choose = !carts[brandIndex].choose;
+            carts[brandIndex].cartListDtos.forEach(cartList => {
+                cartList.choose = carts[brandIndex].choose;
             })
+        } else { // 单独选择
+            let index = e.currentTarget.dataset.index;
+            let selectBrand = false;
+            carts[brandIndex].cartListDtos[index].choose = !carts[brandIndex].cartListDtos[index].choose;
+            carts[brandIndex].cartListDtos.forEach(cart => {
+                if (cart.choose) {
+                    selectBrand = true;
+                }
+            })
+            carts[brandIndex].choose = selectBrand;
         }
+        this.setData({
+            carts: carts
+        })
         this.reComputePrice();
     },
     checkSelectAll () {
         let selectAll = !this.data.selectAll;
         let carts = this.data.carts;
         carts.forEach(cart => {
+            cart.choose = selectAll;
             if (cart.cartListDtos)
                 cart.cartListDtos.forEach(cartList => {
                     cartList.choose = selectAll;
@@ -110,6 +145,8 @@ Page({
      * 重新计算购物车中商品价格
      */
     reComputePrice () {
+
+        app.findCart();
         this.setData({
             goodsPrice: 0,
             payment: 0,
@@ -144,10 +181,12 @@ Page({
             }
         });
         // this.totalPrice = this.fare + this.payment;
+        this.data.carts.length <= 0 ? wx.removeStorageSync('choosedCoupon') : null;
+        let coupon = this.data.choosedCoupon && this.data.choosedCoupon !== -1 ? this.data.choosedCoupon.coupon.amount : 0
         this.setData({
             goodsPrice: goodsPrice,
             payment: payment,
-            totalPrice: fare + payment,
+            totalPrice: fare + payment - coupon,
             fare: fare
         })
     },
@@ -165,7 +204,14 @@ Page({
                 let brandItems = [];
                 cartBrand.cartListDtos.forEach(cartItem => {
                     if (cartItem.choose && cartItem.available) {
-                        brandItems.push(cartItem);
+                        brandItems.push({
+                            cartId: cartItem.cartId,
+                            normalPic: cartItem.normalPic,
+                            name: cartItem.productName,
+                            descr: cartItem.productDescribe,
+                            number: cartItem.number,
+                            minPrice: cartItem.presentPrice
+                        });
                     }
                 })
                 if (brandItems.length > 0) {
@@ -183,15 +229,42 @@ Page({
         }
 
         let currentTime = new Date().getTime();
+       let products = {
+            cart: orderCar,
+            totalFare: this.data.fare,
+            coupon: this.data.choosedCoupon && this.data.choosedCoupon !== -1 ? this.data.choosedCoupon.coupon.amount : 0,
+            goodsPrice: this.data.goodsPrice
+       };
         wx.setStorageSync(
-            "products_" + currentTime,
-            JSON.stringify(orderCar)
+            "products",
+            JSON.stringify(products)
         );
         this.setData({
             carts: carts
         })
         wx.navigateTo({
-            url: '../group/confirmOrder/confirmOrder?cartsKey=products_' + currentTime
+            url: '../group/confirmCart/confirmCart?cartsKey=products_' + currentTime
+        })
+    },
+    toCoupon () {
+        let carts = [];
+        this.data.carts.forEach(c => {
+            if (c.cartListDtos.length > 0) {
+                c.cartListDtos.forEach(o => {
+                    carts.push(o);
+                })
+            }
+        })
+        let cartCoupon = {
+            carts: carts,
+            totalPrice: (this.data.goodsPrice - this.data.fare)
+        }
+        wx.setStorageSync(
+            "cartCoupon",
+            JSON.stringify(cartCoupon)
+        );
+        wx.navigateTo({
+            url: '../profile/coupon/coupon?path=cart'
         })
     },
     /**
@@ -200,13 +273,17 @@ Page({
     addNumber(e) {
         let cart = e.currentTarget.dataset.cart;
         let number = e.currentTarget.dataset.number;
+        if (cart.number <= 1 && number < 0) {
+            this.deleteCart(cart);
+            return;
+        }
         if (number < 0 && !cart.isShow) {
             this.deleteCart(cart);
             return;
         }
         util.request(api.updateCart + cart.cartId,{
             number: number
-        }).then(res => {
+        }, 'PUT').then(res => {
             if (res.errno == 0) {
                 cart.number = cart.number + number;
 
@@ -215,18 +292,18 @@ Page({
                 } else {
                     cart.available = true;
                 }
+                this.loadCarts();
                 this.reComputePrice();
-                // this.$parent.getCartNum();
             }
-        }, 'PUT');
+        });
     },
     /**
      * 删除购物车
      */
-    deleteCart(e) {
-        let cartItem = e.currentTarget.dataset.cart;
+    deleteCart(cart) {
+        let cartItem = cart;
         let carts = this.data.carts;
-        util.request(api.deleteCart + cartItem.cartId).then(res => {
+        util.request(api.deleteCart + cartItem.cartId, {}, 'DELETE').then(res => {
             if (res.errno === 0) {
                 var needDeleteBrandCart = null;
                 carts.forEach(brandCart => {
@@ -243,11 +320,10 @@ Page({
                 }
 
                 this.reComputePrice();
-                // this.$parent.getCartNum();
                 this.setData({
                     carts: carts
                 })
             }
-        }, 'DELETE');
+        });
     }
 })

@@ -38,11 +38,19 @@ Page({
           code: res.code,
           userInfo: e.detail
         }, 'POST').then(function (ret) {
-          if (ret.errno == 0) {
+          if (ret.errno === 0) {
             wx.setStorageSync('token', ret.data.token);
-            wx.switchTab({
-              url: "/pages/group/current/current"
-            });
+            let pages = getCurrentPages();
+            if (pages.length >= 2) {
+              let previousPage = pages[pages.length - 2];
+              previousPage.onLoad(previousPage.options);
+              previousPage.onShow();
+              wx.navigateBack();
+            } else {
+              wx.switchTab({
+                url: '/pages/group/current/current'
+              })
+            }
           } else {
             util.showErrorToast('微信登录失败');
           }

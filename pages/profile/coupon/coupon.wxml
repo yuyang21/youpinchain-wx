@@ -1,23 +1,27 @@
+<wxs src="../../../utils/filter.wxs" module="filter" />
 <view class="address">
-  <view class="input-new" wx:if="{{confirmOrder}}">
-    <view class="setDefault">不使用优惠券</view>
-    <view style="display:flex;align-items:center;margin-right: .1rem;">
-      <view class="wrap" bindtap="nonuse">
-        <my-switch size="md" open-name="" close-name="" value="{{checked}}" disabled="{{checked}}"></my-switch>
-      </view>
-    </view>
+  <view class="no-coupons" wx:if="{{queryPath === 'cart'}}">
+    <text class="setDefault">不使用优惠券</text>
+    <span class="right {{noCoupon ? 'choose' : 'unselected'}}" bindtap="nonuse">
+      <image wx:if="{{noCoupon}}" src="../../../static/images/selected.png"/>
+    </span>
   </view>
   <view class="addresslist">
-    <view wx:for='{{coupons}}' class="li {{goodsPrice && (goodsPrice < item.money || goodsPrice < item.condition) ? 'unavailable' : ''}}"
-      bindtap="selectOrEdit" data-coupon="{{item}}" wx:key="index">
-      <span class="default-address" wx:if="{{choosedCoupon && choosedCoupon.id === item.id}}"></span>
+    <view wx:for='{{coupons}}' class="li"
+      bindtap="selectCoupon" data-coupon="{{item}}" data-coupon-index="{{index}}" wx:key="index">
+      <image wx:if="{{item.unavailable}}" class="unavailable" src="../../../static/images/coupon1.jpg" style="width:{{(queryPath === 'cart' ? 92: 102) + '%'}}"/>
+      <image wx:else class="bg" src="../../../static/images/coupon.jpg" style="width:{{(queryPath === 'cart' ? 92: 102) + '%'}}"/>
       <view class="address-detail">
-        <text>{{item.money}}</text>
-        <text>{{item.couponName}}</text>
-        <text wx:if="item.couponType === 1">{{item.condition}}</text>
-        <text>{{item.describe}}</text>
-        <text>有效期至：{{item.deadline}}</text>
+        <text class="amount">{{item.coupon.amount}}</text>
+        <view class="right">
+          <text class="name">{{item.coupon.name}}</text>
+          <text class="type">{{item.coupon.useType === 0 ? '全场通用' : item.coupon.useType === 1 ? '指定分类' : '指定商品'}}({{item.coupon.minPoint > 0 ? '>' + item.coupon.minPoint + '元' : '无门槛'}})</text>
+        </view>
+        <view class="validityOverTime">有效期至：{{filter.formatDate(item.coupon.validityOverTime)}}</view>
       </view>
+      <span class="right {{item.choose ? 'choose' : 'unselected'}}">
+        <image wx:if="{{item.choose}}" src="../../../static/images/selected.png"/>
+      </span>
     </view>
   </view>
   <view class="no_address" wx:if="{{coupons.length === 0}}">暂无可使用的优惠券哦～</view>

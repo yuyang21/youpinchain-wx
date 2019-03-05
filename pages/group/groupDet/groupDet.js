@@ -1,5 +1,6 @@
 const util = require('../../../utils/util.js');
 const api = require('../../../config/api.js');
+const filter = require('../../../utils/filter');
 Page({
   data: {
     groupSuitId: null,
@@ -17,13 +18,24 @@ Page({
     startTimeDown: 0,
     timer: null,
     headPic: [],
-    footPic: []
+    footPic: [],
+    standardBox: false,
+    mask_box_H: 0,
+    showPoster: false,
   },
   onLoad: function (options) {
+    util.dealwithInviter(options);
+    var scene = {};
+    if (options.scene) {
+      var params = decodeURIComponent(options.scene).split(",");
+      params.forEach(p => {
+        scene[p.split("=")[0]] = p.split("=")[1];
+      });
+    }
     this.setData({
-      groupSuitId: options.groupSuitId,
-      groupMyId: options.groupMyId ? options.groupMyId : null
-    })
+      groupSuitId: options.groupSuitId || scene.P,
+      groupMyId: options.groupMyId || scene.G,
+    });
   },
   onShareAppMessage: function (option) {
     let that = this;
@@ -37,6 +49,9 @@ Page({
   onShow: function () {
     this.initData();
   },
+  addCart () {
+
+  },
   initData () {
     let that = this;
     wx.showLoading({
@@ -48,13 +63,34 @@ Page({
         return;
       }
       wx.hideLoading();
+      let headPic = res.data.headPic;
+      let headPics = [];
+      headPic.forEach(src => {
+        headPics.push({
+          type: src.indexOf('mp4') == -1 ? 'img' : 'video',
+          src: src
+        })
+      });
       that.setData({
         groupSuit: res.data.groupSuit,
         headTitle: res.data.groupSuit.suitName,
         suitTypes: res.data.suitTypes,
-        headPic: res.data.headPic,
+        headPic: headPics,
         footPic: res.data.footPic
       })
+
+      if (headPic.length > 0) {
+        if (that.data.headPic[0].type === 'video') {
+          that.setData({
+            Height: 424
+          })
+        } else {
+          that.setData({
+            Height: 750
+          })
+        }
+      }
+
       that.getDuitDet();
       wx.setNavigationBarTitle({
         title: that.data.groupSuit.suitName
@@ -79,13 +115,24 @@ Page({
         if (res.errno !== 0) {
           return;
         }
-        that.setData({
-          groupMy: res.data.groupMy,
-          groupPrice: res.data.groupMy.discountPrice,
-          endTimeDown: res.data.groupMy.endTime - new Date().getTime() / 1000
-        })
 
-        util.countdown(that)
+        // 拼团已满，则不显示拼团
+        if (res.data.groupMy.joinNum >= res.data.groupMy.rulesNum || res.data.groupMy.groupStatus !== 1) {
+          util.showErrorToast('该拼团已满！');
+          wx.redirectTo({
+              url: '/pages/group/groupDet/groupDet?groupSuitId=' + that.data.groupSuitId
+          })
+        } else {
+            that.setData({
+                groupMy: res.data.groupMy,
+                groupPrice: res.data.groupMy.discountPrice,
+                endTimeDown: res.data.groupMy.endTime - new Date().getTime() / 1000
+            })
+
+            util.countdown(that)
+        }
+
+
       })
     }
   },
@@ -153,6 +200,22 @@ Page({
     }
     wx.navigateTo({
       url: path
+    })
+  },
+  showShareBox () {
+    var route = {
+      page: 'pages/group/groupDet/groupDet',
+      parmas: 'P=' + this.data.groupSuitId + ',G=' + this.data.groupMyId
+    };
+    this.setData({
+      goods: {
+        name: this.data.groupSuit.suitName,
+        describe: this.data.groupSuit.describe,
+        normalPic: this.data.groupSuit.normalPic,
+        presentPrice: this.data.groupSuit.suitPrice
+      },
+      showPoster: !this.data.showPoster,
+      currentPage: JSON.stringify(route)
     })
   }
 })

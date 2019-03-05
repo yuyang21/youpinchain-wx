@@ -17,24 +17,27 @@
 .input-new {
   width: 100%;
   height: 90rpx;
+  line-height: 90rpx;
   padding: 0 0 0 24rpx;
-  display: flex;
   font-size: 30rpx;
   color: #666;
   border-bottom: 2rpx solid #efeff4;
+  overflow: hidden;
 }
 
 .input-new span {
   width: 140rpx;
   line-height: 90rpx;
   margin-right: 28rpx;
+  display:inline-block;
+  vertical-align:top;
 }
 
 .input-new input {
   width: 340rpx;
   height: 88rpx;
   font-size: 30rpx;
-  display:inline-flex;
+  display:inline-block;
   color: #000;
 }
 
@@ -52,13 +55,16 @@
 .input-new:nth-of-type(3) {
   height: 180rpx;
 }
-
+.input-new:nth-of-type(3) span {
+  margin-top: 20rpx;
+}
 .input-new:nth-of-type(3) textarea {
   padding: 30rpx 0 0 0;
   width: 540rpx;
   height:148rpx;
   font-size: 30rpx;
   color: #000;
+  display: inline-block;
 }
 
 .input-new:last-child {
@@ -77,9 +83,8 @@
 .input-new image {
   width: 20rpx;
   height: 35rpx;
-}
-picker.input-new span {
-  padding-right: 19rpx;
+  vertical-align:top;
+  margin-top:30rpx;
 }
 
 .addbutton {

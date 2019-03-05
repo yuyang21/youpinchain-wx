@@ -1,0 +1,220 @@
+<wxs src="../../utils/filter.wxs" module="filter" />
+<view class="goods">
+  <header goBack="true" isShare="true" class="{{backgroundColor}}" bindmyevent="showShareBox"></header>
+  <scroll-view class="scrollBox"  style="height: {{mask_box_H * 2 - 98}}rpx" scroll-y="{{isScroll}}" >
+    <view class="top_main">
+      <view wx:if="{{headPic && headPic.length <= 0}}">
+        <image src="{{goods.normalPic}}" alt="" class="show" />
+      </view>
+      <swiper wx:else class="swiper" indicator-dots="{{headPic.length > 1}}" interval="1500" duration="1000" circular="true" indicator-color="#b5b5b5" indicator-active-color="#e4372e" style="height:{{Height}}rpx;">
+        <block wx:for="{{headPic}}" wx:key="{{index}}" class="header_image">
+          <swiper-item>
+            <video src="{{item.src}}" controls wx:if="{{item.type === 'video'}}"></video>
+            <image src="{{item.src}}" class="slide-image show" wx:else />
+          </swiper-item>
+        </block>
+      </swiper>
+      <view class="presell_box">
+        <view class="left_price left">
+          <view class="price margin-t-p8" wx:if="{{!canOpenGroup}}">
+            <span>￥</span>{{standards[standardIndex].promotionPrice}}
+            <s>￥{{standards[standardIndex].price}}</s>
+          </view>
+          <view class="price margin-t-p8" wx:else>
+            <span>￥</span>{{groupPrice}}
+            <s>￥{{standards[standardIndex].price}}</s>
+          </view>
+        </view>
+        <!-- <view class="right_tip right" wx:if="{{!groupMyId && endTimeDown>0 && startTimeDown<1}}">
+          <view>应季尝鲜还有</view>
+          <view wx:if="endTimeDown > 24*60*60">
+            <span class="shadow_box">{{endTimeDown/60/60/24 | Int}}</span>天<span class="shadow_box">{{filter.timeArry((endTimeDown - (endTimeDown/24/60/60 | Int) * 24*60*60),0)}}</span>时<span class="shadow_box">{{filter.timeArry(endTimeDown,1)}}</span>分
+          </view>
+          <view wx:else>
+            <span class="shadow_box">{{endTimeDown | timeArry(0)}}</span>时<span class="shadow_box">{{endTimeDown |
+              timeArry(1)}}</span>分<span class="shadow_box">{{endTimeDown | timeArry(2)}}</span>秒
+          </view>
+        </view>
+        <view class="right_tip right" wx:if="{{groupMyId && endTimeDown>0}}">
+          <view>距拼团结束</view>
+          <view>
+            <span class="shadow_box">{{endTimeDown | timeArry(0)}}</span>:<span class="shadow_box">{{endTimeDown |
+              timeArry(1)}}</span>:<span class="shadow_box">{{endTimeDown | timeArry(2)}}</span>
+          </view>
+        </view>
+        <view class="right_tip right {{endTimeDown <= 0 ? 'activityEnd' : ''}}" wx:if="{{endTimeDown <= 0}}">
+          <text>拼团结束</text>
+        </view> -->
+      </view>
+      <view class="title">
+        <view class="name">
+          <span class="presell_text" wx:if="{{goods.preSale}}">【预售】</span>
+          {{goods.name}}
+        </view>
+        <view class="desr">{{goods.describe}}</view>
+      </view>
+      <view class="standard" bindtap="showCartMask" data-btn-type="''">
+        <view class="left">已选规格：</view>
+        <view class="right">
+          <view class="li">{{standards[standardIndex].sp1}} {{standards[standardIndex].sp2}} {{standards[standardIndex].sp3}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="assembling_process spell_list" wx:if="{{spellList.length > 0}}">
+      <view class="panel_title">
+        {{spellList.length}}人正在拼单，可直接参与
+        <view class="loadMore right" bindtap="showspellMask">查看更多<image src="../../static/images/path.png"/></view>
+      </view>
+
+      <swiper class="list" vertical="true" display-multiple-items="{{spellList.length < 2 ? 1 : 2}}" interval="2000" circular="false" autoplay="{{spellList.length < 2 ? false : true}}" style="height:{{(spellList.length < 2 ? 86 * 2 : 335) + 'rpx'}}">
+        <swiper-item class="li" wx:for="{{spellList}}" wx:key="index">
+          <image mode='aspectFill' src="{{item.headImgUrl}}" class="left"/>
+          <view class="nickName left">{{filter.substring(item.nickName, 0, 8)}}</view>
+          <view class="btn right" bindtap="spelling" data-group-my-id="{{item.groupMyId}}">去拼单</view>
+          <view class="text right">
+            <view>还差<text class="red">{{item.rulesNum - item.joinNum}}人</text>拼成</view>
+            <view class="countDown">剩余{{filter.timeArry(item.endTimeDown, 0)}}:{{filter.timeArry(item.endTimeDown, 1)}}:{{filter.timeArry(item.endTimeDown, 2)}}</view>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+    <view class="assembling_process">
+      <view class="panel_title">臻选认证</view>
+      <view class="security">
+        <view class="ul">
+          <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../brand/brand?brandId=' + brands.id}}" class="li">
+            <image src="{{brands.pictureUrl}}" />
+            <span>{{brands.name}}</span>
+          </navigator>
+          <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../report/report?productId=' + productId + '&reportId=' + index}}" class="li" wx:for="{{reportList}}" wx:key="{{index}}" wx:if="{{item.icon}}">
+            <image src="{{item.icon}}" />
+            <span>{{item.name}}</span>
+          </navigator>
+        </view>
+      </view>
+    </view>
+    <!-- 产品详情 -->
+    <view class="goods_info" wx:if="{{footPic && footPic.length > 0}}">
+      <view class="panel_title">产品详情</view>
+      <view class="goodsImgs">
+        <image src="{{item}}" alt="" wx:for="{{footPic}}" wx:key="index" mode="widthFix" />
+        <!-- <view class='explain-title'>售后服务</view>
+        <view class='explain-content'>
+          1. 由于生鲜的特殊性，退货需做丢弃处理，无法进行二次销售，所以不支持无理由退货和拒签，请您不要轻易拒签快递，无理由拒签均无法退款。
+        </view>
+        <view class='explain-content'>
+          2. 如有外包装破损严重情况，请当快递员面拍照留证后拒签，并将破损包装图片发送给客服，我们会及时核对，给您办理赔偿或者补寄。</view>
+        <view class='explain-content'>3. 如果收到的产品有破损、变质、请将有问题的产品全部挑出摆放一起，并以外包装为背景拍1-3张清晰照片发送给客服。核实后会按照收到的产品总数赔付等比例金额。</view>
+
+        <view class='explain-title'>理赔范围</view>
+        <view class='explain-content'>1. 运输损失：运输过程中遭到挤压碰撞损坏。</view>
+        <view class='explain-content'>2. 腐败变质：天气、运输时间较长，导致水果变质，无法食用。</view>
+
+        <view class='explain-title'>非理赔范围</view>
+        <view class='explain-content'>1. 运输中轻微磕碰不影响到品质，农户自种产品个别会存在疤痕、品相不佳现象。</view>
+        <view class='explain-content'>2. 运输途中水分蒸发流失，重量可能会减轻，损耗在5%以内为正常，超出可予以赔付。</view>
+        <view class='explain-content'>3. 超过24小时候反馈产品损坏问题，不在理赔范围内。</view>
+        <view class='explain-content'>4. 个人口感问题，或主观情绪。</view>
+        <view class='explain-content'>5. 顾客（电话停机、关机、空号等联系不上收货人，收货人中途离开收货地址导致无法按时签收，要求改收货地址、收货信息有误、地址不详等）导致快递延迟签收（从正常物流派送当天算起）超出24小时的情况，不在理赔范围。</view>
+        <view class='explain-content'>6.由于顾客个人原因保存不当，放置时间过长等问题。</view> -->
+
+      </view>
+    </view>
+  </scroll-view>  
+  <view class="add_cart_container">
+    <view class="low_stocks_btn" wx:if="{{standards[standardIndex].stock - standards[standardIndex].sale <= 0}}">
+      <button>库存不足</button>
+    </view>
+    <block wx:else>
+      <view class="cart_btn_alone right {{goods.type == 2 ? 'cart_btn_center' : ''}}" bindtap="showCartMask" data-btn-type="''">
+        <view wx:if="{{goods.type != 2}}">￥{{!canOpenGroup ? standards[standardIndex].promotionPrice : groupPrice}}</view>
+        <view>{{!canOpenGroup ? '单独购买' : groupMyId ? '参与拼团' : '发起拼团'}}</view>
+      </view>
+      <view class="add_cart_btn right" bindtap="showCartMask" data-btn-type="cart">
+        <view>加入购物车</view>
+      </view>
+    </block>
+  </view>
+  <!-- <view class="add_cart_container activityEnd_btns" wx:if="{{endTimeDown <= 0}}">
+    <view class="cart_btn right" bindtap="toSubmitOrder" data-is-alone-buy="false" data-is-open-group="true">{{groupMyId ? '我要开团' : '查看其他拼团'}}</view>
+    <view class="cart_btn_alone right">拼团结束</view>
+  </view> -->
+  <!-- 查看购物车图标 -->
+  <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="{{'../cart/cart'}}" open-type="switchTab" class="cartIcon">
+    <image src="../../static/images/shopping_cart.png" alt="" />
+    <span wx:if="{{cartNum > 0}}">{{cartNum}}</span>
+  </navigator>
+  <!-- 规格选择 -->
+  <view class="standardBox" wx:if="{{standardBox}}">
+    <view class="closeBox" bindtap="closeChoose"><span class="close">x</span></view>
+    <view class="btn">
+      <view class="low_stocks_btn" wx:if="{{standards[standardIndex].stock - standards[standardIndex].sale <= 0}}">
+        <button>库存不足</button>
+      </view>
+      <block wx:else>
+        <button wx:if="{{btnType === 'cart'}}" class="sureBtn" bindtap="addCart">确认</button>
+        <block wx:else>
+          <button class="leftBtn" bindtap="addCart">{{canOpenGroup ? '单独购买' : '加入购物车'}}</button>
+          <button class="rightBtn" bindtap="confirmBtn" data-is-alone-buy="{{!canOpenGroup}}">{{!canOpenGroup ? '单独购买' : groupMyId ? '参与拼团' : '发起拼团'}}</button>
+        </block>
+      </block>
+    </view>
+    <view class="content">
+      <view class="standards">
+        <view class="prices">
+          <view class="price" wx:if="{{btnType !== 'cart' && canOpenGroup}}">
+            <view class="left">拼团价格：</view>
+            <!-- <view class="right" wx:if="{{!canOpenGroup}}"><span>¥ {{filter.numberFormatFloat(standards[standardIndex].promotionPrice * buyNum)}}</span></view> -->
+            <view class="right">
+              <span>¥ {{filter.numberFormatFloat((groupPrice) * buyNum)}}</span>
+            </view>
+          </view>
+          <view class="price">
+            <view class="left">{{btnType === 'cart' ? '' : '单买'}}价格：</view>
+            <!-- <view class="right" wx:if="{{!canOpenGroup}}"><span>¥ {{filter.numberFormatFloat(standards[standardIndex].promotionPrice * buyNum)}}</span></view> -->
+            <view class="right">
+              <span>¥ {{filter.numberFormatFloat((btnType === 'cart' ? minPrice : standards[standardIndex].promotionPrice) * buyNum)}}</span>
+            </view>
+          </view>
+        </view>
+        <view class="standard" style="margin-top: {{btnType !== 'cart' && canOpenGroup ? 220 : 128}}rpx">
+          <view class="left">规格：</view>
+          <view class="right">
+            <view class="li {{standardIndex === index ? 'active' : ''}}" wx:for="{{standards}}" wx:key="{{index}}" bindtap="selectStandard" data-index="{{index}}">{{item.sp1}} {{item.sp2}} {{item.sp3}}</view>
+          </view>
+        </view>
+        <view class="number">
+          <view class="left">数量：</view>
+          <view class="right">
+            <span class="subduction" bindtap="addNumber" data-index="{{standardIndex}}" data-number="-1">
+              <image src="../../static/images/sub-icon.png" />
+            </span>
+            <span class="num">{{buyNum}}</span>
+            <span class="add" bindtap="addNumber" data-index="{{standardIndex}}" data-number="1">
+              <image src="../../static/images/add-icon.png" />
+            </span>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="mask_box" wx:if="{{standardBox || spelldBox}}" style="height:{{mask_box_H * 2}}rpx" bindtap="closeChoose"></view>
+  <poster bindmyevent="showShareBox" currentPage="{{currentPage}}" goods='{{goods}}' groupPrice='{{groupPrice}}' wx:if="{{showPoster}}"></poster>
+  <view class="spell_box" wx:if="{{spelldBox}}">
+    <view class="title">正在拼单</view>
+    <view class="close" bindtap="closespellMask">x</view>
+    <scroll-view scroll-y="true" class="list">
+      <view class="li" wx:for="{{spellList}}" wx:key="index">
+        <image mode='aspectFill' src="{{item.headImgUrl}}" class="left"/>
+        <view class="text left">
+          <view class="overflow-hi">
+            <view class="nickName left">{{filter.substring(item.nickName, 0, 5)}}</view>
+            <text class="left">还差{{item.rulesNum - item.joinNum}}人</text>
+          </view>
+          <view class="countDown">剩余{{filter.timeArry(item.endTimeDown, 0)}}:{{filter.timeArry(item.endTimeDown, 1)}}:{{filter.timeArry(item.endTimeDown, 2)}}</view>
+        </view>
+        <view class="btn right" bindtap="spelling" data-group-my-id="{{item.groupMyId}}">去拼单</view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

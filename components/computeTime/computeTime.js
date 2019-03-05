@@ -14,12 +14,14 @@ Component({
    */
   data: {
     countNum: 0,
-    countDown: 0,
+    countDown: null,
     timer: null
   },
-
   ready: function () {
-    this.countNum = -this.numTime(this.data.time);
+    this.countNum = this.numTime(this.data.time);
+    this.setData({
+      countDown: this.remaining(this.countNum)
+    })
     this.remainingTime();
   },
   detached: function () {
@@ -38,7 +40,7 @@ Component({
       }
       clearInterval(that.timer);
       that.timer = setInterval(() => {
-        that.countNum--;
+        that.countNum -= 1000;
         that.setData({
           countDown: that.remaining(that.countNum)
         })
@@ -46,8 +48,8 @@ Component({
     },
     //转换时间成分秒
     remaining: function (countNum) {
-      let minute = parseInt(countNum / 60);
-      let second = parseInt(countNum % 60);
+      let minute = parseInt(countNum / 60 / 1000);
+      let second = parseInt((countNum / 1000) % 60);
       if (minute < 10) {
         minute = '0' + minute;
       }

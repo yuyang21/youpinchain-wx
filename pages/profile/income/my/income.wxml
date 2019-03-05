@@ -9,7 +9,7 @@
       <text>{{profileInfo.invitePayNum}}人</text>
     </view>
   </view>
-  <view class="royalty_ratio">
+  <!-- <view class="royalty_ratio">
     <view class="panel_title">当前邀请用户奖励提成比</view>
     <view class="content">
       <view class="img">
@@ -23,7 +23,7 @@
       </view>
       <view class="text"><span class="show">奖励：</span> 用户下单金额*(有效下单人数提成比+邀请用户提成比)</view>
     </view>
-  </view>
+  </view> -->
   <view class="myincome">
     <view class="title">
       <view class="left"><image src="../../../../static/images/mine-income.png" alt=""/>我的收益</view>
@@ -64,10 +64,11 @@
       </view>
     </view>
     <view class="tips">
-      <view>说明：</view>
-      <view><span class="left">1.</span><span class="left">余额中包含所有已付款用户，如果发生退款则会扣除未成功的金额 </span></view>
-      <view><span class="left">2.</span><span class="left">头衔：根据邀请用户数+有效下单数量计算</span></view>
-      <view><span class="left">3.</span><span class="left">具体收益细则请查看明细</span></view>
+      <view>提现说明：</view>
+      <view><span class="left">
+“可提现金额”包含您推荐用户实际消费金额的相应奖励。如果已消费用户发生退款，系统会自动扣除相应奖励金额。</span></view>
+      <!-- <view><span class="left">2.</span><span class="left">头衔：根据邀请用户数+有效下单数量计算</span></view>
+      <view><span class="left">3.</span><span class="left">具体收益细则请查看明细</span></view> -->
     </view>
   </view>
 </view>

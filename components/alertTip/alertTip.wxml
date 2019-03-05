@@ -4,9 +4,7 @@
   <rich-text nodes="{{alertText}}" class="text"></rich-text>
     <view class="i-know">
       <view bindtap="cancelAlertTip" data-type="0">取消</view>
-      <view bindtap="cancelAlertTip" data-type="1" >
-        <button open-type='contact' plain="true" class='kefu' session-from='weapp'>确定</button>
-      </view>
+      <view bindtap="cancelAlertTip" data-type="1">确定</view>
     </view>
   </view>
 </view>

@@ -1,6 +1,7 @@
 module.exports = {
   homeIndex: '/home/index', //首页数据接口
   AuthLoginByWeixin: '/auth/login_by_weixin', //微信授权登陆
+  autoLogin: '/auth/autoLogin', //微信授权登陆
   groupList: '/groups', //拼团列表
   groupDet: '/groups/', //根据拼团id查询商品详情
   userInfo: '/oa/users/info', //用户信息
@@ -10,7 +11,7 @@ module.exports = {
   getRegionsList: '/regions', //查询区域
   getOrderList: '/orders', // 获取订单列表 showType 0:全部，1：待付款，2：待发货，3：待收货，4：待评价
   systemTime: '/system/time', //获取系统时间
-  couponList: '/coupon', //我的优惠券查询
+  couponList: '/coupon/', //我的优惠券查询
   withdraw: '/accounts/0/withdraws', //申请提现
   accountsInfo: '/accounts/0', //我的账户信息
   todayProfit: '/accounts/0/todayProfit', //我的今日收益
@@ -32,5 +33,12 @@ module.exports = {
   deleteCart: '/carts/', //删除购物车
   cartProductCount: '/carts/stat', //购物车中商品数量
   submitOrder: '/orders', //提交订单
-  cancelOrder: '/orders/', //取消订单
+  products: '/products', //单品商品列表
+  getProductDetail: '/products/', //根据商品id查询商品详情
+  orderShare: '/orders/share', //拼团待分享列表
+  qrCode: '/auth/qr', //获取小程序二维码
+  cancelOrder: '/orders/',
+  saveInviter: '/oa/saveInviter',
+  groupMy: '/groupMy',
+  expCodes: '/expresses/expCodes' //物流公司对照表
 };

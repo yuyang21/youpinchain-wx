@@ -50,6 +50,10 @@ input {
   position: relative;
 }
 
+.position-fix {
+  position: fixed;
+}
+
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -62,7 +66,6 @@ input {
 .RMB {
   font-size: 24rpx;
   font-weight: normal;
-  margin-right: 3rpx;
 }
 .red {
   color: #e4372e;

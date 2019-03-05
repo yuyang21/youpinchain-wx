@@ -25,13 +25,17 @@
           <span class="info-data-top"><image src="../../../static/images/mine-icon-dzf.png"/><b class="red-points" wx:if="{{userInfo.unpaid > 0}}">{{userInfo.unpaid}}</b></span>
           <span class="info-data-bottom">待支付</span>
         </navigator>
+        <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=200" class="li info-data-link">
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-dfh.png"/><b class="red-points" wx:if="{{userInfo.sharing > 0}}">{{userInfo.sharing}}</b></span>
+          <span class="info-data-bottom">待分享</span>
+        </navigator>
         <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=201" class="li info-data-link">
-          <span class="info-data-top"><image src="../../../static/images/mine-icon-dfh.png"/><b class="red-points" wx:if="{{userInfo.undelivery > 0}}">{{userInfo.undelivery}}</b></span>
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-dfh.png"/><b class="red-points" wx:if="{{userInfo.undeliry > 0}}">{{userInfo.undeliry}}</b></span>
           <span class="info-data-bottom">待发货</span>
         </navigator>
         <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" url="../../order/list/list?showType=301" class="li info-data-link">
-          <span class="info-data-top"><image src="../../../static/images/mine-icon-yfh.png"/><b class="red-points" wx:if="{{userInfo.delivered > 0}}">{{userInfo.delivered}}</b></span>
-          <span class="info-data-bottom">已发货</span>
+          <span class="info-data-top"><image src="../../../static/images/mine-icon-yfh.png"/><b class="red-points" wx:if="{{userInfo.delived > 0}}">{{userInfo.delived}}</b></span>
+          <span class="info-data-bottom">待收货</span>
         </navigator>
       </view>
     </view>
@@ -41,6 +45,7 @@
         <aside><image src="../../../static/images/mine-income.png"/></aside>
         <view class="myorder-div">
           <span>我的收益</span>
+          <view class="right text">邀请好友开团享收益～</view>
           <span class="myorder-divsvg">
             <image src="../../../static/images/path.png"/>
           </span>

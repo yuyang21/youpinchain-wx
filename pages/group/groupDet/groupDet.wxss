@@ -2,13 +2,18 @@
   padding: 0rpx 0 100rpx;
   background-color: #efeff4;
   overflow: hidden;
+  width:100%;
 }
 .goods .top_main .show {
   width: 100%;
   height: 750rpx;
 }
 swiper {
-  height:750rpx;
+  /* height:750rpx; */
+}
+swiper video {
+  width:100%;
+  height:424rpx;
 }
 
 .presell_box {
@@ -145,7 +150,8 @@ swiper {
 .add_cart_container {
   position: fixed;
   bottom: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
+  z-index: 2;
   clear: both;
   width: 100%;
   height: 98rpx;
@@ -167,7 +173,8 @@ swiper {
 }
 
 .add_cart_container .cart_btn,
-.add_cart_container .cart_btn_alone {
+.add_cart_container .cart_btn_alone,
+.add_cart_btn {
   height: 98rpx;
   text-align: center;
   padding: 14rpx 0;
@@ -176,13 +183,16 @@ swiper {
   color: #fff;
 }
 
-.add_cart_container .cart_btn {
-  background-color: #e4372e;
+.add_cart_container .cart_btn, .add_cart_btn {
+  background-color: #FB9D1C;
   width: 70%;
+}
+.add_cart_btn {
+  line-height: 82rpx;
 }
 
 .add_cart_container .cart_btn_alone {
-  background-color: #FF9FA2;
+  background-color: #de4a40;
   width: 30%;
 }
 

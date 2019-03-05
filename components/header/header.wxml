@@ -1,0 +1,8 @@
+<view class="head_top {{scrollTop > 10 ? 'white' : 'transparent'}}">
+    <view wx:if='{{isShare}}' class="head_share right" bindtap="showMask">
+      <image src="../../static/images/share-icon.png" alt="" width="100%"/>
+    </view>
+    <navigator hover-class="none" hover-start-time="0" hover-stay-time="0" open-type="switchTab" url="/pages/group/current/current" class="head_home right">
+      <image src="../../static/images/tabBar/tab-home-highlight.png" alt="" width="100%"/>
+    </navigator>
+</view>

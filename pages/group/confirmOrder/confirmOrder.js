@@ -3,7 +3,7 @@ const api = require('../../../config/api');
 var commonMixin = require('../../../mixins/commonMixin');
 Page(Object.assign({
   data: {
-    showTotal: false,
+    groupSuitType: 2,
     totalPrice: 0,
     goodsPrice: 0,
     packPrice: 0,
@@ -30,20 +30,38 @@ Page(Object.assign({
     area: [],
     provinceId: [],
     cityId: [],
-    areaId: []
+    areaId: [],
+    suitTypeBox: false,
+    showTip: false,
+    maskBoxH: 0,
+    isAloneBuy: false,
+    groupMy: undefined
   },
   onLoad: function (options) {
     this.setData({
-        brandCartList: JSON.parse(
-            wx.getStorageSync(options.cartsKey)
-        )
-    })
+      products: JSON.parse(
+        wx.getStorageSync('cartsKey')
+      ),
+      isAloneBuy: options.isAloneBuy === 'true',
+      groupMyId: options.groupMyId ? parseInt(options.groupMyId): null,
+      expressCostId: options.expressCostId
+    });
+    if (this.data.groupMyId != null) {
+      let that = this;
+      util.request('/groupMy/' + this.data.groupMyId, {}).then(res => {
+        if (res.errno === 0 ) {
+            this.setData({
+                groupMy: res.data
+            })
+        }
+      })
+    }
+  },
+  onUnload: function () {
+    wx.removeStorageSync('cartsKey');
   },
   onShow: function () {
     this.setData({
-      coupon: wx.getStorageSync('choosedCoupon') ? JSON.parse(
-        wx.getStorageSync('choosedCoupon')
-      ) : null,
       choosedAddress: wx.getStorageSync('choosedAddress') ? JSON.parse(
         wx.getStorageSync('choosedAddress')
       ) : null
@@ -52,50 +70,86 @@ Page(Object.assign({
       this.setRegions(0, 0);
       this.getDefaultAddress();
     }
-    if (this.data.coupon) {
+    let product = this.data.products.data;
+    this.setData({
+      goodsPrice: product.number * product.minPrice
+    })
+    this.data.isAloneBuy? '' : this.getGroupSuitType();
+    this.data.expressCostId ? this.expressCost() : null;
+  },
+  expressCost () {
+    // 运费
+    let that = this;
+    util.request(api.expressCost + that.data.expressCostId).then(res => {
+      let expressCostData = res.data;
+      let fareInfo = '';
+      if (expressCostData.freeExpress === 1) {
+        fareInfo = '(满' + expressCostData.freeExpressValue + '元包邮)'
+      } else if (expressCostData.freeExpress === 2) {
+        fareInfo = '(满' + expressCostData.freeExpressValue + '件包邮)'
+      }
+      let fare = expressCostData.expressPrice;
+      if (expressCostData.freeExpress === 1 && that.data.goodsPrice >= expressCostData.freeExpressValue) { // 金额包邮
+        fare = 0;
+      } else if (expressCostData.freeExpress === 2 && that.data.products.data.number >= expressCostData.freeExpressValue) { // 数量包邮
+        fare = 0;
+      }
+      that.setData({
+        fareInfo: fareInfo,
+        fare: fare
+      })
+      // that.data.groupMyId ? that.getGroupMyAddress() : null;
+    })
+  },
+  getGroupSuitType () {
+    util.request('/products/' + this.data.products.data.id + '/groupSuitType').then(res => {
+      if (res.errno !== 0) {
+        util.showErrorToast(res.errMsg);
+        return;
+      }
+      let suitTypes = res.data;
+      suitTypes.forEach(t => {
+        if (t.type === 1) {
+          t.textType = '不同地址拼团';
+        } else if (t.type === 2) {
+          t.textType = '同一地址拼团';
+        }
+        this.setData({
+          suitTypes: suitTypes
+        })
+      })
+      if (suitTypes.length === 1){
+        this.setData({
+          groupSuitType: suitTypes[0].type
+        })
+      }
+    })
+  },
+  showTipsBox (event) {
+    if (event.currentTarget.dataset.close) {
       this.setData({
-        totalPrice: this.data.totalPrice - this.data.coupon.money,
-        couponId: this.data.coupon.id
+        suitTypeBox: false,
+        showTip: false
+      })
+      return;
+    }
+    if (event.currentTarget.dataset.type) {
+      this.setData({
+        suitTypeBox: true
       })
     }
-
-    // 最低起售份数
+    if (this.data.suitTypeBox && this.data.showTip) {
+      return
+    }
     this.setData({
-        productList: [],
-        showTotal: this.data.brandCartList.length > 2
+      showTip: !this.data.showTip,
+      maskBoxH: wx.getSystemInfoSync().windowHeight
     })
-    let brandCartList = this.data.brandCartList;
-    let productList = this.data.productList;
-    let goodsPrice = 0;
-    let payment = 0;
-    let fare = 0;
-    brandCartList.forEach(cart => {
-        let brandNum = 0;
-        let brandPrice = 0;
-        cart.cartListDtos.forEach(cartItem => {
-            let itemGoodsPrice = cartItem.presentPrice * cartItem.number;
-            goodsPrice += itemGoodsPrice;
-            payment += itemGoodsPrice;
-            brandNum += cartItem.number;
-            brandPrice += itemGoodsPrice;
-            productList.push(cartItem)
-        })
-
-        if (cart.expressCost && cart.expressCost.freeExpress === 1 && brandPrice < cart.expressCost.freeExpressValue) { // 下单金额
-            fare += cart.expressCost.expressPrice;
-        }
-        if (cart.expressCost && cart.expressCost.freeExpress === 2 && brandNum < cart.expressCost.freeExpressValue) { // 下单金额
-            fare += cart.expressCost.expressPrice;
-        }
-    });
+  },
+  selectSuitType (event) {
     this.setData({
-        productList: productList,
-        totalPrice: fare + payment,
-        goodsPrice: goodsPrice,
-        payment: payment,
-        fare: fare
+      groupSuitType: event.currentTarget.dataset.suitType
     })
-    wx.setStorageSync('goodsPrice', JSON.stringify(goodsPrice));
   },
   paymentCall() {
     let that = this;
@@ -113,59 +167,102 @@ Page(Object.assign({
       wx.hideLoading();
     }, 3000);
     if (!that.data.choosedAddress) {
-        if (!util.checkAddress(that.data.address)) {
-            that.setData({
-                payButton: false
-            })
-            return;
-        }
-        that.submitAddress(that.data.address, function () {
-            that.doPayCall();
+      if (!util.checkAddress(that.data.address)) {
+        that.setData({
+          payButton: false
         })
-    } else {
+        return;
+      }
+      that.submitAddress(that.data.address, function () {
         that.doPayCall();
+      })
+    } else {
+      that.doPayCall();
     }
   },
   doPayCall() {
-    if (this.data.orderId != 0) {
-        this.doPay(this.data.orderId);
-        return;
+    if (this.data.orderId !== 0) {
+      this.doPay(this.data.orderId);
+      return;
     }
-
-    let cartIds = [];
-    this.data.productList.forEach(cart => {
-        cartIds.push(cart.cartId);
-    });
     let addressId = this.data.choosedAddress.id;
-    let that = this;
-    util.request(api.submitOrder, {
-        cartIds: cartIds,
-        addressId: addressId,
-        couponId: that.data.couponId, 
-        message: that.data.message
-    }, 'POST').then(res => {
-        if (res.errno !== 0) {
+    let groupMyId = !this.data.groupMyId ? null : Number(this.data.groupMyId);
+    if (this.data.isAloneBuy) {
+      this.aloneOrder(this.data.products.cartIds, addressId);
+    } else {
+      // 开团
+      if (!groupMyId) {
+        util.request('/groupMy/2/' + this.data.products.data.id, {
+          groupSuitType: 1,
+          sku: this.data.products.sku.skuCode
+        }, 'POST').then((res) => {
+          // 开团失败时
+          if (res.errno !== 0) {
             util.showErrorToast(res.errmsg);
             return;
-        }
-        that.setData({
-            orderId: res.data
+          }
+          groupMyId = res.data;
+          this.submitGroup(groupMyId, addressId);
         })
-        that.doPay(that.data.orderId);
+      } else { // 参团
+        this.submitGroup(groupMyId, addressId);
+      }
+    }
+  },
+  aloneOrder (cartIds, addressId) {
+    let that = this;
+    util.request(api.submitOrder, {
+      cartIds: cartIds,
+      addressId: addressId,
+      couponId: that.data.couponId,
+      message: that.data.message
+    }, 'POST').then(res => {
+      that.setData({
+        orderId: res.orderId
+      })
+      that.doPay(this.data.orderId);
     })
   },
-  doPay(orderId) {
+  submitGroup (groupMyId, addressId) {
+    let that = this;
+    let products = [{
+      productId: this.data.products.data.id,
+      buyNum: this.data.products.data.number,
+      skuCode: that.data.products.sku.skuCode
+    }]
+    util.request('/order/1', {
+      productType: 2,
+      groupSuitType: 1,
+      groupMyId: groupMyId,
+      addressId: addressId,
+      products: products
+    }, 'POST').then(res => {
+      if (res.errno !== 0) {
+        util.showErrorToast(res.errmsg);
+        that.setData({
+          payButton: false
+        })
+        return;
+      }
+      that.setData({
+        orderId: res.data
+      })
+      that.doPay(that.data.orderId, groupMyId);
+    })
+  },
+  doPay(orderId, groupMyId) {
     let that = this;
     wx.showLoading({
       title: '加载中',
       mask: true
     })
-    util.request('/orders/' + orderId + '/prepay', {}, 'POST').then(resp => {
+    util.request('/orders/' + orderId + '/prepay', {
+      type: '1111111111'
+    }, 'POST').then(resp => {
       that.setData({
         payButton: false
       })
       wx.hideLoading();
-      console.log(resp.errno);
       if (resp.errno === 403) {
         util.showErrorToast(resp.errmsg);
       } else {
@@ -179,9 +276,39 @@ Page(Object.assign({
             that.setData({
               payButton: false
             })
-            wx.navigateTo({
+            if (!that.data.isAloneBuy) {
+              // wx.navigateTo({
+              //   url: '../groupMy/groupMy?groupMyId' + groupMyId
+              // })
+
+              // 拼团成功，跳转到待发货
+              if (that.data.groupMyId) {
+                  util.request(api.groupMy + '/' + that.data.groupMyId, {
+
+                  }, "GET").then(res => {
+                    if (res.errno === 0 && res.data.joinNum + 1 >= res.data.rulesNum) {
+                        wx.redirectTo({
+                            url: '../../order/list/list?showType=201'
+                        })
+                    } else {
+                        wx.redirectTo({
+                            url: '../../order/list/list?showType=200'
+                        })
+                    }
+                  });
+
+              // 拼团未成功，跳转到待分享，引导用户分享
+              } else {
+                  wx.redirectTo({
+                      url: '../../order/list/list?showType=200'
+                  })
+              }
+
+            } else {
+              wx.redirectTo({
                 url: '../../order/list/list'
-            })
+              })
+            }
           },
           fail(res) {
             util.showErrorToast(res.errMsg);
@@ -337,7 +464,8 @@ Page(Object.assign({
             that.setData({
               region: region,
               cityId: that.data.cityIds[e.detail.value],
-              areaId: area[0].id
+              areaId: area[0].id,
+              areaIds: that.returnListName(area, 'id'),
             })
           })
         })

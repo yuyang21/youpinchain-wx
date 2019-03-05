@@ -1,0 +1,215 @@
+.poster {
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 1);
+  padding-top: 24rpx;
+}
+
+.poster .text {
+  font-size: 30rpx;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  display: block;
+}
+
+.poster .close_model {
+  position: absolute;
+  top: 54rpx;
+  right: 29rpx;
+  width: 60rpx;
+  height: 60rpx;
+  z-index:6;
+}
+.poster .saveBtn {
+  width: 280rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  background: #e4372e;
+  color: #fff;
+  font-size: 30rpx;
+  text-align: center;
+  border-radius:50rpx;
+  margin:80rpx auto;
+}
+
+.poster .invite_landing {
+  overflow: hidden;
+  /* position: relative; */
+  top: 20rpx;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 60rpx auto 0;
+  background: rgba(0, 0, 0, 0.8);
+  width: 84%;
+}
+
+.poster .invite_landing .box {
+  overflow: auto;
+  width: 100%;
+  max-height: 960rpx;
+  background-color: #fff;
+  padding: 10rpx 30rpx 24rpx;
+  border-radius: 10rpx;
+}
+
+.poster .invite_landing .box .groupMyInfo {
+  margin:30rpx 0 0 140rpx;
+  text-align:left;
+}
+
+.poster .invite_landing .box .groupMyInfo view:first-child {
+  font-size: 26rpx;
+  color: #3B3B3B;
+  line-height: 26rpx;
+}
+.poster .invite_landing .box .groupMyInfo view:first-child strong {
+  color: #000;
+  margin-right: 10rpx;
+  font-weight: bold;
+}
+
+.poster .invite_landing .box .groupMyInfo view:nth-child(2) {
+  font-size: 24rpx;
+  color: #3B3B3B;
+  transform: scale(.87) translateX(-40rpx);
+  width: 113%;
+}
+
+.poster .invite_landing .box .groupMyInfo view.padd-t {
+  padding: 10rpx 0 20rpx;
+}
+
+.poster .invite_landing .box .header {
+  border: 6rpx solid #A40000;
+  border-radius: 10rpx;
+  position: relative;
+}
+
+.poster .invite_landing .box .header .icon_head {
+  position: absolute;
+  top: -74rpx;
+  left: -8rpx;
+  width: 122rpx;
+  height: 120rpx;
+}
+
+.poster .invite_landing .box .header .descrInfo {
+  width: 100%;
+  height: 80rpx;
+  line-height: 90rpx;
+  background-color: #A40000;
+  overflow: hidden;
+  padding: 0 24rpx;
+}
+.poster .invite_landing .box .header .descrInfo .left {
+  font-size: 26rpx;
+  color: #fff;
+}
+.poster .invite_landing .box .header .descrInfo .left span:first-child {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+
+.poster .invite_landing .box .header .descrInfo .left span:last-child {
+  font-size: 24rpx;
+}
+
+.poster .invite_landing .box .header .descrInfo .right {
+  width: 200rpx;
+  height: 30rpx;
+  font-size: 24rpx;
+  color: #A40000;
+  background-color: #FFFF00;
+  border-radius: 16rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30rpx;
+}
+
+.poster .invite_landing .box .boxImg {
+  display: block;
+  width: 100%;
+  height: 350rpx;
+  border-radius: 4rpx 4rpx 0 0;
+}
+
+.poster .invite_landing .box .container {
+  overflow: hidden;
+  padding: 24rpx 0 0 2rpx;
+  width: 100%;
+}
+
+.poster .invite_landing .box .container .left {
+  width: 63%;
+}
+.poster .invite_landing .box .container .left .title {
+  font-size: 30rpx;
+  color: #262424;
+  max-height: 72rpx;
+  font-weight: bold;
+}
+
+.poster .invite_landing .box .container .left .content {
+  font-size: 24rpx;
+  color: #434343;
+  max-height: 72rpx;
+  overflow: hidden;
+}
+
+.poster .invite_landing .box .container .left .discountPrice {
+  font-size: 30rpx;
+  color: #A40000;
+  font-weight: bold;
+  margin-top: 10rpx;
+}
+
+.poster .invite_landing .box .container .left .discountPrice span {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #A40000;
+  margin-right: 8rpx;
+}
+
+.poster .invite_landing .box .container .left .tips {
+  font-size: 24rpx;
+  color: #000;
+  font-weight: bold;
+  margin: 4rpx 0;
+  transform: scale(.9) translateX(-20rpx);
+}
+
+.poster .invite_landing .box .container .left .originalPrice {
+  font-size: 24rpx;
+  color: #000;
+  font-weight: bold;
+  margin-top: 10rpx;
+}
+
+.poster .invite_landing .box .container .left .originalPrice span {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 24rpx;
+  color: #000;
+  transform: scale(.85) translateY(2rpx);
+  margin-right: 4rpx;
+}
+
+.poster .invite_landing .box .container .qrcode {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 10rpx;
+  background: #000;
+  margin-top: 20rpx;
+}
+.myQrcode {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

@@ -3,6 +3,7 @@
   "usingComponents": {
     "alertTip": "/components/alertTip/alertTip",
     "refundOrderTip": "/components/refundOrderTip/refundOrderTip",
-    "computeTime": "/components/computeTime/computeTime"
+    "computeTime": "/components/computeTime/computeTime",
+    "poster": "/components/poster/poster"
   }
 }

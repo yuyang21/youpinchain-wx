@@ -1,0 +1,55 @@
+.head_top {
+    background-color: transparent;
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 90rpx;
+    /* border-bottom: 2rpx solid transparent; */
+}
+.head_goback image {
+    width: 24rpx;
+    height: 40rpx;
+    left: 22rpx;
+    position: absolute;
+	top: 50%;
+    transform: translateY(-50%);
+}
+.head_share image, .head_home image {
+    width: 41rpx;
+    height: 40rpx;
+    right: 22rpx;
+    position: absolute;
+	top: 50%;
+    transform: translateY(-50%);
+}
+.head_home image {
+    right: 90rpx; 
+}
+.title_head {
+    width: 50%;
+    color: #333;
+    text-align: center;
+    position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.title_head .title_text {
+  font-size: 32rpx;
+  color: #333;
+  text-align: center;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.head_top.white {
+    background-color: #fff;
+}
+.head_top.transparent {
+    background-color: transparent;
+}

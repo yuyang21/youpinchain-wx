@@ -113,9 +113,10 @@
     padding-bottom: 30rpx;
     background-color: #efeff4;
 }
-.shop_list_container .swiper-container .topBG image {
-    width: 100%;
+.shop_list_container .swiper-container .topBG {
     height: 166rpx;
+    width: 100%;
+    background-color: #E42826;
 }
 .shop_list_container .swiper-container .shop_info {
     margin: -96rpx auto 0;
@@ -171,6 +172,9 @@
     position: relative;
     padding: 30rpx 0;
     overflow: hidden;
+}
+.shop_list_container .swiper-container .shop_info .goods .right .red {
+    font-size: 30rpx;
 }
 .shop_list_container .swiper-container .shop_info .goods .img {
     float: left;
@@ -248,7 +252,8 @@
     text-align: right;
 }
 .shop_list_container .swiper-container .shop_info .payment_info .li view.coupon {
-    color: #999;
+    color: #333;
+    text-decoration:underline;
 }
 .shop_list_container .swiper-container .shop_info .totalPrice {
     margin-top: 24rpx;

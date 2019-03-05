@@ -9,7 +9,7 @@ Page({
       title: '未发货',
       text: '您的订单还未发货～'
     }, {
-      title: '已发货',
+      title: '待收货',
       text: '您的订单已经发货啦～'
     }, {
       title: '配送中',
@@ -24,11 +24,22 @@ Page({
     orderData: {},
     orderProduct: {},
     exp: {},
-    showAlertTip: false
+    showAlertTip: false,
+    showPoster: false,
+    currentPage: '',
+    page: 1,
+    size: 10,
+    members: [],
+    totalPages: 1,
+    goods: {},
+    groupPrice: '',
+    joinNum: 0,
+    endTimeDown: 0
   },
   onLoad (options) {
     this.setData({
-      orderId: options.orderId
+      orderId: options.orderId,
+      groupMyId: options.groupMyId ? options.groupMyId : null
     })
     let that = this;
     util.request('/orders/' + that.data.orderId).then(res => {
@@ -44,8 +55,10 @@ Page({
       that.setData({
         orderData: orderData,
         orderProduct: res.data.orderProduct,
-        showLoading: false
+        showLoading: false,
+        groupPrice: res.data.groupPrice
       })
+      that.expCodes();
       if (that.data.orderData.handleOption.confirm && that.data.orderData.expNo) {
         util.request('/expresses/' + that.data.orderData.expCode + '/' + that.data.orderData.expNo).then(res => {
           if (res.errno !== 0) {
@@ -61,7 +74,64 @@ Page({
           }
         })
       }
+      if (orderData.status === 200) {
+        this.getMembers(this.data.page, this.data.size);
+      }
     })
+  },
+  expCodes () {
+    let that = this;
+    let orderData = that.data.orderData;
+    util.request(api.expCodes).then(res => {
+      if (res.errno !== 0) {
+        return;
+      }
+      orderData.expName = res.data[this.data.orderData.expCode]
+      that.setData({
+        orderData: orderData
+      })
+    })
+  },
+  copyExpNo () {
+    let that = this;
+    wx.setClipboardData({
+      data: that.data.orderData.expNo,
+      success: function(res) {
+        wx.getClipboardData({
+          success: function(res) {
+            console.log(res.data) // data
+          }
+        })
+      }
+    })
+  },
+  getMembers(page, size) {
+    let that = this;
+    util.countdown(that);
+    util.request('/groups/0', {
+      groupMyId: that.data.groupMyId
+    }).then(res => {
+      that.setData({
+        joinNum: res.data.groupMy.rulesNum - res.data.groupMy.joinNum,
+        endTimeDown: Math.round((res.data.groupMy.endTime - new Date().getTime()) / 1000)
+      })
+      util.countdown(that);
+    })
+    util.request('/groups/0/groupMys/' + that.data.groupMyId + '/members', {
+      page: page,
+      pageSize: size
+    }).then(res => {
+      that.setData({
+        members: res.data.members,
+        totalPages: res.data.totalPages
+      })
+    })
+  },
+  loadMoreMember() {
+    this.setData({
+      page: this.data.page + 1
+    })
+    this.getMembers(this.data.page, this.data.size);
   },
   goTrack () {
     if (!this.data.orderData.handleOption.confirm) {
@@ -72,41 +142,40 @@ Page({
     })
   },
   // 取消订单
-  cancelOrder(e) {
+  cancelOrder(orderId) {
     var that = this;
-    let orderId = e.currentTarget.dataset.orderId;
     util.request(api.cancelOrder + orderId, {}, 'DELETE').then(res => {
       if (res.errno !== 0) {
-        that.showErrMsg("失败");
+        util.showErrorToast(res.errmsg);
         return;
       }
+      util.showSuccessToast("成功");
       wx.navigateTo({
-        url: '../../order/list/list?showType=201'
+        url: '../list/list'
       })
     })
   },
   // 确认收货
-  confirmOrder(e) {
+  confirmOrder(orderId) {
     var that = this;
-    let orderId = e.currentTarget.dataset.orderId;
     util.request('/orders/' + orderId + '/confirm', {}, "POST").then(res => {
       if (res.errno !== 0) {
-        that.showErrMsg("失败");
+        util.showErrorToast("失败");
         return;
       }
+      util.showSuccessToast("成功");
       wx.navigateTo({
-        url: '../../order/list/list?showType=401'
+        url: '../list/list'
       })
     })
   },
   toPay(e) {
-    var that = this;
     let orderId = e.currentTarget.dataset.orderId;
     util.request('/orders/' + orderId + '/prepay', {
       type: '1111111111'
-    }, 'POST').then(resp => {
+    }, "POST").then(resp => {
       if (resp.errno === 403) {
-        that.showErrMsg(resp.errmsg)
+        util.showErrorToast(resp.errmsg);
       } else {
         wx.requestPayment({
           timeStamp: resp.data.timeStamp, //时间戳，自1970年以来的秒数
@@ -122,14 +191,40 @@ Page({
           fail(res) {
             util.showErrorToast(res.errMsg);
           }
-        });
+        })
       }
     })
   },
-  toggleAlert (e) {
+  toggleAlert(e) {
     // e.detail // 自定义组件触发事件时提供的detail对象
     this.setData({
       showAlertTip: !this.data.showAlertTip
+    })
+  },
+  closeMask () {
+    this.setData({
+      showPoster: false
+    })
+  },
+  showShareBox (e) {
+    let groupMyId = this.data.groupMyId;
+    let route = '';
+    let goods = JSON.parse(wx.getStorageSync('orderProduct'));
+    if (goods.productType === 1) { // 1套装，2单品
+      route = {
+        page: 'pages/group/groupDet/groupDet',
+        parmas: 'P=' + goods.productId + ',G=' + groupMyId
+      };
+    } else {
+      route = {
+        page: 'pages/goods/goods',
+        parmas: 'P=' + goods.productId + ',B=' + goods.brandId + ',G=' + groupMyId
+      };
+    }
+    this.setData({
+      goods: goods,
+      showPoster: !this.data.showPoster,
+      currentPage: JSON.stringify(route)
     })
   }
 })

@@ -6,6 +6,9 @@ Page({
     trackData: {}
   },
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中',
+    })
     this.setData({
       expNo: options.expNo || '821721174311',
       expCode: options.expCode || '11'
@@ -20,11 +23,19 @@ Page({
   },
   expresses() {
     util.request('/expresses/' + this.data.expCode + '/' + this.data.expNo).then(res => {
-      if (res.errno !== 0) {
+      wx.hideLoading();
+      let trackData = JSON.parse(res.data);
+      if (res.errno !== 0 || !trackData.data[0].time) {
+        this.setData({
+          trackData: null
+        })
         return;
       }
+      trackData.data.forEach(o => {
+        o.time = new Date(o.time.replace(/-/g, '/')).getTime();
+      });
       this.setData({
-        trackData: JSON.parse(res.data)
+        trackData: trackData
       })
       console.info(this.data.trackData)
     })

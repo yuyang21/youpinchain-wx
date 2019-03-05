@@ -63,7 +63,8 @@ Page(Object.assign({
         cityId: address.cityId,
         areaId: address.areaId,
         mobile: address.mobile,
-        address: address.address
+        address: address.address,
+        isDefault: this.data.toggle
       }, 'PUT').then(res => {
         if (res.errno == 0) {
           if (this.data.queryPath == 'confirmOrder') {
@@ -226,7 +227,9 @@ Page(Object.assign({
               region[2].push(p.name);
               that.setData({
                 cityIds: cityIds,
+                areaIds: that.returnListName(area, 'id'),
                 region: region,
+                city: region[1],
                 provinceId: this.data.provinceIds[e.detail.value],
                 cityId: city[0].id,
                 areaId: area[0].id
@@ -246,8 +249,10 @@ Page(Object.assign({
             region[2].push(p.name);
             that.setData({
               region: region,
+              area: region[2],
               cityId: that.data.cityIds[e.detail.value],
-              areaId: area[0].id
+              areaId: area[0].id,
+              areaIds: that.returnListName(area, 'id'),
             })
           })
         })

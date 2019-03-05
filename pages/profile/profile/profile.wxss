@@ -6,7 +6,8 @@
 .profile-top-red {
   height: 166rpx;
   width: 100%;
-  background-image: linear-gradient(to bottom, #fc5b46, #fa424f);
+  background-color: #E42826;
+  /* background-image: linear-gradient(to bottom, #fc5b46, #fa424f); */
 }
 
 .profile-number {
@@ -85,7 +86,7 @@
 
 .info-data .ul .info-data-link {
   float: left;
-  width: 33.33%;
+  width: 25%;
   display: inline-block;
 }
 
@@ -164,7 +165,11 @@
   line-height: 36rpx;
   background: #e4372e;
   border-radius: 50%;
-  right:63rpx;
+  right:42rpx;
   top:24rpx;
   text-align: center;
+}
+.profile-1reTe .text {
+  font-size:30rpx;
+  margin-right:-130rpx;
 }

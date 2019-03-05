@@ -3,6 +3,10 @@ const api = require('../../../config/api.js');
 Page({
   data: {
     userInfo: {
+      unpaid: 0,
+      sharing: 0,
+      undeliry: 0,
+      delived: 0
     },
     userImgUrl: '',
     username: '',
@@ -16,7 +20,15 @@ Page({
   },
   getOrderStat () {
     let that = this;
-    let userInfo = {};
+    that.setData({
+      userInfo: {
+        unpaid: 0,
+        sharing: 0,
+        undeliry: 0,
+        delived: 0
+      }
+    })
+    let userInfo = this.data.userInfo;
     util.request(api.orderStat).then(res => {
       if (res.errno !== 0) {
         return;
@@ -24,6 +36,9 @@ Page({
       res.data.orderStat.forEach(stat => {
         if (stat.status == 101) {
           userInfo.unpaid = stat.count;
+        }
+        if (stat.status == 200) {
+          userInfo.sharing = stat.count;
         }
         if (stat.status == 201) {
           userInfo.undeliry = stat.count;

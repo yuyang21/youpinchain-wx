@@ -107,7 +107,6 @@ function loginByWeixin() {
         console.log(res)
         if (res.errno === 0) {
           //存储用户信息
-          wx.setStorageSync('userInfo', res.data.userInfo);
           wx.setStorageSync('token', res.data.token);
           resolve(res);
         } else {
@@ -127,7 +126,7 @@ function loginByWeixin() {
  */
 function checkLogin() {
   return new Promise(function (resolve, reject) {
-    if (wx.getStorageSync('userInfo') && wx.getStorageSync('token')) {
+    if (wx.getStorageSync('token')) {
       checkSession().then(() => {
         resolve(true);
       }).catch(() => {

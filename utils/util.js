@@ -1,3 +1,5 @@
+const api_host = 'http://youpinlian.datbc.com/youpin/wx'
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -17,10 +19,10 @@ const formatNumber = n => {
 function showErrorToast(msg) {
   wx.showToast({
     title: msg,
-    image: '/static/images/icon_error.png'
+    icon: 'none',
+    duration: 2000
   })
 }
-
 function showSuccessToast(msg) {
   wx.showToast({
     title: msg,
@@ -30,38 +32,25 @@ function showSuccessToast(msg) {
 }
 
 /**
- * 封封微信的的request
+ * 封装微信的的request
  */
 function request(url, data = {}, method = "GET") {
-  console.log(getApp())
+  let that = getApp()
   return new Promise(function (resolve, reject) {
     wx.request({
-      url: getApp().config.api_host + url,
+      url: api_host + url,
       data: data,
       method: method,
       header: {
         'Content-Type': 'application/json',
-        'X-youpinchain-Token': wx.getStorageSync('token')
+        'X-youpinchain-Token': wx.getStorageSync('token'),
+        'app-version': that !== undefined && that.globalData !== undefined ? that.globalData.version : ''
       },
       success: function (res) {
-        if (res.statusCode == 200) {
-          if (res.data.errno == 401) {
-            // 微信登陆失效
-            console.log("util 401退出到微信登录");
-            try {
-              wx.removeStorageSync('userInfo');
-              wx.removeStorageSync('token');
-            } catch (e) {
-              // Do something when catch error
-            }
-            // 切换到登录页面
-            wx.navigateTo({
-              url: '/pages/auth/login/login'
-            });
-            console.log('登录失败')
-          } else {
-            resolve(res.data);
-          }
+        console.log(url);
+        console.log(res);
+        if (res.statusCode === 200) {
+          resolve(res.data);
         } else {
           reject(res.errMsg);
         }
@@ -75,8 +64,8 @@ function request(url, data = {}, method = "GET") {
 }
 /**
  * 转发设置内容
- * @param {转发来源} option 
- * @param { title: 标题, path: 路径, imgUrl: 图片链接} obj 
+ * @param {转发来源} option
+ * @param { title: 标题, path: 路径, imgUrl: 图片链接} obj
  */
 const shareEvent = (option, obj) => {
   let shareObj = {
@@ -85,13 +74,13 @@ const shareEvent = (option, obj) => {
     imgUrl: obj.imgUrl,
     success(res) {
       // 转发成功之后的回调
-      if (res.errMsg == 'shareAppMessage:ok') { }
+      if (res.errMsg === 'shareAppMessage:ok') { }
     },
     fail(res) {
       // 转发失败之后的回调
-      if (res.errMsg == 'shareAppMessage:fail cancel') {
+      if (res.errMsg === 'shareAppMessage:fail cancel') {
         // 用户取消转发
-      } else if (res.errMsg == 'shareAppMessage:fail') {
+      } else if (res.errMsg === 'shareAppMessage:fail') {
         // 转发失败，其中 detail message 为详细失败信息
       }
     },
@@ -101,7 +90,7 @@ const shareEvent = (option, obj) => {
   };
   if (option.from === 'button') {
     // 来自页面内转发按钮
-    console.log(option.target)
+    // console.log(option.target)
   }
   return shareObj;
 }
@@ -112,7 +101,7 @@ const shareEvent = (option, obj) => {
 function countdown(that) {
   var second = that.data.endTimeDown
   if (second == 0) {
-    console.log("Time Out...");
+    // console.log("Time Out...");
     clearTimeout(time)
     return;
   }
@@ -125,7 +114,7 @@ function countdown(that) {
 }
 /**
  * 校验地址表单
- * @param {地址对象} address 
+ * @param {地址对象} address
  */
 function checkAddress(address) {
   if (!address.name) {
@@ -152,6 +141,49 @@ function checkAddress(address) {
   return true;
 }
 
+function dealwithInviter(options) {
+    let scene = {};
+    if (options.scene) {
+        let params = decodeURIComponent(options.scene).split(",");
+        params.forEach(p => {
+            scene[p.split("=")[0]] = p.split("=")[1];
+            console.log('scene.' + p.split("=")[0] + ':' + p.split("=")[1])
+        });
+    }
+    var inviter = options.inviter || scene.I || null;
+    if (inviter != null && wx.getStorageSync('token')) {
+        request('/oa/saveInviter', {
+            inviter: inviter
+        }, 'POST').then(res => {})
+    }
+}
+
+const fsm = wx.getFileSystemManager();
+const FILE_BASE_NAME = 'tmp_base64src';
+
+const base64src = function(base64data) {
+  return new Promise((resolve, reject) => {
+    const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
+    if (!format) {
+      reject(new Error('ERROR_BASE64SRC_PARSE'));
+    }
+    const filePath = `${wx.env.USER_DATA_PATH}/${FILE_BASE_NAME}.${format}`;
+    const buffer = wx.base64ToArrayBuffer(bodyData);
+    fsm.writeFile({
+      filePath,
+      data: buffer,
+      encoding: 'binary',
+      success() {
+        resolve(filePath);
+      },
+      fail() {
+        reject(new Error('ERROR_BASE64SRC_WRITE'));
+      },
+    });
+  });
+};
+
+
 module.exports = {
   formatTime,
   request,
@@ -159,5 +191,7 @@ module.exports = {
   showSuccessToast,
   shareEvent,
   countdown,
-  checkAddress
+  checkAddress,
+  base64src,
+  dealwithInviter
 }

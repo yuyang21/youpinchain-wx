@@ -3,33 +3,33 @@
   <view class="shop_list_container">
     <view class="swiper-container" wx:if="{{carts.length > 0}}">
       <view class="topBG">
-        <image src="../../static/images/gwc-bg.png"/>
+        <!-- <image src="../../static/images/gwc-bg.png"/> -->
       </view>
       <view class="shop_info">
         <view wx:for="{{carts}}" wx:key="{{index}}" wx:for-item="cartList" class="lists {{index === carts.length - 1 ? 'border-no': ''}}">
           <view class="title">
-            <span class="{{cartList.choose ? 'choose' : 'unselected'}}" bindtap="checkCart" data-cartList="{{cartList}}">
+            <span class="{{cartList.choose ? 'choose' : 'unselected'}}" bindtap="checkCart" data-cart-list="{{cartList}}" data-brand-index="{{index}}">
               <image wx:if="{{cartList.choose}}" src="../../static/images/selected.png"/>
             </span>
             <span>{{cartList.brandName}}</span>
           </view>
           <view class="goods">
             <view class="left">
-              <view class="li" wx:for="{{cartList.cartListDtos}}" wx:key="{{item.cartId}}">
-                <span class="{{item.choose && item.available ? 'choose' : 'unselected'}}" bindtap="checkCart" data-cartList="{{item}}">
+              <view class="li" wx:for="{{cartList.cartListDtos}}" wx:key="{{item.cartId}}" wx:for-index="idx">
+                <span class="{{item.choose && item.available ? 'choose' : 'unselected'}}" bindtap="checkCart" data-cart-list="{{item}}" data-brand-index="{{index}}" data-index="{{idx}}">
                   <image wx:if="{{item.choose && item.available}}" src="../../static/images/selected.png" />
                 </span>
               </view>
             </view>
             <view class="right">
               <view class="li" wx:for="{{cartList.cartListDtos}}" wx:key="{{item.cartId}}">
-                <image src="{{item.thumbnailPic}}" alt="" class="img {{!item.thumbnailPic ? 'noImage': ''}}"/>
+                <image mode='aspectFill' src="{{item.thumbnailPic || item.normalPic}}" alt="" class="img {{!item.thumbnailPic || !item.normalPic ? 'noImage': ''}}"/>
                 <view class="goods_info">
                   <view class="name" style="-webkit-box-orient: vertical;">{{item.productName}}</view>
                   <view class="price"><span class="RMB">￥</span>{{item.presentPrice}}</view>
                 </view>
                 <view class="cart_btns">
-                  <span class="subduction {{item.number <= 1 ? 'disabled': ''}}" bindtap="item.number > 1 ? addNumber : deleteCart" data-cart="{{item}}" data-number="-1">
+                  <span class="subduction {{item.number <= 1 ? 'disabled': ''}}" bindtap="addNumber" data-cart="{{item}}" data-number="-1">
                     <image wx:if="{{item.number > 1}}" src="../../static/images/sub-icon.png"/>
                     <image wx:else src="../../static/images/sub-disable-icon.png"/>
                   </span>
@@ -52,6 +52,10 @@
           <view class="li">
             <view>商品实付</view>
             <view><span class="RMB">￥</span>{{filter.numberFormatFloat(payment)}}</view>
+          </view>
+          <view class="li" bindtap="toCoupon">
+            <view>优惠价格</view>
+            <view class="RMB coupon"><span class="RMB" wx:if="{{choosedCoupon && choosedCoupon !== -1 || coupon.length <= 0}}">-￥</span>{{choosedCoupon ? (choosedCoupon === -1 ? '暂不使用' : choosedCoupon.coupon.amount) : (coupon.length > 0 ? '请选择优惠券' : 0)}}</view>
           </view>
           <view class="li">
             <view>运费</view>
